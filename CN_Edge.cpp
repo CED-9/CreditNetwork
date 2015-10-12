@@ -14,6 +14,10 @@ void Edge::setEdge(int nodeFromIdT, int nodeToIdT, double interest_rate){
 	this->nodeToId = nodeToIdT;
 }
 
+void Edge::setCurrent(int d){
+	unitEdges[0].d_current = d;
+}
+
 Edge::~Edge(){}
 
 int Edge::get_c_remain(){

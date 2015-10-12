@@ -102,12 +102,12 @@ void WidgetGraph::constructWidget(Graph* graphT){
 				WidgetNode* widgetNode1 = node->credit_in_widget_nodes.find(target->getNodeId())->second;
 				WidgetNode* widgetNode2 = target->credit_out_widget_nodes.find(node->getNodeId())->second;
 				this->addEdge(widgetNode1, widgetNode2, 
-					edgePair.second->get_c_in_remain(), edgePair.second->get_interest_rate(), 0);
+					edgePair.second->get_c_in_remain(), edgePair.second->get_interest_rate(), 0, CREDIT_WIDGET_EDGE);
 			} else {
 				WidgetNode* widgetNode1 = node->debt_out_widget_nodes.find(target->getNodeId())->second;
 				WidgetNode* widgetNode2 = target->debt_in_widget_nodes.find(node->getNodeId())->second;
 				this->addEdge(widgetNode2, widgetNode1, 
-					edgePair.second->get_d_out_current(), edgePair.second->get_interest_rate(), 0);
+					edgePair.second->get_d_out_current(), edgePair.second->get_interest_rate(), 0, DEBT_WIDGET_EDGE);
 			}
 
 		}
@@ -122,13 +122,15 @@ void WidgetGraph::constructWidget(Graph* graphT){
 			for (auto outwardFlowWidget : node->credit_in_widget_nodes){
 				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
 					node->edge_out.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_in.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate()
+					- node->edge_in.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(), 
+					INNER_WIDGET_EDGE
 				);				
 			}
 			for (auto outwardFlowWidget : node->debt_in_widget_nodes){
 				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
 					node->edge_out.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_out.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate()
+					- node->edge_out.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(),
+					INNER_WIDGET_EDGE
 				);
 			}
 		}
@@ -136,13 +138,15 @@ void WidgetGraph::constructWidget(Graph* graphT){
 			for (auto outwardFlowWidget : node->credit_in_widget_nodes){
 				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
 					node->edge_in.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_in.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate()
+					- node->edge_in.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(),
+					INNER_WIDGET_EDGE
 				);				
 			}
 			for (auto outwardFlowWidget : node->debt_in_widget_nodes){
 				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
 					node->edge_in.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_out.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate()
+					- node->edge_out.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(),
+					INNER_WIDGET_EDGE
 				);
 			}
 		}
@@ -170,10 +174,13 @@ void WidgetGraph::constructWidget(Graph* graphT){
 }
 
 // from node1 to node2, capability of routing
-void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2, int capacity, double ir, double ir_diff){
-	WidgetEdge* edge = new WidgetEdge(ir, ir_diff, capacity, node1, node2);
+void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2, 
+	int capacity, double ir, double ir_diff, WidgetEdgeType type){
+
+	WidgetEdge* edge = new WidgetEdge(ir, ir_diff, capacity, node1, node2, type);
 	addIntWidgetPair(node2->getGlobalId(), edge, node1->edge_out);
 	addIntWidgetPair(node1->getGlobalId(), edge, node2->edge_in);
+
 }
 
 

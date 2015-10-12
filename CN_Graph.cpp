@@ -52,6 +52,22 @@ void Graph::addUnitEdge(Node* nodeFrom, Node* nodeTo, double ir){
 
 }
 
+void Graph::addUnitEdgeDebt(Node* nodeFrom, Node* nodeTo, double ir){
+
+	std::pair<int, InEdge*> pairIn;
+	pairIn.first = nodeFrom->getNodeId();
+	pairIn.second = new InEdge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
+	pairIn.second->setCurrent(1);
+	nodeTo->edge_in.insert(pairIn);
+
+	std::pair<int, OutEdge*> pairOut;
+	pairOut.first = nodeTo->getNodeId();
+	pairOut.second = new OutEdge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
+	pairIn.second->setCurrent(1);
+	nodeFrom->edge_out.insert(pairOut);
+
+}
+
 void Graph::print(){
 	for (auto& it : nodes){
 		it.second->print();
@@ -70,7 +86,7 @@ void Graph::generateTestGraph(){
 		tempPair.second = temp;
 		nodes.insert(tempPair);
 	}
-	this->addUnitEdge(nodes.find(1)->second, nodes.find(0)->second, 0.3);
+	this->addUnitEdgeDebt(nodes.find(0)->second, nodes.find(1)->second, 0.3);
 	this->addUnitEdge(nodes.find(1)->second, nodes.find(2)->second, 0.2);
 	this->addUnitEdge(nodes.find(3)->second, nodes.find(1)->second, 0.2);
 	this->addUnitEdge(nodes.find(4)->second, nodes.find(1)->second, 0.4);

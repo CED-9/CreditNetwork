@@ -19,6 +19,12 @@ enum WidgetNodeType{
 	SUPER_DEST,
 };
 
+enum WidgetEdgeType{
+	CREDIT_WIDGET_EDGE,
+	DEBT_WIDGET_EDGE,
+	INNER_WIDGET_EDGE,
+};
+
 class WidgetNode;
 
 struct WidgetEdge{
@@ -28,8 +34,13 @@ struct WidgetEdge{
 	double curr;
 	double interest_rate;
 	double interest_diff;
-	WidgetEdge(double ir, double ir_diff, int capT,  WidgetNode* nodeFromT, WidgetNode* nodeToT)
-		: curr(0), cap(capT), interest_rate(ir), nodeTo(nodeToT), nodeFrom(nodeFromT), interest_diff(ir_diff) {}
+
+	WidgetEdgeType type;
+
+	WidgetEdge(double ir, double ir_diff, int capT, 
+		WidgetNode* nodeFromT, WidgetNode* nodeToT, WidgetEdgeType typeT)
+		: curr(0), cap(capT), interest_rate(ir), 
+		nodeTo(nodeToT), nodeFrom(nodeFromT), interest_diff(ir_diff), type(typeT) {}
 };
 
 static std::string helper(WidgetNodeType type){
@@ -43,6 +54,21 @@ static std::string helper(WidgetNodeType type){
 		case DEBT_IN_NODE:
 			return "DEBT_IN_NODE";
 	}
+	cerr << "unknown widget node type";
+	return "";
+}
+
+static std::string helper(WidgetEdgeType type){
+	switch(type){
+		case CREDIT_WIDGET_EDGE:
+			return "CREDIT_WIDGET_EDGE";
+		case DEBT_WIDGET_EDGE:
+			return "DEBT_WIDGET_EDGE";
+		case INNER_WIDGET_EDGE:
+			return "INNER_WIDGET_EDGE";
+	}
+	cerr << "unknown widget edge type";
+	return "";
 }
 
 class WidgetNode{
@@ -75,7 +101,9 @@ public:
 
 		for (auto it : edge_in){
 			cout << "From widget node " << it.second->nodeFrom->globalNodeId 
-				<< " which belongs to " <<  it.second->nodeFrom->originNode->getNodeId() << endl
+				<< " which belongs to " <<  it.second->nodeFrom->originNode->getNodeId() 
+				<< " Type: " << helper(it.second->type) 
+				<< endl
 				<< "interest rate: " << it.second->interest_rate 
 				<< " capacity: " << it.second->cap 
 				<< " current: " << it.second->curr << endl;
@@ -83,7 +111,9 @@ public:
 
 		for (auto it : edge_out){
 			cout << "To widget node " << it.second->nodeTo->globalNodeId 
-				<< " which belongs to " <<  it.second->nodeTo->originNode->getNodeId() << endl
+				<< " which belongs to " <<  it.second->nodeTo->originNode->getNodeId() 
+				<< " Type: " << helper(it.second->type) 
+				<< endl
 				<< "interest rate: " << it.second->interest_rate 
 				<< " capacity: " << it.second->cap 
 				<< " current: " << it.second->curr << endl;
@@ -107,7 +137,8 @@ public:
 	vector<WidgetNode*> widgetNodes;
 
 
-	void addEdge(WidgetNode* node1, WidgetNode* node2, int capacity, double ir, double ir_diff);
+	void addEdge(WidgetNode* node1, WidgetNode* node2, 
+		int capacity, double ir, double ir_diff, WidgetEdgeType type);
 	void constructWidget(Graph* graphT);
 	void copyBack();
 

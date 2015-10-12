@@ -22,6 +22,8 @@ public:
 
 	void setEdge(int nodeFromIdT, int nodeToIdT, double interest_rate);
 
+	void setCurrent(int d);
+
 	~Edge();
 
 	int get_c_remain();
