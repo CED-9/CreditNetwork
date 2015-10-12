@@ -1,16 +1,16 @@
 #ifndef CN_Node
 #define CN_Node
 
+#include "CN_Edge.h"
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 
 using namespace std;
 
 // forward declaration
-class Node;
 class Graph;
-#include "CN_Edge.h"
-
+class WidgetNode;
 
 class Node{
 
@@ -18,25 +18,21 @@ public:
 	int nodeId;
 
     // edges
-	std::vector<OutEdge> edge_out;
-	std::vector<InEdge> edge_in;
+	unordered_map<int, OutEdge*> edge_out;
+	unordered_map<int, InEdge*> edge_in;
+
+	// widget nodes
+	unordered_map<int, WidgetNode*> credit_out_widget_nodes;
+	unordered_map<int, WidgetNode*> credit_in_widget_nodes;
+	unordered_map<int, WidgetNode*> debt_in_widget_nodes;
+	unordered_map<int, WidgetNode*> debt_out_widget_nodes;
     
 	Node(int id);
+	~Node();
 
 	void setNodeId(int id){ nodeId = id; }
 	int getNodeId(){ return nodeId; }
 
-	// // double change
-	// Status setInEdge(
-	// 	Node* nodeT, double c_in_maxT, 
-	// 	double d_out_currentT, double interest_rateT, OpMode mode
-	// 	); 
-	// Status setOutEdge(
-	// 	Node* nodeT, double c_out_maxT, 
-	// 	double d_in_currentT, double interest_rateT, OpMode mode
-	// 	); 
-
-	void visualize();
 	void print(); 
 };
 
