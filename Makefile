@@ -1117,3 +1117,13 @@ testMechs:
 	$(CCC) -c $(CCFLAGS) CN_WidgetGraph.cpp -std=c++0x
 	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test1 simTest1.cpp *.o $(CCLNFLAGS) -std=c++0x
 	time ./test1 1 1 
+
+
+test: CN_Edge.cpp CN_Node.cpp CN_Graph.cpp test.cpp
+	g++ -g -c CN_Edge.cpp -std=c++11
+	g++ -g -c CN_Node.cpp -std=c++11
+	g++ -g -c CN_Graph.cpp -std=c++11
+	g++ -g -c CN_WidgetGraph.cpp -std=c++11
+	g++ -g -c CN_Searcher.cpp -std=c++11
+	g++ -o test test.cpp *.o -std=c++11
+	./test

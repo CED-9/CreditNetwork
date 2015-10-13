@@ -10,6 +10,75 @@
 
 using namespace std;
 
+
+static bool dfsHelper(Graph* graph, Node* front, Node* dest, vector<Node*>& path){
+
+}
+
+bool Searcher::dfs(Graph* graph, Node* src, Node* dest, vector<Node*>& path){
+
+	path.clear();
+	queue <Node*> tempQueue;
+	set <Node*> tempVisited;
+	Node* front = NULL;
+
+	for (auto temp : src->edge_in){
+		if (temp.second->get_d_out_current() == 0){
+			tempVisited.insert(temp.second);
+			tempQueue.push(temp.second);
+		}
+	}
+	for (auto temp : src->edge_out){
+		if (temp.second->get_d_out_current() == 1){
+			tempVisited.insert(temp.second);
+			tempQueue.push(temp.second);
+		}
+	}
+	
+
+	for (int i = 0; i < NODE_NUM_MAX; ++i){
+		prev[i] = NULL;
+	}
+
+	while(tempQueue.size() != 0){
+
+		front = tempQueue.front();
+		tempQueue.pop();
+		cout << "front: " << front->getGlobalId() << endl;
+		cout << "size of edge out: " << front->edge_out.size() << endl;
+
+		if(dest == front->originNode){
+			break; 
+		}
+
+		for(auto it : front->edge_out){ 
+
+			cout << "searching: " << it.second->nodeTo->getGlobalId() << endl;
+			if(tempVisited.end() != tempVisited.find(it.second->nodeTo)){ 
+				continue;
+			}
+
+			prev[it.second->nodeTo->getGlobalId()] = front; 
+			tempVisited.insert(it.second->nodeTo);
+			tempQueue.push(it.second->nodeTo); 
+		}
+
+	}
+
+	if(front->originNode != dest){
+		path.clear(); 
+		return false; 
+	}
+
+
+}
+
+
+
+
+
+
+
 bool Searcher::bfsWidget(WidgetGraph* widgetGraph, 
 	Node* src, Node* dest, list<WidgetNode*>& path){
 
