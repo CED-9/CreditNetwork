@@ -11,12 +11,9 @@
 class Searcher{
 public:
 
-	static bool dfs(Graph* graph, 
+	static bool bfsIRConstraint(double ir, Graph* graph, 
 		Node* src, Node* dest, vector<Node*>& path);
-
-	static bool bfsWidget(WidgetGraph* widgetGraph, 
-		Node* src, Node* dest, list<WidgetNode*>& path);
-
+	
 };
 
 #endif

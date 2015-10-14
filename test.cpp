@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <list>
+#include <vector>
 #include <iostream>
 
 using namespace std;
@@ -17,20 +18,19 @@ int main(int argc, char* argv[]){
 	graph.generateTestGraph();
 	graph.print();
 
-	WidgetGraph widget;
-	widget.setupSrcAndDest(graph.nodes.find(0)->second, graph.nodes.find(5)->second, 1.0);
-	widget.constructWidget(&graph);
-	widget.print();
+	// WidgetGraph widget;
+	// widget.setupSrcAndDest(graph.nodes.find(0)->second, graph.nodes.find(5)->second, 1.0);
+	// widget.constructWidget(&graph);
+	// widget.print();
 
-	list<WidgetNode*> path;
-	bool result = Searcher::bfsWidget(&widget, widget.widgetNodes[17]->originNode, 
-		widget.widgetNodes[0]->originNode, path);
+	vector<Node*> path;
+	bool result = Searcher::bfsIRConstraint(0.5, &graph, graph.nodes.find(0)->second,
+		graph.nodes.find(5)->second, path);
 
 	cout << "result: " << result << endl;
 
-	while (!path.empty()){
-		cout << path.front()->getGlobalId() << endl;
-		path.pop_front();
+	for (int i = 0; i < path.size(); ++i){
+		cout << path[i]->getNodeId();
 	}
 
 	return 0;

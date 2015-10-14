@@ -31,3 +31,4 @@ void Node::print(){
 }
 
 
+int Node::getNodeId(){ return nodeId; }

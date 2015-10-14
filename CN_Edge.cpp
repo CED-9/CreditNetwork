@@ -4,14 +4,14 @@
 
 using namespace std;
 
-void Edge::setEdge(int nodeFromIdT, int nodeToIdT, double interest_rate){
+void Edge::Edge(Node* nodeFromT, Node* nodeToT, double interest_rate){
 	UnitEdge temp;
 	temp.c_max = 1;
 	temp.d_current = 0;
 	temp.interest_rate = interest_rate;
 	unitEdges.push_back(temp);
-	this->nodeFromId = nodeFromIdT;
-	this->nodeToId = nodeToIdT;
+	this->nodeFrom = nodeFromT;
+	this->nodeTo = nodeToT;
 }
 
 void Edge::setCurrent(int d){
@@ -38,7 +38,7 @@ double Edge::get_interest_rate(){
 }
 
 void Edge::print(){
-	cout << nodeFromId << " To " << nodeToId;
+	cout << "From " << nodeFrom->getNodeId() << " To " << nodeTo->getNodeId();
 	cout << " ... IR " << unitEdges[0].interest_rate
 	<< " Credit " << unitEdges[0].c_max
 	<< " Debt " << unitEdges[0].d_current;

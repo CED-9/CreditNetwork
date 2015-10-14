@@ -38,33 +38,18 @@ Graph::~Graph(){
 	}
 }
 
-void Graph::addUnitEdge(Node* nodeFrom, Node* nodeTo, double ir){
 
-	std::pair<int, InEdge*> pairIn;
-	pairIn.first = nodeFrom->getNodeId();
-	pairIn.second = new InEdge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
-	nodeTo->edge_in.insert(pairIn);
+void Graph::addUnitEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt){
 
-	std::pair<int, OutEdge*> pairOut;
-	pairOut.first = nodeTo->getNodeId();
-	pairOut.second = new OutEdge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
-	nodeFrom->edge_out.insert(pairOut);
+	std::pair<int, Edge*> edge;
 
-}
+	edge.first = nodeFrom->getNodeId();
+	edge.second = new Edge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
+	edge.second->setCurrent(currDebt);
+	nodeTo->edge_in.insert(edge);
 
-void Graph::addUnitEdgeDebt(Node* nodeFrom, Node* nodeTo, double ir){
-
-	std::pair<int, InEdge*> pairIn;
-	pairIn.first = nodeFrom->getNodeId();
-	pairIn.second = new InEdge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
-	pairIn.second->setCurrent(1);
-	nodeTo->edge_in.insert(pairIn);
-
-	std::pair<int, OutEdge*> pairOut;
-	pairOut.first = nodeTo->getNodeId();
-	pairOut.second = new OutEdge(nodeFrom->getNodeId(), nodeTo->getNodeId(), ir);
-	pairIn.second->setCurrent(1);
-	nodeFrom->edge_out.insert(pairOut);
+	edge.first = nodeTo->getNodeId();
+	nodeFrom->edge_out.insert(edge);
 
 }
 
@@ -86,13 +71,14 @@ void Graph::generateTestGraph(){
 		tempPair.second = temp;
 		nodes.insert(tempPair);
 	}
-	this->addUnitEdgeDebt(nodes.find(0)->second, nodes.find(1)->second, 0.3);
-	this->addUnitEdge(nodes.find(1)->second, nodes.find(2)->second, 0.2);
-	this->addUnitEdge(nodes.find(3)->second, nodes.find(1)->second, 0.2);
-	this->addUnitEdge(nodes.find(4)->second, nodes.find(1)->second, 0.4);
-	this->addUnitEdge(nodes.find(2)->second, nodes.find(3)->second, 0.1);
-	this->addUnitEdge(nodes.find(3)->second, nodes.find(4)->second, 0.1);
-	this->addUnitEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3);
-	this->addUnitEdge(nodes.find(5)->second, nodes.find(3)->second, 0.4);
-	this->addUnitEdge(nodes.find(5)->second, nodes.find(2)->second, 0.2);
+	
+	this->addUnitEdge(nodes.find(1)->second, nodes.find(0)->second, 0.3, 0);
+	this->addUnitEdge(nodes.find(1)->second, nodes.find(2)->second, 0.2, 0);
+	this->addUnitEdge(nodes.find(3)->second, nodes.find(1)->second, 0.2, 0);
+	this->addUnitEdge(nodes.find(4)->second, nodes.find(1)->second, 0.4, 0);
+	this->addUnitEdge(nodes.find(2)->second, nodes.find(3)->second, 0.1, 0);
+	this->addUnitEdge(nodes.find(3)->second, nodes.find(4)->second, 0.1, 0);
+	this->addUnitEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3, 0);
+	this->addUnitEdge(nodes.find(5)->second, nodes.find(3)->second, 0.4, 0);
+	this->addUnitEdge(nodes.find(5)->second, nodes.find(2)->second, 0.2, 0);
 }

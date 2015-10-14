@@ -5,34 +5,58 @@
 #include <set>
 #include <queue>
 #include <list>
+#include <stack>
 #include <unordered_map>
 #include <iostream>
 
 using namespace std;
 
-
-static bool dfsHelper(Graph* graph, Node* front, Node* dest, vector<Node*>& path){
-
-}
-
-bool Searcher::dfs(Graph* graph, Node* src, Node* dest, vector<Node*>& path){
+bool Searcher::bfsIRConstraint(double ir, 
+	Graph* graph, Node* src, Node* dest, vector<Node*>& path){
 
 	path.clear();
-	queue <Node*> tempQueue;
-	set <Node*> tempVisited;
-	Node* front = NULL;
 
-	for (auto temp : src->edge_in){
-		if (temp.second->get_d_out_current() == 0){
-			tempVisited.insert(temp.second);
-			tempQueue.push(temp.second);
+	queue < pair<Node*, double> > tempQueue;
+	unordered_map<int, double> tempVisited; // nodeId, max ir
+	pair<Node*, double> frontPair;
+	Node* prev[NODE_NUM_MAX];
+
+	// initialization
+	for (auto edge : src->edge_in){
+
+		if (edge.second->get_c_in_remain() == 0 ||
+			ir < edge.second->get_interest_rate()){
+			continue;
 		}
+
+		pair<int, double> visitedPair;
+		visitedPair.first = edge.second->getNodeFromId();
+		visitedPair.second = ir;
+		tempVisited.insert(visitedPair);
+
+		pair<Node*, double> queuePair;
+		queuePair.first = graph->nodes.find(edge.second->getNodeFromId())->second;
+		queuePair.second = ir;
+		tempQueue.push(queuePair);
+
 	}
-	for (auto temp : src->edge_out){
-		if (temp.second->get_d_out_current() == 1){
-			tempVisited.insert(temp.second);
-			tempQueue.push(temp.second);
+	for (auto edge : src->edge_out){
+
+		if (edge.second->get_d_in_current() == 0 ||
+			ir < edge.second->get_interest_rate()){
+			continue;
 		}
+
+		pair<int, double> visitedPair;
+		visitedPair.first = edge.second->getNodeToId();
+		visitedPair.second = ir;
+		tempVisited.insert(visitedPair);
+
+		pair<Node*, double> queuePair;
+		queuePair.first = graph->nodes.find(edge.second->getNodeToId())->second;
+		queuePair.second = ir;
+		tempQueue.push(queuePair);
+
 	}
 	
 
@@ -40,101 +64,84 @@ bool Searcher::dfs(Graph* graph, Node* src, Node* dest, vector<Node*>& path){
 		prev[i] = NULL;
 	}
 
+	cout << "initialized " << tempQueue.size() << endl;
+
 	while(tempQueue.size() != 0){
 
-		front = tempQueue.front();
+		frontPair = tempQueue.front();
+		double currIR = frontPair.second;
+		Node* front = frontPair.first;
 		tempQueue.pop();
-		cout << "front: " << front->getGlobalId() << endl;
-		cout << "size of edge out: " << front->edge_out.size() << endl;
 
-		if(dest == front->originNode){
-			break; 
+		cout << "front: " << front->getNodeId() << endl;
+
+		if(dest == front){
+			break;
 		}
 
-		for(auto it : front->edge_out){ 
+		// push to queue
+		for(auto edge : front->edge_in){ 
 
-			cout << "searching: " << it.second->nodeTo->getGlobalId() << endl;
-			if(tempVisited.end() != tempVisited.find(it.second->nodeTo)){ 
+			// cout << "front->edge " << edge.second->getNodeFromId() << endl;
+			if (edge.second->get_c_in_remain() == 0){
+				continue;
+			}
+			if(tempVisited.end() == tempVisited.find(edge.second->getNodeFromId())){
+				pair<int, double> visitedPair;
+				visitedPair.first = edge.second->getNodeFromId();
+				visitedPair.second = currIR;
+				tempVisited.insert(visitedPair);
+			} else if (tempVisited.find(edge.second->getNodeFromId())->second >= ir){
+				tempVisited.find(edge.second->getNodeFromId())->second = currIR;
+			} else {
 				continue;
 			}
 
-			prev[it.second->nodeTo->getGlobalId()] = front; 
-			tempVisited.insert(it.second->nodeTo);
-			tempQueue.push(it.second->nodeTo); 
+			prev[edge.second->getNodeFromId()] = front;
+
+			pair<Node*, double> queuePair;
+			queuePair.first = graph->nodes.find(edge.second->getNodeFromId())->second;
+			queuePair.second = ir;
+			tempQueue.push(queuePair);
+
+		}
+
+		for(auto edge : front->edge_out){ 
+			if (edge.second->get_d_in_current() == 0){
+				continue;
+			}
+			if(tempVisited.end() != tempVisited.find(edge.second->getNodeToId())){
+				pair<int, double> visitedPair;
+				visitedPair.first = edge.second->getNodeToId();
+				visitedPair.second = currIR;
+				tempVisited.insert(visitedPair);
+			} else if (tempVisited.find(edge.second->getNodeToId())->second >= ir){
+				tempVisited.find(edge.second->getNodeToId())->second = currIR;
+			} else {
+				continue;
+			}
+
+			prev[edge.second->getNodeToId()] = front;
+
+			pair<Node*, double> queuePair;
+			queuePair.first = graph->nodes.find(edge.second->getNodeToId())->second;
+			queuePair.second = ir;
+			tempQueue.push(queuePair);
 		}
 
 	}
 
-	if(front->originNode != dest){
+	Node* result = frontPair.first;
+	if(result != dest){
 		path.clear(); 
 		return false; 
 	}
 
-
-}
-
-
-
-
-
-
-
-bool Searcher::bfsWidget(WidgetGraph* widgetGraph, 
-	Node* src, Node* dest, list<WidgetNode*>& path){
-
-	path.clear();
-	queue <WidgetNode*> tempQueue; 
-	set <WidgetNode*> tempVisited; 
-	WidgetNode* front = NULL;
-	WidgetNode* prev[NODE_NUM_MAX];
-	for (auto widget : src->credit_in_widget_nodes){
-		tempVisited.insert(widget.second);
-		tempQueue.push(widget.second);
-	}
-	for (auto widget : src->debt_in_widget_nodes){
-		tempVisited.insert(widget.second);
-		tempQueue.push(widget.second);
-	}
-	
-
-	for (int i = 0; i < NODE_NUM_MAX; ++i){
-		prev[i] = NULL;
-	}
-
-	while(tempQueue.size() != 0){
-
-		front = tempQueue.front();
-		tempQueue.pop();
-		cout << "front: " << front->getGlobalId() << endl;
-		cout << "size of edge out: " << front->edge_out.size() << endl;
-
-		if(dest == front->originNode){
-			break; 
-		}
-
-		for(auto it : front->edge_out){ 
-
-			cout << "searching: " << it.second->nodeTo->getGlobalId() << endl;
-			if(tempVisited.end() != tempVisited.find(it.second->nodeTo)){ 
-				continue;
-			}
-
-			prev[it.second->nodeTo->getGlobalId()] = front; 
-			tempVisited.insert(it.second->nodeTo);
-			tempQueue.push(it.second->nodeTo); 
-		}
-
-	}
-
-	if(front->originNode != dest){
-		path.clear(); 
-		return false; 
-	}
-
-	while(front){
-		path.push_front(front); 
-		front = prev[front->getGlobalId()];
+	while(result){
+		path.push_back(result); 
+		result = prev[result->getNodeId()];
 	}
 
 	return true;
 }
+

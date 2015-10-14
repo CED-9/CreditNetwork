@@ -22,9 +22,7 @@ public:
 	void print();
 	Node* searchID(int id);
 	
-	void addUnitEdge(Node* node1, Node* node2, double ir);
-	void addUnitEdgeDebt(Node* nodeFrom, Node* nodeTo, double ir);
-
+	void addUnitEdge(Node* node1, Node* node2, double ir, int currDebt);
 
 	/////////////////////////////////////////////////////////////////////////
 	/* Generate Initial Network */
