@@ -17,6 +17,17 @@ liquid: CN_Edge.cpp CN_Node.cpp CN_Graph.cpp test.cpp
 	g++ -g -c CN_Executer.cpp -std=c++11
 	g++ -g -c CN_CreditNet.cpp -std=c++11
 	g++ -o test_liquidity test_liquidity.cpp *.o -pthread -std=c++11
+
+liquid2: CN_Edge.cpp CN_Node.cpp CN_Graph.cpp test.cpp
+	g++ -g -c CN_Node.cpp -std=c++11
+	g++ -g -c CN_Edge.cpp -std=c++11
+	g++ -g -c CN_Graph.cpp -std=c++11
+	g++ -g -c CN_Searcher.cpp -std=c++11
+	g++ -g -c CN_Executer.cpp -std=c++11
+	g++ -g -c CN_CreditNet.cpp -std=c++11
+	g++ -o test_liquidity2 test_liquidity2.cpp *.o -pthread -std=c++11
+	./test_liquidity2 10 1
+test:
 	./test_liquidity 9 1
 	./test_liquidity 9 2
 	./test_liquidity 9 3

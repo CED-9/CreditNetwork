@@ -45,14 +45,18 @@ int CreditNet::genInterBankTrans(){
 		return 1;
 	} else if (f1->routePreference == "BFS_LOW_IR") {
 		vector<Edge*> path;
-		double ir = 0.1;
-		if (!Searcher::bfsIRConstraint(ir, this, f1, f2, path)) {
-			return 1;
+		int counter = 1;
+		double ir = counter/100.0;
+		while (!Searcher::bfsIRConstraint(ir, this, f1, f2, path)) {
+			counter += 1;
+			ir = counter/100.0;
+			if (counter == 10){
+				return 1;
+			}
+			// cout << "ir: " << ir << endl;
 		}
-		while (Searcher::bfsIRConstraint(ir, this, f1, f2, path)) {
-			ir -= 0.01;
-		}
-		Searcher::bfsIRConstraint(ir + 0.01, this, f1, f2, path);
+		// cout << "-----------------------ir " << ir << endl;
+		// Searcher::bfsIRConstraint((counter+1)/100.0, this, f1, f2, path);
 		Executer::execute(path, f1, f2);
 		return 0;
 	}
