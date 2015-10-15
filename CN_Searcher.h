@@ -3,7 +3,6 @@
 
 #include "CN_Node.h"
 #include "CN_Graph.h"
-#include "CN_WidgetGraph.h"
 
 #include <list>
 #include <vector>
@@ -12,7 +11,7 @@ class Searcher{
 public:
 
 	static bool bfsIRConstraint(double ir, Graph* graph, 
-		Node* src, Node* dest, vector<Node*>& path);
+		Node* src, Node* dest, vector<Edge*>& path);
 	
 };
 

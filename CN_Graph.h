@@ -15,19 +15,21 @@ public:
 	/////////////////////////////////////////////////////////////////////////
 	Graph();
 	Graph(int nodeNum);
-    Graph(Graph &graphT);
-    Graph& operator=(Graph &graphT);
-    ~Graph();
+	Graph(Graph &graphT);
+	Graph& operator=(Graph &graphT);
+	~Graph();
 
 	void print();
 	Node* searchID(int id);
 	
 	void addUnitEdge(Node* node1, Node* node2, double ir, int currDebt);
-
+	void setRoutePreference(int opMode, vector<string> &v);
 	/////////////////////////////////////////////////////////////////////////
 	/* Generate Initial Network */
 	/////////////////////////////////////////////////////////////////////////
 	void generateTestGraph();
+	void generateTestGraph2();
+	void genTest0Graph(double threshold, int numIR);
 
 };
 

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void Edge::Edge(Node* nodeFromT, Node* nodeToT, double interest_rate){
+Edge::Edge(Node* nodeFromT, Node* nodeToT, double interest_rate){
 	UnitEdge temp;
 	temp.c_max = 1;
 	temp.d_current = 0;
