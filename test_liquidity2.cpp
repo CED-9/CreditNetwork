@@ -71,7 +71,7 @@ void singleSimulation(
 	// double transRate = (double) test/((double) numTest * (double) finNum * ((double) finNum-1));
 	lock_rates.unlock();
 	lock_cout.lock();
-	cout << "threshold   " << threshold << "   SS fail rate   " << *resultRate <<"   denom   "<< cnt + 2.0 * window_size + 1.0<<"   num   "<<failRateTotal<<endl;
+	// cout << "threshold   " << threshold << "   SS fail rate   " << *resultRate <<"   denom   "<< cnt + 2.0 * window_size + 1.0<<"   num   "<<failRateTotal<<endl;
 
 	lock_cout.unlock();
 }
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
 	const int numDeg = 10;
 	// double degrees [numDeg] = {0.01,0.02,0.04,0.06,0.09,0.12,0.15,
 	// double degrees [numDeg] = {0.10,0.15,0.20, 0.25, 0.30};
-	double degrees[numDeg] = {0.05, 0.075, 0.09, 0.1, 0.125, 0.15, 0.175, 0.25, 0.3, 0.4};
+	double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.175, 0.15};
 	// double degrees[numDeg] = {0.09};
 
 	// 10 rounds
@@ -112,8 +112,7 @@ int main(int argc, char* argv[]){
 		for (int j = 0; j < iter; ++j){
 			rate_avg += rates[j];
 		}
-		cout << "---------------final rate: "
-			<< "Threshold   " << threshold << "   SS succ rate   " << 1-rate_avg/iter << endl;
+		cout << "Threshold   " << threshold << "   SS Fail rate   " << rate_avg/iter << endl;
 		delete [] rates;
 	}
 }

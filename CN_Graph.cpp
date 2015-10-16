@@ -115,8 +115,8 @@ void Graph::generateTestGraph(){
 
 void Graph::generateTestGraph2(){
 
-	nodeNum = 9;
-	for (int i = 0; i < 9; ++i){
+	nodeNum = 8;
+	for (int i = 0; i < 8; ++i){
 		Node* temp = new Node(i);
 		std::pair<int, Node*> tempPair;
 		tempPair.first = i;
@@ -124,16 +124,16 @@ void Graph::generateTestGraph2(){
 		nodes.insert(tempPair);
 	}
 
-	this->addUnitEdge(nodes.find(1)->second, nodes.find(0)->second, 0.3, 1);
-	this->addUnitEdge(nodes.find(4)->second, nodes.find(2)->second, 0.2, 1);
+	this->addUnitEdge(nodes.find(0)->second, nodes.find(1)->second, 0.3, 1);
 	this->addUnitEdge(nodes.find(2)->second, nodes.find(1)->second, 0.3, 0);
-	this->addUnitEdge(nodes.find(5)->second, nodes.find(2)->second, 0.4, 0);
+	this->addUnitEdge(nodes.find(2)->second, nodes.find(4)->second, 0.2, 1);
 	this->addUnitEdge(nodes.find(3)->second, nodes.find(0)->second, 0.2, 0);
 	this->addUnitEdge(nodes.find(4)->second, nodes.find(3)->second, 0.4, 0);
+	this->addUnitEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0);
+	this->addUnitEdge(nodes.find(5)->second, nodes.find(2)->second, 0.4, 0);
 	this->addUnitEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3, 0);
-	this->addUnitEdge(nodes.find(4)->second, nodes.find(8)->second, 0.2, 0);
-	this->addUnitEdge(nodes.find(8)->second, nodes.find(7)->second, 0.3, 0);
-	this->addUnitEdge(nodes.find(7)->second, nodes.find(1)->second, 0.2, 0);    
+	this->addUnitEdge(nodes.find(6)->second, nodes.find(1)->second, 0.2, 0);
+	this->addUnitEdge(nodes.find(7)->second, nodes.find(6)->second, 0.3, 0);
 
 }
 

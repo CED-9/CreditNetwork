@@ -12,7 +12,8 @@ class Node;
 struct UnitEdge{
 	int c_max;
 	int d_current;
-	double interest_rate;
+	double credit_interest_rate; // steady
+	double debt_interest_rate;
 };
 
 class Edge{
@@ -34,7 +35,11 @@ public:
 
 	void set_interest_rate(double interest_rateT);
 
+	void set_debt_interest_rate(double interest_rateT);
+
 	double get_interest_rate();
+
+	double get_debt_interest_rate();
 
 	void print();
 

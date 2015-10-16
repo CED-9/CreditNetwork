@@ -129,8 +129,6 @@ int main(int argc, char* argv[]){
 		std::vector<double> payoffs(finNum,0.0);
 
 		double transVal = stod(config.transVal);
-		int conNum = 0;
-		int proNum = 0;
 
 		double threshold = stod(config.edgeProb);
 		int numIR = stoi(config.numIR);
@@ -139,12 +137,11 @@ int main(int argc, char* argv[]){
 	 
 		for (int j = 0; j < iter; ++j){
 			// config the network
-			CreditNet creditNet(finNum, conNum, proNum);
+			CreditNet creditNet(finNum);
 			for (int i = 0; i<finNum; ++i){
-				creditNet.finAgent[i]->transactionNum = 0;
+				creditNet.nodes.find(i)->second->transactionNum = 0;
 			}
 			creditNet.genTest0Graph(threshold, numIR);
-		 
 			creditNet.setRoutePreference(5, config.assignedStrategy);
 		
 			// main loop
@@ -158,7 +155,7 @@ int main(int argc, char* argv[]){
 			cout << window_size - failRateTotal << "   "<<endl;;
 			for (int k = 0; k < finNum; ++k){
 				// cout << creditNet.finAgent[k]->transactionNum << "  " << creditNet.finAgent[k]->getCurrBanlance()<<"   ";
-				payoffs[k] += (double) creditNet.finAgent[k]->transactionNum * (double)transVal + (double)creditNet.finAgent[k]->getCurrBanlance();
+				payoffs[k] += (double) creditNet.nodes.find(k)->second->transactionNum * (double)transVal + (double)creditNet.nodes.find(k)->second->getCurrBanlance();
 				// cout  << payoffs[k] << "   ";
 			}
 			// cout << endl;
