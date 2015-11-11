@@ -9,7 +9,6 @@ class Graph{
 public:
 	int nodeNum;
 	unordered_map<int, Node*> nodes;
-	vector<Edge*> nodes;
 
 	/////////////////////////////////////////////////////////////////////////
 	/* Graph basics */
