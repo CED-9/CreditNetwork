@@ -9,6 +9,7 @@ class Graph{
 public:
 	int nodeNum;
 	unordered_map<int, Node*> nodes;
+	vector<Edge*> nodes;
 
 	/////////////////////////////////////////////////////////////////////////
 	/* Graph basics */
@@ -23,6 +24,8 @@ public:
 	Node* searchID(int id);
 	
 	void addUnitEdge(Node* node1, Node* node2, double ir, int currDebt);
+	void addMultiEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt, int cap);
+
 	void setRoutePreference(int opMode, vector<string> &v);
 	/////////////////////////////////////////////////////////////////////////
 	/* Generate Initial Network */

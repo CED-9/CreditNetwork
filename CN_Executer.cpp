@@ -50,4 +50,7 @@ void Executer::execute(vector<Edge*>& path, Node* src, Node* dest){
 
 	}
 
+	src -> transactionNum++;
+	src -> totalIR += currIR;
+
 }

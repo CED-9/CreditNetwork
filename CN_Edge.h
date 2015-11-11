@@ -23,11 +23,17 @@ public:
 	Node* nodeTo;
 	vector <UnitEdge> unitEdges;
 
+	Edge(Node* nodeFromT, Node* nodeToT);
 	Edge(Node* nodeFromT, Node* nodeToT, double interest_rate);
+	~Edge();
+
+	void addUnitEdge(int cap, int current, double interest_rate);
+
+	////////////////////////////////////////////////////////////////////
+	// one unit edge
+	////////////////////////////////////////////////////////////////////
 
 	void setCurrent(int d);
-
-	~Edge();
 
 	int get_c_remain();
 

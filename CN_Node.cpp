@@ -8,6 +8,7 @@
 Node::Node(int id){
 	this->nodeId = id;
 	this->transactionNum = 0;
+	this->totalIR = 0;
 	this->routePreference = "";
 }
 

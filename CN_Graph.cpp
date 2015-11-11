@@ -47,15 +47,33 @@ Graph::~Graph(){
 }
 
 
+void Graph::addMultiEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt, int cap){
+
+	if (nodeTo->edge_in.find(nodeFrom->getNodeId()) == nodeTo->edge_in.end()){
+		// cout << "not found!" << endl;
+		std::pair<int, Edge*> edge;
+		edge.first = nodeFrom->getNodeId();
+		edge.second = new Edge(nodeFrom, nodeTo);
+		edge.second->addUnitEdge(cap, currDebt, ir);
+		nodeTo->edge_in.insert(edge);
+		edge.first = nodeTo->getNodeId();
+		nodeFrom->edge_out.insert(edge);
+		return;
+	}
+
+	// cout << "found!" << endl;
+	nodeTo->edge_in.find(nodeFrom->getNodeId())->second->addUnitEdge(cap, currDebt, ir);
+}
+
 void Graph::addUnitEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt){
 
 	std::pair<int, Edge*> edge;
 
 	edge.first = nodeFrom->getNodeId();
-	edge.second = new Edge(nodeFrom, nodeTo, ir);
-	edge.second->setCurrent(currDebt);
-	nodeTo->edge_in.insert(edge);
+	edge.second = new Edge(nodeFrom, nodeTo);
+	edge.second->addUnitEdge(1, currDebt, ir);
 
+	nodeTo->edge_in.insert(edge);
 	edge.first = nodeTo->getNodeId();
 	nodeFrom->edge_out.insert(edge);
 
@@ -124,17 +142,38 @@ void Graph::generateTestGraph2(){
 		nodes.insert(tempPair);
 	}
 
-	this->addUnitEdge(nodes.find(0)->second, nodes.find(1)->second, 0.3, 1);
-	this->addUnitEdge(nodes.find(2)->second, nodes.find(1)->second, 0.3, 0);
-	this->addUnitEdge(nodes.find(2)->second, nodes.find(4)->second, 0.2, 1);
-	this->addUnitEdge(nodes.find(3)->second, nodes.find(0)->second, 0.2, 0);
-	this->addUnitEdge(nodes.find(4)->second, nodes.find(3)->second, 0.4, 0);
-	this->addUnitEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0);
-	this->addUnitEdge(nodes.find(5)->second, nodes.find(2)->second, 0.4, 0);
-	this->addUnitEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3, 0);
-	this->addUnitEdge(nodes.find(6)->second, nodes.find(1)->second, 0.2, 0);
-	this->addUnitEdge(nodes.find(7)->second, nodes.find(6)->second, 0.3, 0);
+	this->addMultiEdge(nodes.find(0)->second, nodes.find(1)->second, 0.3, 1, 10);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(1)->second, 0.3, 0, 3);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(4)->second, 0.2, 1, 6);
+	this->addMultiEdge(nodes.find(3)->second, nodes.find(0)->second, 0.2, 0, 7);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(3)->second, 0.4, 0, 1);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0, 3);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(2)->second, 0.4, 0, 7);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3, 0, 4);
+	this->addMultiEdge(nodes.find(6)->second, nodes.find(1)->second, 0.2, 0, 2);
+	this->addMultiEdge(nodes.find(7)->second, nodes.find(6)->second, 0.3, 0, 1);
 
+	this->addMultiEdge(nodes.find(0)->second, nodes.find(1)->second, 0.3, 1, 10);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(1)->second, 0.3, 0, 3);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(4)->second, 0.2, 1, 6);
+	this->addMultiEdge(nodes.find(3)->second, nodes.find(0)->second, 0.2, 0, 7);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(3)->second, 0.4, 0, 1);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0, 3);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(2)->second, 0.4, 0, 7);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3, 0, 4);
+	this->addMultiEdge(nodes.find(6)->second, nodes.find(1)->second, 0.2, 0, 2);
+	this->addMultiEdge(nodes.find(7)->second, nodes.find(6)->second, 0.3, 0, 1);
+
+	this->addMultiEdge(nodes.find(0)->second, nodes.find(1)->second, 0.6, 1, 10);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(1)->second, 0.6, 0, 3);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(4)->second, 0.4, 1, 6);
+	this->addMultiEdge(nodes.find(3)->second, nodes.find(0)->second, 0.4, 0, 7);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(3)->second, 0.8, 0, 1);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.4, 0, 3);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(2)->second, 0.8, 0, 7);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(4)->second, 0.6, 0, 4);
+	this->addMultiEdge(nodes.find(6)->second, nodes.find(1)->second, 0.4, 0, 2);
+	this->addMultiEdge(nodes.find(7)->second, nodes.find(6)->second, 0.6, 0, 1);
 }
 
 void Graph::setRoutePreference(int opMode, vector<string> &v){

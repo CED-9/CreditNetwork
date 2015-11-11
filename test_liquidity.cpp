@@ -72,7 +72,10 @@ void singleSimulation(
 	lock_rates.unlock();
 	lock_cout.lock();
 	// cout << "threshold   " << threshold << "   SS fail rate   " << *resultRate <<"   denom   "<< cnt + 2.0 * window_size + 1.0<<"   num   "<<failRateTotal<<endl;
-
+	// for (auto it : creditNet.nodes){
+	// 	cout << "ID: " << it.second->getNodeId() << " " << it.second->totalIR / it.second->transactionNum << ", ";
+	// }
+	// cout << endl;
 	lock_cout.unlock();
 }
 
@@ -84,13 +87,13 @@ int main(int argc, char* argv[]){
 	int numIR = atoi(argv[2]);
 	int mechanismGenMode = atoi(argv[1]);
 	int window_size = 4500;
-	int iter = 10;
+	int iter = 1;
 	int numTest = 10;
 	int burn = 150;
 	const int numDeg = 10;
 	// double degrees [numDeg] = {0.01,0.02,0.04,0.06,0.09,0.12,0.15,
 	// double degrees [numDeg] = {0.10,0.15,0.20, 0.25, 0.30};
-	double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.175, 0.15};
+	double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.09, 0.1, 0.115, 0.125, 0.175, 0.15};
 	// double degrees[numDeg] = {0.09};
 
 	// 10 rounds
