@@ -25,37 +25,71 @@ static void addIntWidgetPair(int targetId,
 static void addWidgetNode(int & globalId, Node* node, WidgetGraph* g){
 	for (auto edgePair : node->edge_in){
 
-		if (edgePair.second->get_d_current() == 0){
-
-			int id1 = globalId++;
-			WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.first);
-			g->widgetNodes.push_back(widgetNode1);
-			addIntWidgetPair(edgePair.first, widgetNode1, node->credit_in_widget_nodes);
-
-		} else {
-
-			int id2 = globalId++;
-			WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.first);
-			g->widgetNodes.push_back(widgetNode2);
-			addIntWidgetPair(edgePair.first, widgetNode2, node->debt_out_widget_nodes);
-
+		for (int i = 0; i < edgePair.second->unitEdges.size(); ++i){
+			if (edgePair.second->unitEdges[i].c_max != edgePair.second->unitEdges[i].d_current){
+				// create widget node from credit in edge
+				int id1 = globalId++;
+				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.second->unitEdges[i].unitEdgeId);
+				g->widgetNodes.push_back(widgetNode1);
+				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_in_widget_nodes);
+			}
+			if (0 != edgePair.second->unitEdges[i].d_current){
+				// create widget node from debt out edge
+				int id2 = globalId++;
+				WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.second->unitEdges[i].unitEdgeId);
+				g->widgetNodes.push_back(widgetNode2);
+				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_out_widget_nodes);
+			}
 		}
+
+		// if (edgePair.second->get_d_current() == 0){
+
+		// 	int id1 = globalId++;
+		// 	WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.first);
+		// 	g->widgetNodes.push_back(widgetNode1);
+		// 	addIntWidgetPair(edgePair.first, widgetNode1, node->credit_in_widget_nodes);
+
+		// } else {
+
+		// 	int id2 = globalId++;
+		// 	WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.first);
+		// 	g->widgetNodes.push_back(widgetNode2);
+		// 	addIntWidgetPair(edgePair.first, widgetNode2, node->debt_out_widget_nodes);
+
+		// }
 	}
 
 	for (auto edgePair : node->edge_out){
 
-		if (edgePair.second->get_d_current() == 0){
-			int id1 = globalId++;
-			WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.first);
-			g->widgetNodes.push_back(widgetNode1);
-			addIntWidgetPair(edgePair.first, widgetNode1, node->credit_out_widget_nodes);
-		
-		} else {
-			int id2 = globalId++;
-			WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.first);
-			g->widgetNodes.push_back(widgetNode2);
-			addIntWidgetPair(edgePair.first, widgetNode2, node->debt_in_widget_nodes);
+		for (int i = 0; i < edgePair.second->unitEdges.size(); ++i){
+			if (edgePair.second->unitEdges[i].c_max != edgePair.second->unitEdges[i].d_current){
+				// create widget node from credit in edge
+				int id1 = globalId++;
+				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.second->unitEdges[i].unitEdgeId);
+				g->widgetNodes.push_back(widgetNode1);
+				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_out_widget_nodes);
+			}
+			if (0 != edgePair.second->unitEdges[i].d_current){
+				// create widget node from debt out edge
+				int id2 = globalId++;
+				WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.second->unitEdges[i].unitEdgeId);
+				g->widgetNodes.push_back(widgetNode2);
+				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_in_widget_nodes);
+			}
 		}
+
+		// if (edgePair.second->get_d_current() == 0){
+		// 	int id1 = globalId++;
+		// 	WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.first);
+		// 	g->widgetNodes.push_back(widgetNode1);
+		// 	addIntWidgetPair(edgePair.first, widgetNode1, node->credit_out_widget_nodes);
+		
+		// } else {
+		// 	int id2 = globalId++;
+		// 	WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.first);
+		// 	g->widgetNodes.push_back(widgetNode2);
+		// 	addIntWidgetPair(edgePair.first, widgetNode2, node->debt_in_widget_nodes);
+		// }
 
 	}
 }

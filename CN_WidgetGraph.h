@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 
 using namespace std;
 
@@ -28,6 +29,9 @@ enum WidgetEdgeType{
 class WidgetNode;
 
 struct WidgetEdge{
+
+	UnitEdge* originUnitEdge;
+
 	WidgetNode* nodeFrom;
 	WidgetNode* nodeTo;
 	double cap;
@@ -135,6 +139,7 @@ public:
 	Node* dest;
 	double payment;
 	vector<WidgetNode*> widgetNodes;
+	list<WidgetEdge*> outterWidgetEdges;
 
 
 	void addEdge(WidgetNode* node1, WidgetNode* node2, 
@@ -151,7 +156,6 @@ public:
 		}
 	}
 	void setupSrcAndDest(Node*, Node*, double);
-	int lpSolver(int opMode);
 };
 
 #endif
