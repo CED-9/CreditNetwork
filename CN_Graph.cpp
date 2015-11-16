@@ -23,10 +23,11 @@ Graph::Graph(int nodeNumT){
 }
 
 static void deepCopyHelper(Graph* newGraph, Graph& oldGraph){
+	newGraph->nodeNum = oldGraph.nodeNum;
 	for (auto& it : oldGraph.nodes){
 		std::pair<int, Node*> tempPair;
 		tempPair.first = it.first;
-		tempPair.second = it.second;
+		tempPair.second = new Node(*(it.second));
 		newGraph->nodes.insert(tempPair);
 	}
 }
@@ -54,7 +55,7 @@ void Graph::addMultiEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt, 
 		std::pair<int, Edge*> edge;
 		edge.first = nodeFrom->getNodeId();
 		edge.second = new Edge(nodeFrom, nodeTo);
-		edge.second->addUnitEdge(cap, currDebt, ir);
+		edge.second->addSingleCreditEdge(cap, currDebt, ir);
 		nodeTo->edge_in.insert(edge);
 		edge.first = nodeTo->getNodeId();
 		nodeFrom->edge_out.insert(edge);
@@ -63,20 +64,6 @@ void Graph::addMultiEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt, 
 
 	// cout << "found!" << endl;
 	nodeTo->edge_in.find(nodeFrom->getNodeId())->second->addUnitEdge(cap, currDebt, ir);
-}
-
-void Graph::addUnitEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt){
-
-	std::pair<int, Edge*> edge;
-
-	edge.first = nodeFrom->getNodeId();
-	edge.second = new Edge(nodeFrom, nodeTo);
-	edge.second->addUnitEdge(1, currDebt, ir);
-
-	nodeTo->edge_in.insert(edge);
-	edge.first = nodeTo->getNodeId();
-	nodeFrom->edge_out.insert(edge);
-
 }
 
 void Graph::print(){

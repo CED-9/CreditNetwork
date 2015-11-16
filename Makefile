@@ -8,3 +8,7 @@ all: CN_Edge.cpp CN_Node.cpp CN_Graph.cpp test.cpp
 	g++ -g -c CN_CreditNet.cpp -std=c++11
 	g++ -o test test_widget.cpp *.o -std=c++11
 	./test
+test: CN_Edge.cpp CN_Node.cpp
+	g++ -g -c CN_Node.cpp -std=c++11
+	g++ -g -c CN_Edge.cpp -std=c++11
+	g++ -o test test_edge.cpp *.o -std=c++11
