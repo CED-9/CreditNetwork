@@ -9,12 +9,13 @@ Edge::Edge(Node* nodeFromT, Node* nodeToT){
 	this->nodeTo = nodeToT;
 }
 
-Edge::Edge(const Edge& e, Node* nodeFromT, Node* nodeToT){
+Edge::Edge(const Edge& e, Node* nodeFromT, Node* nodeToT, 
+	unordered_map<int, AtomicEdge*>& atomicMap){
 	this->nodeFrom = nodeFromT;
 	this->nodeTo = nodeToT;
 	for (int i = 0; i < e.singleCreditEdges.size(); ++i){
 		SingleCreditEdge* s = new SingleCreditEdge(*(e.singleCreditEdges[i]), 
-			this, this->singleCreditEdges.size());
+			this, this->singleCreditEdges.size(), atomicMap);
 		this->singleCreditEdges.push_back(s);
 	}
 }
@@ -25,20 +26,29 @@ Edge::~Edge(){
 	}
 }
 
-void Edge::addSingleCreditEdge(double interest_rate, int cap, int& atomicGlobalId){
+SingleCreditEdge* Edge::addSingleCreditEdge(double interest_rate, int cap, 
+	int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap){
+
 	SingleCreditEdge* temp = new SingleCreditEdge(cap, 
-		interest_rate, atomicGlobalId, this, this->singleCreditEdges.size());
+		interest_rate, atomicGlobalId, this, 
+		this->singleCreditEdges.size(), atomicMap);
 	this->singleCreditEdges.push_back(temp);
+	return temp;
+	
 }
 
-void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate, int& atomicGlobalId){
+void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate, 
+	int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap){
+
 	if (a->isDebt){
 		a->originEdge->singleCreditEdges[a->singleCreditIndex]
 			->routeDebt(flow, a->interest_rate);
 	} else {
 		a->originEdge->singleCreditEdges[a->singleCreditIndex]
-			->routeCredit(flow, interest_rate, atomicGlobalId, this, a->singleCreditIndex);
+			->routeCredit(flow, interest_rate, atomicGlobalId, 
+				this, a->singleCreditIndex, atomicMap);
 	}
+
 }
 
 void Edge::print(){

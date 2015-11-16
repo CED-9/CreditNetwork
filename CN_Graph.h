@@ -8,8 +8,10 @@
 class Graph{
 public:
 	int nodeNum;
+	int atomicGlobalId;
 	unordered_map<int, Node*> nodes;
 	unordered_map<int, AtomicEdge*> atomicEdges;
+
 	
 
 	/////////////////////////////////////////////////////////////////////////
@@ -23,13 +25,12 @@ public:
 
 	void print();
 	
-	void addMultiEdge(Node* nodeFrom, Node* nodeTo, double ir, int currDebt, int cap);
+	void addMultiEdge(Node* nodeFrom, Node* nodeTo, double credit_ir, double debt_ir, int currDebt, int cap);
 
 	void setRoutePreference(int opMode, vector<string> &v);
 	/////////////////////////////////////////////////////////////////////////
 	/* Generate Initial Network */
 	/////////////////////////////////////////////////////////////////////////
-	void generateTestGraph();
 	void generateTestGraph2();
 	void genTest0Graph(double threshold, int numIR);
 

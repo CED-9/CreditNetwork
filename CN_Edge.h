@@ -23,17 +23,26 @@ public:
 	int capacity;
 	double interest_rate;
 
-	AtomicEdge(const AtomicEdge& a, Edge* e, int single){
+	AtomicEdge(const AtomicEdge& a, Edge* e, 
+			int single, unordered_map<int, AtomicEdge*>& atomicMap){
 		this->originEdge = e;
 		this->singleCreditIndex = single;
 		this->isDebt = a.isDebt;
 		this->atomicEdgeId = a.atomicEdgeId;
 		this->capacity = a.capacity;
 		this->interest_rate = a.interest_rate;
+		atomicMap[this->atomicEdgeId] = this;
 	}
-	AtomicEdge(bool d, int id, int capT, double ir, Edge* e, int single)
-		: isDebt(d), atomicEdgeId(id), capacity(capT), interest_rate(ir) 
-		, originEdge(e), singleCreditIndex(single) {}
+
+	AtomicEdge(bool d, int id, int capT, double ir, Edge* e, 
+		int single, unordered_map<int, AtomicEdge*>& atomicMap)
+		: isDebt(d), atomicEdgeId(id), capacity(capT)
+		, interest_rate(ir), originEdge(e), singleCreditIndex(single) {
+
+			atomicMap[this->atomicEdgeId] = this;
+
+	}
+
 	void print() {
 		cout << "    Atomic Edge, id: " << atomicEdgeId << " " 
 		<< "capacity: " << capacity << " ir: " << interest_rate 
@@ -51,23 +60,28 @@ public:
 	AtomicEdge* credit_remain;
 	unordered_map<double, AtomicEdge*> debt_current;
 
-	SingleCreditEdge(const SingleCreditEdge& s, Edge* e, int single) {
+	SingleCreditEdge(const SingleCreditEdge& s, Edge* e, 
+		int single, unordered_map<int, AtomicEdge*>& atomicMap) {
+		
 		this->credit_max = s.credit_max;
 		this->credit_interest_rate = s.credit_interest_rate;
-		this->credit_remain = new AtomicEdge(*(s.credit_remain), e, single);
+		this->credit_remain = new AtomicEdge(*(s.credit_remain), e, single, atomicMap);
 		for (auto it : debt_current){
 			pair<double, AtomicEdge*> p;
 			p.first = it.first;
-			p.second = new AtomicEdge(*(it.second), e, single);
+			p.second = new AtomicEdge(*(it.second), e, single, atomicMap);
 			this->debt_current.insert(p);
 		}
 
 	}
 
-	SingleCreditEdge(int c_max, double ir, int& globalId, Edge* e, int single) 
+	SingleCreditEdge(int c_max, double ir, int& globalId, Edge* e, 
+		int single, unordered_map<int, AtomicEdge*>& atomicMap)
 		: credit_max(c_max), credit_interest_rate(ir){
+
 			credit_remain = new AtomicEdge(0, 
-				globalId++, c_max, ir, e, single);
+				globalId++, c_max, ir, e, single, atomicMap);
+
 	}
 
 	~SingleCreditEdge(){
@@ -77,26 +91,31 @@ public:
 		}
 	}
 
-	bool routeCredit(int current, double interest_rate, int& globalId, Edge* e, int single){
+	bool routeCredit(int current, double interest_rate, int& globalId, Edge* e, 
+		int single, unordered_map<int, AtomicEdge*>& atomicMap){
+
+
 		if (credit_remain->capacity < current){
 			return false;
 		}
 
 		if (debt_current.find(interest_rate) != debt_current.end()){
+
 			debt_current[interest_rate]->capacity += current;
+
 		} else {
-			AtomicEdge* temp = new AtomicEdge(1, 
-				globalId++, current, interest_rate, e, single);
-			std::pair<double, AtomicEdge*> p;
-			p.first = interest_rate;
-			p.second = temp;
-			debt_current.insert(p);
+			
+			debt_current[interest_rate] = new AtomicEdge(1, 
+				globalId++, current, interest_rate, e, single, atomicMap);
+
 		}
+
 		credit_remain->capacity -= current;
 		return true;
 	}
 
 	bool routeDebt(int current, double interest_rate) {
+
 		if (debt_current.find(interest_rate) == debt_current.end()) {
 			return false;
 		}
@@ -129,12 +148,14 @@ public:
 	vector <SingleCreditEdge*> singleCreditEdges;
 
 	Edge(Node* nodeFromT, Node* nodeToT);
-	Edge(const Edge& e, Node* nodeFromT, Node* nodeToT);
+	Edge(const Edge& e, Node* nodeFromT, Node* nodeToT, unordered_map<int, AtomicEdge*>& atomicMap);
 	~Edge();
 
-	void addSingleCreditEdge(double interest_rate, int cap, int& atomicGlobalId);
+	SingleCreditEdge* addSingleCreditEdge(double interest_rate, int cap, 
+		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap);
 
-	void routeAtomicEdge(AtomicEdge* a, int capacity, double interest_rate, int& atomicGlobalId);
+	void routeAtomicEdge(AtomicEdge* a, int capacity, double interest_rate, 
+		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap);
 
 	void print();
 

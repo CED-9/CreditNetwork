@@ -16,25 +16,29 @@ int main(int argc, char* argv[]){
 
 	// Graph graph;
 	// graph.generateTestGraph2();
-	Graph graph(100);
-	graph.genTest0Graph(0.06, 5);
+	// Graph graph(100);
+	// graph.genTest0Graph(0.06, 5);
 	// graph.print();
+	
+	Graph graph;
+	graph.generateTestGraph2();
+	graph.print();
 
-	int cnt = 0;
-	for (int i = 0; i < 100; ++i){
-		vector<Edge*> path;
-		Node* src = graph.nodes.find(rand()%100)->second;
-		Node* dest = graph.nodes.find(rand()%100)->second;
-		bool result = Searcher::bfsIRConstraint(0.03, &graph, src, dest, path);
+	// int cnt = 0;
+	// for (int i = 0; i < 100; ++i){
+	// 	vector<Edge*> path;
+	// 	Node* src = graph.nodes.find(rand()%100)->second;
+	// 	Node* dest = graph.nodes.find(rand()%100)->second;
+	// 	bool result = Searcher::bfsIRConstraint(0.03, &graph, src, dest, path);
 
-		cout << "result: " << result << endl;
-		if (result){
-			cnt++;
-		}
+	// 	cout << "result: " << result << endl;
+	// 	if (result){
+	// 		cnt++;
+	// 	}
 
-		Executer::execute(path, src, dest);
-	}
-	cout << cnt << endl;
+	// 	Executer::execute(path, src, dest);
+	// }
+	// cout << cnt << endl;
 
 	graph.print();
 
@@ -67,9 +71,9 @@ int main(int argc, char* argv[]){
 	// Executer::execute(path, src, dest);
 	// graph.print();
 
-	for (auto it : graph.nodes){
-		cout << it.second->getNodeId() << it.second->totalIR / it.second->transactionNum << endl;
-	}
+	// for (auto it : graph.nodes){
+	// 	cout << it.second->getNodeId() << it.second->totalIR / it.second->transactionNum << endl;
+	// }
 
 
 	// CreditNet creditNet(100);
