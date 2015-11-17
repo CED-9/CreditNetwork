@@ -83,6 +83,9 @@ void WidgetGraph::constructWidget(Graph* graphT){
 	// outer widget edges
 	for (auto atomicEdgePair : graphT->atomicEdges){
 		AtomicEdge* temp = atomicEdgePair.second;
+		if (temp->capacity == 0){
+			continue;
+		}
 		if (temp->isDebt){
 			// debt, flow: from->to
 			this->addEdge(temp->fromWidget, temp->toWidget, 
