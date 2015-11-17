@@ -25,71 +25,55 @@ static void addIntWidgetPair(int targetId,
 static void addWidgetNode(int & globalId, Node* node, WidgetGraph* g){
 	for (auto edgePair : node->edge_in){
 
-		for (int i = 0; i < edgePair.second->unitEdges.size(); ++i){
-			if (edgePair.second->unitEdges[i].c_max != edgePair.second->unitEdges[i].d_current){
+		for (int i = 0; i < edgePair.second->singleCreditEdges.size(); ++i){
+
+
+			SingleCreditEdge* s = edgePair.second->singleCreditEdges[i];
+
+			if (s->credit_remain->capacity != 0){
 				// create widget node from credit in edge
 				int id1 = globalId++;
-				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.second->unitEdges[i].unitEdgeId);
+				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.second->nodeFrom->getNodeId());
 				g->widgetNodes.push_back(widgetNode1);
 				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_in_widget_nodes);
 			}
-			if (0 != edgePair.second->unitEdges[i].d_current){
-				// create widget node from debt out edge
-				int id2 = globalId++;
-				WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.second->unitEdges[i].unitEdgeId);
-				g->widgetNodes.push_back(widgetNode2);
-				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_out_widget_nodes);
+			for (int j = 0; j < s->debt_current; ++j){
+				if (0 != edgePair.second->unitEdges[i].d_current){
+					// create widget node from debt out edge
+					int id2 = globalId++;
+					WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.second->nodeFrom->getNodeId());
+					g->widgetNodes.push_back(widgetNode2);
+					addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_out_widget_nodes);
+				}
 			}
+			
 		}
 
-		// if (edgePair.second->get_d_current() == 0){
-
-		// 	int id1 = globalId++;
-		// 	WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.first);
-		// 	g->widgetNodes.push_back(widgetNode1);
-		// 	addIntWidgetPair(edgePair.first, widgetNode1, node->credit_in_widget_nodes);
-
-		// } else {
-
-		// 	int id2 = globalId++;
-		// 	WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.first);
-		// 	g->widgetNodes.push_back(widgetNode2);
-		// 	addIntWidgetPair(edgePair.first, widgetNode2, node->debt_out_widget_nodes);
-
-		// }
 	}
 
 	for (auto edgePair : node->edge_out){
 
-		for (int i = 0; i < edgePair.second->unitEdges.size(); ++i){
-			if (edgePair.second->unitEdges[i].c_max != edgePair.second->unitEdges[i].d_current){
+		for (int i = 0; i < edgePair.second->singleCreditEdges.size(); ++i){
+
+			SingleCreditEdge* s = edgePair.second->singleCreditEdges[i];
+
+			if (s->credit_remain->capacity != 0){
 				// create widget node from credit in edge
 				int id1 = globalId++;
-				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.second->unitEdges[i].unitEdgeId);
+				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.second->nodeFrom->getNodeId());
 				g->widgetNodes.push_back(widgetNode1);
-				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_out_widget_nodes);
+				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_in_widget_nodes);
 			}
-			if (0 != edgePair.second->unitEdges[i].d_current){
-				// create widget node from debt out edge
-				int id2 = globalId++;
-				WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.second->unitEdges[i].unitEdgeId);
-				g->widgetNodes.push_back(widgetNode2);
-				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_in_widget_nodes);
+			for (int j = 0; j < s->debt_current; ++j){
+				if (0 != edgePair.second->unitEdges[i].d_current){
+					// create widget node from debt out edge
+					int id2 = globalId++;
+					WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.second->nodeFrom->getNodeId());
+					g->widgetNodes.push_back(widgetNode2);
+					addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_out_widget_nodes);
+				}
 			}
 		}
-
-		// if (edgePair.second->get_d_current() == 0){
-		// 	int id1 = globalId++;
-		// 	WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.first);
-		// 	g->widgetNodes.push_back(widgetNode1);
-		// 	addIntWidgetPair(edgePair.first, widgetNode1, node->credit_out_widget_nodes);
-		
-		// } else {
-		// 	int id2 = globalId++;
-		// 	WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.first);
-		// 	g->widgetNodes.push_back(widgetNode2);
-		// 	addIntWidgetPair(edgePair.first, widgetNode2, node->debt_in_widget_nodes);
-		// }
 
 	}
 }
@@ -207,5 +191,45 @@ void WidgetGraph::setupSrcAndDest(Node* srcT, Node* destT, double paymentT){
 
 
 
+void WidgetGraph::constructWidget(Graph* graphT){
+	// widget nodes
+	int globalId = 0;
+	for (auto atomicEdgePair : graphT->atomicEdges){
 
+		WidgetNode* w1 = new WidgetNode(atomicEdgePair.second->originEdge->nodeFrom, globalId, atomicEdgePair.first);
+		WidgetNode* w2 = new WidgetNode(atomicEdgePair.second->originEdge->nodeTo, globalId, atomicEdgePair.first);
+		widgetNodes.push_back(w1);
+		widgetNodes.push_back(w2);
+		// mark on atomic edge
+		atomicEdgePair.second->fromWidget = w1;
+		atomicEdgePair.second->toWidget = w2;
+
+	}
+
+	// outer edges
+	for (auto atomicEdgePair : graphT->atomicEdges){
+		AtomicEdge* temp = atomicEdgePair.second;
+		if (temp->isDebt){
+			this->addEdge(temp->fromWidget, temp->toWidget, temp->interest_rate, 0);
+		} else {
+			this->addEdge(temp->toWidget, temp->fromWidget, temp->interest_rate, 0);
+		}
+		
+	}
+
+	// inner edges
+	
+
+}
+
+
+// from node1 to node2, capability of routing
+void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2, 
+	int capacity, double ir, double ir_diff){
+
+	WidgetEdge* edge = new WidgetEdge(ir, ir_diff, capacity, node1, node2, type);
+	node1->edge_out[node2->getGlobalId()] = edge;
+	node2->edge_in[node1->getGlobalId()] = edge;
+
+}
 

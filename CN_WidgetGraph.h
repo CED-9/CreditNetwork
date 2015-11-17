@@ -30,7 +30,7 @@ class WidgetNode;
 
 struct WidgetEdge{
 
-	UnitEdge* originUnitEdge;
+	AtomicEdge* originAtomicEdge;
 
 	WidgetNode* nodeFrom;
 	WidgetNode* nodeTo;
@@ -41,10 +41,10 @@ struct WidgetEdge{
 
 	WidgetEdgeType type;
 
-	WidgetEdge(double ir, double ir_diff, int capT, 
-		WidgetNode* nodeFromT, WidgetNode* nodeToT, WidgetEdgeType typeT)
-		: curr(0), cap(capT), interest_rate(ir), 
-		nodeTo(nodeToT), nodeFrom(nodeFromT), interest_diff(ir_diff), type(typeT) {}
+	WidgetEdge(double ir, double ir_diff, int capT, WidgetNode* nodeFromT, 
+		WidgetNode* nodeToT, WidgetEdgeType typeT, AtomicEdge* atomicEdge)
+		: curr(0), cap(capT), interest_rate(ir), nodeTo(nodeToT)
+		, nodeFrom(nodeFromT), interest_diff(ir_diff), type(typeT), originAtomicEdge(a) {}
 };
 
 static std::string helper(WidgetNodeType type){
