@@ -45,17 +45,17 @@ int main(int argc, char* argv[]){
 		g = graph;
 	}
 	cout << "--------------------------------------" << endl;
-	g.print();
+	// g.print();
 
 	WidgetGraph widget;
 	widget.constructWidget(&g);
 
-	cout << "widget graph --------------------------------" << endl;
+	// cout << "widget graph --------------------------------" << endl;
 	// widget.print();
 
 	
 
-	cout << "copy back --------------------------------" << endl;
+	// cout << "copy back --------------------------------" << endl;
 	widget.copyBack();
 	g.print();
 

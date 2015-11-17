@@ -52,6 +52,9 @@ void WidgetGraph::constructWidget(Graph* graphT){
 	for (auto atomicEdgePair : graphT->atomicEdges){
 		
 		AtomicEdge* atomicEdge = atomicEdgePair.second;
+		if (atomicEdge->capacity == 0){
+			continue;
+		}
 		WidgetNode* w1 = NULL;
 		WidgetNode* w2 = NULL;
 		Node* from = atomicEdge->originEdge->nodeFrom;
@@ -121,6 +124,9 @@ void WidgetGraph::constructWidget(Graph* graphT){
 
 void WidgetGraph::copyBack(){
 	for (auto e : this->outerWidgetEdges){
+		if (e->curr == 0){
+			continue;
+		}
 		e->originAtomicEdge->route(e->curr, e->originAtomicEdge->interest_rate, this->originGraph);
 	}
 }

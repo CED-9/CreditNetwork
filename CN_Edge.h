@@ -53,6 +53,9 @@ public:
 	}
 
 	void route(int current, double interest_rate, Graph* g){
+		if (current == 0){
+			return;
+		}
 		helpRouteOnAtomicEdge(current, interest_rate, this, g);
 	}
 
