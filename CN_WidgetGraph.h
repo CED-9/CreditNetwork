@@ -26,27 +26,6 @@ enum WidgetEdgeType{
 	INNER_WIDGET_EDGE,
 };
 
-class WidgetNode;
-
-struct WidgetEdge{
-
-	AtomicEdge* originAtomicEdge;
-
-	WidgetNode* nodeFrom;
-	WidgetNode* nodeTo;
-	double cap;
-	double curr;
-	double interest_rate;
-	double interest_diff;
-
-	WidgetEdgeType type;
-
-	WidgetEdge(double ir, double ir_diff, int capT, WidgetNode* nodeFromT, 
-		WidgetNode* nodeToT, WidgetEdgeType typeT, AtomicEdge* atomicEdge)
-		: curr(0), cap(capT), interest_rate(ir), nodeTo(nodeToT)
-		, nodeFrom(nodeFromT), interest_diff(ir_diff), type(typeT), originAtomicEdge(a) {}
-};
-
 static std::string helper(WidgetNodeType type){
 	switch(type){
 		case CREDIT_OUT_NODE:
@@ -75,18 +54,42 @@ static std::string helper(WidgetEdgeType type){
 	return "";
 }
 
+class WidgetNode;
+
+struct WidgetEdge{
+
+	AtomicEdge* originAtomicEdge;
+
+	WidgetNode* nodeFrom;
+	WidgetNode* nodeTo;
+	double cap;
+	double curr;
+	double interest_rate;
+	double interest_diff;
+
+	WidgetEdgeType type;
+
+	WidgetEdge(double ir, double ir_diff, int capT, WidgetNode* nodeFromT, 
+		WidgetNode* nodeToT, WidgetEdgeType typeT, AtomicEdge* a)
+		: curr(0), cap(capT), interest_rate(ir), nodeTo(nodeToT)
+		, nodeFrom(nodeFromT), interest_diff(ir_diff), type(typeT), originAtomicEdge(a) {}
+};
+
 class WidgetNode{
 public:
 	int globalNodeId;
 	WidgetNodeType type;
 	Node* originNode;
 	int targetNodeId;
+	AtomicEdge* originAtomicEdge;
 
 	unordered_map<int, WidgetEdge*> edge_out;
 	unordered_map<int, WidgetEdge*> edge_in;
 
-	WidgetNode(WidgetNodeType t, Node* o, int id, int targetNodeIdT)
-		: type(t), originNode(o), globalNodeId(id), targetNodeId(targetNodeIdT) {}
+	WidgetNode(WidgetNodeType t, Node* o, int id, int targetNodeIdT, AtomicEdge* a)
+		: type(t), originNode(o)
+		, globalNodeId(id), targetNodeId(targetNodeIdT) 
+		, originAtomicEdge(a) {}
 
 	~WidgetNode(){
 		for (auto it : edge_out){
@@ -143,7 +146,7 @@ public:
 
 
 	void addEdge(WidgetNode* node1, WidgetNode* node2, 
-		int capacity, double ir, double ir_diff, WidgetEdgeType type);
+		int capacity, double ir, double ir_diff, WidgetEdgeType type, AtomicEdge* a);
 	void constructWidget(Graph* graphT);
 	void copyBack();
 

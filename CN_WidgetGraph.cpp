@@ -13,173 +13,6 @@ WidgetGraph::~WidgetGraph(){
 	}
 }
 
-template <class W>
-static void addIntWidgetPair(int targetId, 
-	W widgetNode, unordered_map<int, W>& map){
-	std::pair<int, W> tempPair;
-	tempPair.first = targetId;
-	tempPair.second = widgetNode;
-	map.insert(tempPair);
-}
-
-static void addWidgetNode(int & globalId, Node* node, WidgetGraph* g){
-	for (auto edgePair : node->edge_in){
-
-		for (int i = 0; i < edgePair.second->singleCreditEdges.size(); ++i){
-
-
-			SingleCreditEdge* s = edgePair.second->singleCreditEdges[i];
-
-			if (s->credit_remain->capacity != 0){
-				// create widget node from credit in edge
-				int id1 = globalId++;
-				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_IN_NODE, node, id1, edgePair.second->nodeFrom->getNodeId());
-				g->widgetNodes.push_back(widgetNode1);
-				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_in_widget_nodes);
-			}
-			for (int j = 0; j < s->debt_current; ++j){
-				if (0 != edgePair.second->unitEdges[i].d_current){
-					// create widget node from debt out edge
-					int id2 = globalId++;
-					WidgetNode* widgetNode2 = new WidgetNode(DEBT_OUT_NODE, node, id2, edgePair.second->nodeFrom->getNodeId());
-					g->widgetNodes.push_back(widgetNode2);
-					addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_out_widget_nodes);
-				}
-			}
-			
-		}
-
-	}
-
-	for (auto edgePair : node->edge_out){
-
-		for (int i = 0; i < edgePair.second->singleCreditEdges.size(); ++i){
-
-			SingleCreditEdge* s = edgePair.second->singleCreditEdges[i];
-
-			if (s->credit_remain->capacity != 0){
-				// create widget node from credit in edge
-				int id1 = globalId++;
-				WidgetNode* widgetNode1 = new WidgetNode(CREDIT_OUT_NODE, node, id1, edgePair.second->nodeFrom->getNodeId());
-				g->widgetNodes.push_back(widgetNode1);
-				addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode1, node->credit_in_widget_nodes);
-			}
-			for (int j = 0; j < s->debt_current; ++j){
-				if (0 != edgePair.second->unitEdges[i].d_current){
-					// create widget node from debt out edge
-					int id2 = globalId++;
-					WidgetNode* widgetNode2 = new WidgetNode(DEBT_IN_NODE, node, id2, edgePair.second->nodeFrom->getNodeId());
-					g->widgetNodes.push_back(widgetNode2);
-					addIntWidgetPair(edgePair.second->unitEdges[i].unitEdgeId, widgetNode2, node->debt_out_widget_nodes);
-				}
-			}
-		}
-
-	}
-}
-
-void WidgetGraph::constructWidget(Graph* graphT){
-
-	// construct all nodes
-	int globalId = 0;
-	for (auto nodePair : graphT->nodes){
-		Node* node = nodePair.second;
-		addWidgetNode(globalId, node, this);
-	}
-
-	// add all outer edges between widget nodes
-	for (auto nodePair : graphT->nodes){
-
-		Node* node = nodePair.second;
-		
-		for (auto edgePair : node->edge_in){
-			Node* target = graphT->nodes.find(edgePair.second->nodeFrom->getNodeId())->second;
-			if (edgePair.second->get_d_current() == 0){
-				WidgetNode* widgetNode1 = node->credit_in_widget_nodes.find(target->getNodeId())->second;
-				WidgetNode* widgetNode2 = target->credit_out_widget_nodes.find(node->getNodeId())->second;
-				this->addEdge(widgetNode1, widgetNode2, 
-					edgePair.second->get_c_remain(), edgePair.second->get_interest_rate(), 0, CREDIT_WIDGET_EDGE);
-			} else {
-				WidgetNode* widgetNode1 = node->debt_out_widget_nodes.find(target->getNodeId())->second;
-				WidgetNode* widgetNode2 = target->debt_in_widget_nodes.find(node->getNodeId())->second;
-				this->addEdge(widgetNode2, widgetNode1, 
-					edgePair.second->get_d_current(), edgePair.second->get_interest_rate(), 0, DEBT_WIDGET_EDGE);
-			}
-
-		}
-	}
-
-	// inner widget edges
-	for (auto nodePair : graphT->nodes){
-
-		Node* node = nodePair.second;
-
-		for (auto inwardFlowWidget : node->credit_out_widget_nodes){
-			for (auto outwardFlowWidget : node->credit_in_widget_nodes){
-				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
-					node->edge_out.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_in.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(), 
-					INNER_WIDGET_EDGE
-				);				
-			}
-			for (auto outwardFlowWidget : node->debt_in_widget_nodes){
-				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
-					node->edge_out.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_out.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(),
-					INNER_WIDGET_EDGE
-				);
-			}
-		}
-		for (auto inwardFlowWidget : node->debt_out_widget_nodes){
-			for (auto outwardFlowWidget : node->credit_in_widget_nodes){
-				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
-					node->edge_in.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_in.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(),
-					INNER_WIDGET_EDGE
-				);				
-			}
-			for (auto outwardFlowWidget : node->debt_in_widget_nodes){
-				addEdge(inwardFlowWidget.second, outwardFlowWidget.second, 1, 2.0, 
-					node->edge_in.find(inwardFlowWidget.second->targetNodeId)->second->get_interest_rate() 
-					- node->edge_out.find(outwardFlowWidget.second->targetNodeId)->second->get_interest_rate(),
-					INNER_WIDGET_EDGE
-				);
-			}
-		}
-	}
-
-
-	// super source, super destination
-	// WidgetNode* source = new WidgetNode(SUPER_SOURCE, this->src, globalId++, -1);
-	// WidgetNode* dest = new WidgetNode(SUPER_DEST, this->dest, globalId++, -1);
-	// this->widgetNodes.push_back(source);
-	// this->widgetNodes.push_back(dest);
-	// for (auto it : this->src->credit_in_widget_nodes){
-	// 	this->addEdge(source, it.second, 1, 2.0, 0);
-	// }
-	// for (auto it : this->src->debt_in_widget_nodes){
-	// 	this->addEdge(source, it.second, 1, 2.0, 0);
-	// }
-	// for (auto it : this->dest->credit_out_widget_nodes){
-	// 	this->addEdge(dest, it.second, 1, 2.0, 0);
-	// }
-	// for (auto it : this->dest->debt_out_widget_nodes){
-	// 	this->addEdge(dest, it.second, 1, 2.0, 0);
-	// }
-
-}
-
-// from node1 to node2, capability of routing
-void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2, 
-	int capacity, double ir, double ir_diff, WidgetEdgeType type){
-
-	WidgetEdge* edge = new WidgetEdge(ir, ir_diff, capacity, node1, node2, type);
-	addIntWidgetPair(node2->getGlobalId(), edge, node1->edge_out);
-	addIntWidgetPair(node1->getGlobalId(), edge, node2->edge_in);
-
-}
-
-
 
 void WidgetGraph::setupSrcAndDest(Node* srcT, Node* destT, double paymentT){
 	src = srcT;
@@ -187,17 +20,52 @@ void WidgetGraph::setupSrcAndDest(Node* srcT, Node* destT, double paymentT){
 	payment = paymentT;
 }
 
+// from node1 to node2, capability of routing
+void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2, 
+	int capacity, double ir, double ir_diff, WidgetEdgeType type, AtomicEdge* a){
+
+	WidgetEdge* edge = new WidgetEdge(ir, ir_diff, capacity, node1, node2, type, a);
+	node1->edge_out[node2->getGlobalId()] = edge;
+	node2->edge_in[node1->getGlobalId()] = edge;
+
+}
 
 
+static void helpAddInnerWidgetEdge(WidgetGraph*g, WidgetNode* from, WidgetNode* to){
 
+	if (from->originAtomicEdge->interest_rate < to->originAtomicEdge->interest_rate){
+		return;
+	}
+	g->addEdge(from, to, from->originAtomicEdge->capacity + 
+		to->originAtomicEdge->capacity, -1, 
+		from->originAtomicEdge->interest_rate - 
+		to->originAtomicEdge->interest_rate, 
+		INNER_WIDGET_EDGE, from->originAtomicEdge);
+}
 
 void WidgetGraph::constructWidget(Graph* graphT){
 	// widget nodes
 	int globalId = 0;
 	for (auto atomicEdgePair : graphT->atomicEdges){
+		
+		AtomicEdge* atomicEdge = atomicEdgePair.second;
+		WidgetNode* w1 = NULL;
+		WidgetNode* w2 = NULL;
+		Node* from = atomicEdge->originEdge->nodeFrom;
+		Node* to = atomicEdge->originEdge->nodeTo;
 
-		WidgetNode* w1 = new WidgetNode(atomicEdgePair.second->originEdge->nodeFrom, globalId, atomicEdgePair.first);
-		WidgetNode* w2 = new WidgetNode(atomicEdgePair.second->originEdge->nodeTo, globalId, atomicEdgePair.first);
+		if (atomicEdge->isDebt) {
+			w1 = new WidgetNode(DEBT_IN_NODE, from, globalId++, to->getNodeId(), atomicEdge);
+			w2 = new WidgetNode(DEBT_OUT_NODE, to, globalId++, from->getNodeId(), atomicEdge);
+			from->debt_in_widget_nodes[atomicEdge->atomicEdgeId] = w1;
+			to->debt_out_widget_nodes[atomicEdge->atomicEdgeId] = w2;
+		} else {
+			w1 = new WidgetNode(CREDIT_OUT_NODE, from, globalId++, to->getNodeId(), atomicEdge);
+			w2 = new WidgetNode(CREDIT_IN_NODE, to, globalId++, from->getNodeId(), atomicEdge);
+			from->credit_out_widget_nodes[atomicEdge->atomicEdgeId] = w1;
+			to->credit_in_widget_nodes[atomicEdge->atomicEdgeId] = w2;
+		}
+
 		widgetNodes.push_back(w1);
 		widgetNodes.push_back(w2);
 		// mark on atomic edge
@@ -206,30 +74,43 @@ void WidgetGraph::constructWidget(Graph* graphT){
 
 	}
 
-	// outer edges
+	// outer widget edges
 	for (auto atomicEdgePair : graphT->atomicEdges){
 		AtomicEdge* temp = atomicEdgePair.second;
 		if (temp->isDebt){
-			this->addEdge(temp->fromWidget, temp->toWidget, temp->interest_rate, 0);
+			// debt, flow: from->to
+			this->addEdge(temp->fromWidget, temp->toWidget, 
+				temp->capacity, temp->interest_rate, 0, DEBT_WIDGET_EDGE, atomicEdgePair.second);
 		} else {
-			this->addEdge(temp->toWidget, temp->fromWidget, temp->interest_rate, 0);
+			// credit, flow: to->from
+			this->addEdge(temp->toWidget, temp->fromWidget, 
+				temp->capacity, temp->interest_rate, 0, CREDIT_WIDGET_EDGE, atomicEdgePair.second);
 		}
-		
 	}
 
-	// inner edges
+	// inner widget edges
+	for (auto nodePair : graphT->nodes){
+		Node* node = nodePair.second;
+
+		for (auto inwardFlowWidget : node->credit_out_widget_nodes){
+			for (auto outwardFlowWidget : node->credit_in_widget_nodes){
+				helpAddInnerWidgetEdge(this, inwardFlowWidget.second, outwardFlowWidget.second);
+			}
+			for (auto outwardFlowWidget : node->debt_in_widget_nodes){
+				helpAddInnerWidgetEdge(this, inwardFlowWidget.second, outwardFlowWidget.second);
+			}
+		}
+		for (auto inwardFlowWidget : node->debt_out_widget_nodes){
+			for (auto outwardFlowWidget : node->credit_in_widget_nodes){
+				helpAddInnerWidgetEdge(this, inwardFlowWidget.second, outwardFlowWidget.second);
+			}
+			for (auto outwardFlowWidget : node->debt_in_widget_nodes){
+				helpAddInnerWidgetEdge(this, inwardFlowWidget.second, outwardFlowWidget.second);
+			}
+		}
+	}
+
 	
-
-}
-
-
-// from node1 to node2, capability of routing
-void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2, 
-	int capacity, double ir, double ir_diff){
-
-	WidgetEdge* edge = new WidgetEdge(ir, ir_diff, capacity, node1, node2, type);
-	node1->edge_out[node2->getGlobalId()] = edge;
-	node2->edge_in[node1->getGlobalId()] = edge;
 
 }
 
