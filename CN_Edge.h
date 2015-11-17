@@ -10,6 +10,7 @@ using namespace std;
 
 class Edge;
 class Node;
+class WidgetNode;
 
 // atomic edge, 0 flow, capacity
 class AtomicEdge{
@@ -22,6 +23,10 @@ public:
 	int atomicEdgeId;
 	int capacity;
 	double interest_rate;
+
+	// widget stuff
+	WidgetNode* fromWidget;
+	WidgetNode* toWidget;
 
 	AtomicEdge(const AtomicEdge& a, Edge* e, 
 			int single, unordered_map<int, AtomicEdge*>& atomicMap){

@@ -1,5 +1,6 @@
 #include "CN_Edge.h"
 #include "CN_Graph.h"
+#include "CN_WidgetGraph.h"
 #include <unordered_map>
 #include <list>
 #include <vector>
@@ -45,6 +46,12 @@ int main(int argc, char* argv[]){
 	}
 	cout << "--------------------------------------" << endl;
 	g.print();
+
+	WidgetGraph widget;
+	widget.constructWidget(&g);
+
+	cout << "widget graph --------------------------------" << endl;
+	widget.print();
 
 
 	return 0;
