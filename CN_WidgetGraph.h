@@ -7,7 +7,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <list>
+#include <set>
+
 
 using namespace std;
 
@@ -112,6 +113,7 @@ public:
 				<< " Type: " << helper(it.second->type) 
 				<< endl
 				<< "interest rate: " << it.second->interest_rate 
+				<< " interest diff: " << it.second->interest_diff
 				<< " capacity: " << it.second->cap 
 				<< " current: " << it.second->curr << endl;
 		}
@@ -122,6 +124,7 @@ public:
 				<< " Type: " << helper(it.second->type) 
 				<< endl
 				<< "interest rate: " << it.second->interest_rate 
+				<< " interest diff: " << it.second->interest_diff
 				<< " capacity: " << it.second->cap 
 				<< " current: " << it.second->curr << endl;
 		}
@@ -142,11 +145,12 @@ public:
 	Node* dest;
 	double payment;
 	vector<WidgetNode*> widgetNodes;
-	list<WidgetEdge*> outterWidgetEdges;
+	set<WidgetEdge*> outerWidgetEdges;
 
 
 	void addEdge(WidgetNode* node1, WidgetNode* node2, 
-		int capacity, double ir, double ir_diff, WidgetEdgeType type, AtomicEdge* a);
+		int capacity, double ir, double ir_diff, 
+		WidgetEdgeType type, AtomicEdge* a, bool isOuter);
 	void constructWidget(Graph* graphT);
 	void copyBack();
 

@@ -204,3 +204,12 @@ void Graph::setRoutePreference(int opMode, vector<string> &v){
 	}
 	return;
 }
+
+
+
+//////////////////////////////////////////////////////
+// route on atomic edge
+//////////////////////////////////////////////////////
+void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g){
+	a->originEdge->routeAtomicEdge(a, current, interest_rate, g->atomicGlobalId, g->atomicEdges);
+}

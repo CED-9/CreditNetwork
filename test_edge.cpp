@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
 	for (int i = 0; i < 1; ++i){
 		Graph graph;
 		graph.generateTestGraph2();
-		graph.print();
+		// graph.print();
 		g = graph;
 	}
 	cout << "--------------------------------------" << endl;
@@ -51,8 +51,13 @@ int main(int argc, char* argv[]){
 	widget.constructWidget(&g);
 
 	cout << "widget graph --------------------------------" << endl;
-	widget.print();
+	// widget.print();
 
+	
+
+	cout << "copy back --------------------------------" << endl;
+	widget.copyBack();
+	g.print();
 
 	return 0;
 }

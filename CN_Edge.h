@@ -10,7 +10,11 @@ using namespace std;
 
 class Edge;
 class Node;
+class Graph;
 class WidgetNode;
+class AtomicEdge;
+
+extern void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g);
 
 // atomic edge, 0 flow, capacity
 class AtomicEdge{
@@ -46,6 +50,10 @@ public:
 
 			atomicMap[this->atomicEdgeId] = this;
 
+	}
+
+	void route(int current, double interest_rate, Graph* g){
+		helpRouteOnAtomicEdge(current, interest_rate, this, g);
 	}
 
 	void print() {
@@ -157,7 +165,7 @@ public:
 	SingleCreditEdge* addSingleCreditEdge(double interest_rate, int cap, 
 		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap);
 
-	void routeAtomicEdge(AtomicEdge* a, int capacity, double interest_rate, 
+	void routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate, 
 		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap);
 
 	void print();
