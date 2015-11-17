@@ -66,11 +66,9 @@ public:
 		this->credit_max = s.credit_max;
 		this->credit_interest_rate = s.credit_interest_rate;
 		this->credit_remain = new AtomicEdge(*(s.credit_remain), e, single, atomicMap);
-		for (auto it : debt_current){
-			pair<double, AtomicEdge*> p;
-			p.first = it.first;
-			p.second = new AtomicEdge(*(it.second), e, single, atomicMap);
-			this->debt_current.insert(p);
+		for (auto it : s.debt_current){
+			this->debt_current[it.first] = 
+				new AtomicEdge(*(it.second), e, single, atomicMap);
 		}
 
 	}

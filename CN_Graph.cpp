@@ -30,10 +30,23 @@ static void deepCopyHelper(Graph* newGraph, Graph& oldGraph){
 	newGraph->nodeNum = oldGraph.nodeNum;
 	newGraph->atomicGlobalId = oldGraph.atomicGlobalId;
 	for (auto& it : oldGraph.nodes){
-		std::pair<int, Node*> tempPair;
-		tempPair.first = it.first;
-		tempPair.second = new Node(*(it.second));
-		newGraph->nodes.insert(tempPair);
+		newGraph->nodes[it.first] = new Node(it.first);
+		newGraph->nodes[it.first]->transactionNum = it.second->transactionNum;
+		newGraph->nodes[it.first]->totalIR = it.second->totalIR;
+		newGraph->nodes[it.first]->routePreference = it.second->routePreference;
+	}
+	for (auto& oldNodePair : oldGraph.nodes){
+		for (auto& oldEdgePair : oldNodePair.second->edge_in){
+			int fromId = oldEdgePair.first;
+			int toId = oldNodePair.first;
+			Node* newFromNode = newGraph->nodes[fromId];
+			Node* newToNode = newGraph->nodes[toId];
+
+			Edge* e = new Edge(*(oldEdgePair.second),
+				newFromNode, newToNode, newGraph->atomicEdges);
+			newToNode->edge_in[fromId] = e;
+			newFromNode->edge_out[toId] = e;
+		}
 	}
 
 }
