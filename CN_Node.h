@@ -33,7 +33,7 @@ public:
 	unordered_map<int, WidgetNode*> debt_out_widget_nodes;
 
 	Node(int id);
-	Node(const Node& n);
+
 	~Node();
 
 	int getNodeId();

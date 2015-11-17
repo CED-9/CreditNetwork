@@ -12,24 +12,6 @@ Node::Node(int id){
 	this->routePreference = "";
 }
 
-Node::Node(const Node& n){
-	this->nodeId = n.nodeId;
-	this->transactionNum = n.transactionNum;
-	this->totalIR = n.totalIR;
-	this->routePreference = n.routePreference;
-	for (auto it : edge_in){
-		pair<int, Edge*> p;
-		p.first = it.first;
-		p.second = new Edge(*(it.second));
-		this->edge_in.insert(p);
-	}
-	for (auto it : edge_out){
-		pair<int, Edge*> p;
-		p.first = it.first;
-		p.second = new Edge(*(it.second));
-		this->edge_in.insert(p);
-	}
-}
 
 Node::~Node(){
 	for (auto it : edge_in){

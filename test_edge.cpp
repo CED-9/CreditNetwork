@@ -35,9 +35,17 @@ int main(int argc, char* argv[]){
 	// 	it.second->print();
 	// }
 	
-	Graph graph;
-	graph.generateTestGraph2();
-	graph.print();
+
+	Graph g;
+	for (int i = 0; i < 1; ++i){
+		Graph graph;
+		graph.generateTestGraph2();
+		graph.print();
+		g = graph;
+	}
+	cout << "--------------------------------------" << endl;
+	g.print();
+
 
 	return 0;
 }
