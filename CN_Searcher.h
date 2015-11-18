@@ -11,7 +11,7 @@ class Searcher{
 public:
 
 	static bool bfsIRConstraint(double ir, Graph* graph, 
-		Node* src, Node* dest, vector<Edge*>& path);
+		Node* src, Node* dest, vector<AtomicEdge*>& path);
 	
 };
 

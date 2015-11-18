@@ -50,6 +50,7 @@ int main(int argc, char* argv[]){
 
 	WidgetGraph widget;
 	widget.constructWidget(&g);
+	widget.setupSrcAndDest(g.nodes[0], g.nodes[5], 1);
 
 	// cout << "widget graph --------------------------------" << endl;
 	// widget.print();
@@ -58,9 +59,16 @@ int main(int argc, char* argv[]){
 	converter.constructCplex(&widget);
 	converter.printInput();
 
-	// cout << "copy back --------------------------------" << endl;
+
+	CplexSolver solver;
+	solver.solve(converter);
+	cout << "--------------------------------------" << endl;
+	converter.printResult();	
+	converter.copyBack();
+
+	cout << "copy back --------------------------------" << endl;
 	widget.copyBack();
-	// g.print();
+	g.print();
 
 
 

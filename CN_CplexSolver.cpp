@@ -10,7 +10,7 @@ static int
 buildNetwork (CPXENVptr env, CPXNETptr net, WidgetGraph* widgetNet, int nnodes, int narcs,
 	double * &supply, int* &head, int* &tail, double* &obj, double* &ub, double* &lb);
 
-int CplexSolver::lpSolver(CplexConverter& converter)
+int CplexSolver::solve(CplexConverter& converter)
 {
 	/* Declare variables and arrays for retrieving problem data and
 	  solution information later on. */
@@ -113,13 +113,13 @@ int CplexSolver::lpSolver(CplexConverter& converter)
 
 	/* Write the output to the screen. */
 
-	// printf ("\nSolution status = %d\n", solstat);
+	printf ("\nSolution status = %d\n", solstat);
 	if (solstat != 1 && solstat != 6 && solstat != 14){
 		// cout << "status" << solstat << endl; 
 		status1 = -1;
 		goto TERMINATE;
 	}
-	// printf ("Solution value  = %f\n\n", objval);
+	printf ("Solution value  = %f\n\n", objval);
 
 	status1 = 0;
 	

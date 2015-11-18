@@ -141,13 +141,14 @@ class WidgetGraph{
 private:
 	Graph* originGraph;
 public:
-	Node* src;
-	Node* dest;
-	double payment;
 	vector<WidgetNode*> widgetNodes;
 	set<WidgetEdge*> outerWidgetEdges;
 	set<WidgetEdge*> widgetEdges;
 
+	// super source and super sink
+	Node* superSource;
+	Node* superSink;
+	double payment;
 
 	void addEdge(WidgetNode* node1, WidgetNode* node2, 
 		int capacity, double ir, double ir_diff, 

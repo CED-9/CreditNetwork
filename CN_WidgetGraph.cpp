@@ -15,8 +15,8 @@ WidgetGraph::~WidgetGraph(){
 
 
 void WidgetGraph::setupSrcAndDest(Node* srcT, Node* destT, double paymentT){
-	src = srcT;
-	dest = destT;
+	superSource = srcT;
+	superSink = destT;
 	payment = paymentT;
 }
 
