@@ -146,6 +146,7 @@ public:
 	double payment;
 	vector<WidgetNode*> widgetNodes;
 	set<WidgetEdge*> outerWidgetEdges;
+	set<WidgetEdge*> widgetEdges;
 
 
 	void addEdge(WidgetNode* node1, WidgetNode* node2, 

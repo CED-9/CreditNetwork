@@ -1,6 +1,7 @@
 #include "CN_Edge.h"
 #include "CN_Graph.h"
 #include "CN_WidgetGraph.h"
+#include "CN_CplexSolver.h"
 #include <unordered_map>
 #include <list>
 #include <vector>
@@ -53,11 +54,16 @@ int main(int argc, char* argv[]){
 	// cout << "widget graph --------------------------------" << endl;
 	// widget.print();
 
-	
+	CplexConverter converter;
+	converter.constructCplex(&widget);
+	converter.printInput();
 
 	// cout << "copy back --------------------------------" << endl;
 	widget.copyBack();
-	g.print();
+	// g.print();
+
+
+
 
 	return 0;
 }

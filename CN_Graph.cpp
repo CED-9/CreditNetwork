@@ -139,7 +139,7 @@ void Graph::generateTestGraph2(){
 
 	this->addMultiEdge(nodes.find(4)->second, nodes.find(3)->second, 0.4, 0.0, 0, 1);
 
-	this->addMultiEdge(nodes.find(5)->second, nodes.find(4)->second, 0.3, 0.0, 0, 3);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(4)->second, 0.2, 0.0, 0, 3);
 
 	this->addMultiEdge(nodes.find(5)->second, nodes.find(2)->second, 0.4, 0.0, 0, 2);
 

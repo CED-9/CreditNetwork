@@ -30,6 +30,7 @@ void WidgetGraph::addEdge(WidgetNode* node1, WidgetNode* node2,
 	if (isOuter){
 		this->outerWidgetEdges.insert(edge);
 	}
+	this->widgetEdges.insert(edge);
 }
 
 

@@ -13,4 +13,5 @@ test: CN_Edge.cpp CN_Node.cpp
 	g++ -g -c CN_Edge.cpp -std=c++11
 	g++ -g -c CN_Graph.cpp -std=c++11
 	g++ -g -c CN_WidgetGraph.cpp -std=c++11
+	g++ -g -c CN_CplexSolver.cpp -std=c++11
 	g++ -o test test_edge.cpp *.o -std=c++11
