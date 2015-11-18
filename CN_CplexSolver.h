@@ -6,6 +6,10 @@
 class CplexConverter{
 
 public:
+	// widget graph
+	int widgetNodeNum;
+	int widgetEdgeNum;
+
 	// input 
 	int nnodes;
 	int narcs;
@@ -26,8 +30,11 @@ public:
 	
 	void constructCplex(WidgetGraph* w){
 		widgetNet = w;
-		nnodes = widgetNet->widgetNodes.size();
-		narcs = widgetNet->widgetEdges.size();
+		widgetNodeNum = widgetNet->widgetNodes.size();
+		widgetEdgeNum = widgetNet->widgetEdges.size();
+
+		nnodes = widgetNodeNum;
+		narcs = widgetEdgeNum;
 
 		supply = new double [nnodes];
 		tail = new int [narcs];
@@ -68,7 +75,37 @@ public:
 		}
 	}
 
-	void copyBack();
+	void copyBack(){
+		for (int i = 0; i < widgetNet->widgetEdges.size(); ++i){
+			if (head[i] > widgetNodeNum || tail[i] > widgetNodeNum) {
+				cerr << "error!" << endl;
+				continue;
+			}
+			widgetNet->widgetNodes[head[i]]->edge_out[tail[i]]->curr = x[i];
+		}
+
+		delete [] supply;
+		delete [] head;
+		delete [] tail;
+		delete [] obj;
+		delete [] ub;
+		delete [] lb;
+
+		delete [] x;
+		delete [] dj;
+		delete [] pi;
+		delete [] slack;
+	}
 };
+
+
+class CplexSolver{
+
+public:
+
+	int lpSolver(CplexConverter& converter);
+
+};
+
 
 #endif
