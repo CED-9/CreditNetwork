@@ -108,6 +108,7 @@ void Graph::genTest0Graph(double threshold, int numIR){
 			if (num > 1.0 - threshold){
 				if (rand()%2 == 1) {
 					// this->addUnitEdge(nodes.find(i)->second, nodes.find(j)->second, ir, rand()%2);
+					this->addMultiEdge(nodes.find(i)->second, nodes.find(j)->second, 0.3, 0.4, 2, 2);
 				} else {
 					// this->addUnitEdge(nodes.find(j)->second, nodes.find(i)->second, ir, rand()%2);
 				}

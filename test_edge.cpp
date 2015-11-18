@@ -46,11 +46,11 @@ int main(int argc, char* argv[]){
 		g = graph;
 	}
 	cout << "--------------------------------------" << endl;
-	// g.print();
+	g.print();
 
 	WidgetGraph widget;
 	widget.constructWidget(&g);
-	widget.setupSrcAndDest(g.nodes[0], g.nodes[5], 1);
+	widget.setupSrcAndDest(g.nodes[0], g.nodes[5], 5);
 
 	// cout << "widget graph --------------------------------" << endl;
 	// widget.print();
@@ -61,10 +61,12 @@ int main(int argc, char* argv[]){
 
 
 	CplexSolver solver;
-	solver.solve(converter);
 	cout << "--------------------------------------" << endl;
-	converter.printResult();	
-	converter.copyBack();
+	if (solver.solve(converter) == 0){
+		converter.copyBack();
+	}
+	converter.printResult();
+
 
 	cout << "copy back --------------------------------" << endl;
 	widget.copyBack();
