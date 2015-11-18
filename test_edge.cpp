@@ -39,12 +39,7 @@ int main(int argc, char* argv[]){
 	
 
 	Graph g;
-	for (int i = 0; i < 1; ++i){
-		Graph graph;
-		graph.generateTestGraph2();
-		// graph.print();
-		g = graph;
-	}
+	g.generateTestGraph2();
 	cout << "--------------------------------------" << endl;
 	g.print();
 
@@ -52,13 +47,13 @@ int main(int argc, char* argv[]){
 	widget.constructWidget(&g);
 	widget.setupSrcAndDest(g.nodes[0], g.nodes[5], 5);
 
-	// cout << "widget graph --------------------------------" << endl;
-	// widget.print();
+	cout << "widget graph --------------------------------" << endl;
+	widget.print();
 
 	CplexConverter converter;
 	converter.constructCplex(&widget);
+	cout << "--------------------------------------" << endl;
 	converter.printInput();
-
 
 	CplexSolver solver;
 	cout << "--------------------------------------" << endl;
