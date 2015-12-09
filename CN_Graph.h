@@ -4,6 +4,8 @@
 #include "CN_Node.h"
 #include <list>
 #include <unordered_map>
+#include <set>
+
 
 class Graph{
 public:
@@ -11,7 +13,7 @@ public:
 	int atomicGlobalId;
 	unordered_map<int, Node*> nodes;
 	unordered_map<int, AtomicEdge*> atomicEdges;
-
+	set<doulbe> allInterests;
 	
 
 	/////////////////////////////////////////////////////////////////////////
