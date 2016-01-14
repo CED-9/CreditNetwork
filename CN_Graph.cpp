@@ -137,6 +137,8 @@ void Graph::genTest0Graph(double threshold, int numIR, int n){
 
 		}
 	}
+
+
 }
 
 void Graph::generateTestGraph2(){
@@ -170,6 +172,11 @@ void Graph::generateTestGraph2(){
 	this->addMultiEdge(nodes.find(7)->second, nodes.find(6)->second, 0.3, 0.0, 0, 1);
 
 	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0.0, 0, 2);
+
+
+	this->allInterests.insert(0.2);
+	this->allInterests.insert(0.3);
+	this->allInterests.insert(0.4);
 
 }
 

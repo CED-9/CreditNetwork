@@ -5,6 +5,8 @@
 #include "CN_Edge.h"
 #include <list>
 #include <unordered_map>
+#include <set>
+
 
 class Graph{
 public:
@@ -13,7 +15,7 @@ public:
 	unordered_map<int, Node*> nodes;
 	list<Edge*> edges;
 	unordered_map<int, AtomicEdge*> atomicEdges;
-
+	set<doulbe> allInterests;
 	
 
 	/////////////////////////////////////////////////////////////////////////
