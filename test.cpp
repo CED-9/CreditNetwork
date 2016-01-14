@@ -4,6 +4,7 @@
 #include "CN_Searcher.h"
 #include "CN_Executer.h"
 #include "CN_CreditNet.h"
+#include "CN_Solver.h"
 #include <unordered_map>
 #include <list>
 #include <vector>
@@ -21,8 +22,19 @@ int main(int argc, char* argv[]){
 	// graph.print();
 	
 	Graph graph;
-	graph.generateTestGraph2();
+	graph.generateTestGraph3();
 	graph.print();
+
+	CplexConverter converter;
+	converter.constructCplex(&graph, graph.nodes[0], graph.nodes[3], 1);
+	converter.printInput();
+	
+	LpSolver lpSolver;
+	lpSolver.buildLpProblem(converter);
+	converter.printResult();
+
+
+	
 
 	// int cnt = 0;
 	// for (int i = 0; i < 100; ++i){
@@ -39,9 +51,6 @@ int main(int argc, char* argv[]){
 	// 	Executer::execute(path, src, dest);
 	// }
 	// cout << cnt << endl;
-
-	graph.print();
-
 
 	// Node* src = graph.nodes.find(0)->second;
 	// Node* dest = graph.nodes.find(5)->second;

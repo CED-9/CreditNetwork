@@ -15,7 +15,7 @@ Edge::Edge(const Edge& e, Node* nodeFromT, Node* nodeToT,
 	this->nodeTo = nodeToT;
 	for (int i = 0; i < e.singleCreditEdges.size(); ++i){
 		SingleCreditEdge* s = new SingleCreditEdge(*(e.singleCreditEdges[i]), 
-			this, this->singleCreditEdges.size(), atomicMap);
+			this, this->singleCreditEdges.size(), atomicMap, nodeFromT, nodeToT);
 		this->singleCreditEdges.push_back(s);
 	}
 }
@@ -31,7 +31,7 @@ SingleCreditEdge* Edge::addSingleCreditEdge(double interest_rate, int cap,
 
 	SingleCreditEdge* temp = new SingleCreditEdge(cap, 
 		interest_rate, atomicGlobalId, this, 
-		this->singleCreditEdges.size(), atomicMap);
+		this->singleCreditEdges.size(), atomicMap, nodeFrom, nodeTo);
 	this->singleCreditEdges.push_back(temp);
 	return temp;
 	
@@ -46,7 +46,7 @@ void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate,
 	} else {
 		a->originEdge->singleCreditEdges[a->singleCreditIndex]
 			->routeCredit(flow, interest_rate, atomicGlobalId, 
-				this, a->singleCreditIndex, atomicMap);
+				this, a->singleCreditIndex, atomicMap, nodeFrom, nodeTo);
 	}
 
 }
@@ -59,4 +59,12 @@ void Edge::print(){
 		singleCreditEdges[i]->print();
 	}
 	
+}
+
+void printEdge(Edge* e){
+	e->print();
+}
+
+void printAtomicEdge(AtomicEdge* ae){
+	ae->print();
 }

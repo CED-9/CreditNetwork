@@ -46,6 +46,7 @@ static void deepCopyHelper(Graph* newGraph, Graph& oldGraph){
 				newFromNode, newToNode, newGraph->atomicEdges);
 			newToNode->edge_in[fromId] = e;
 			newFromNode->edge_out[toId] = e;
+			newGraph->edges.push_back(e);
 		}
 	}
 
@@ -64,6 +65,9 @@ Graph::~Graph(){
 	for (auto& it : nodes){
 		delete it.second;
 	}
+	for (auto& it : edges){
+		delete it;
+	}
 }
 
 
@@ -76,6 +80,7 @@ void Graph::addMultiEdge(Node* nodeFrom, Node* nodeTo,
 		e = new Edge(nodeFrom, nodeTo);
 		nodeTo->edge_in[nodeFrom->getNodeId()] = e;
 		nodeFrom->edge_out[nodeTo->getNodeId()] = e;
+		this->edges.push_back(e);
 	} else {
 		e = nodeTo->edge_in[nodeFrom->getNodeId()];
 	}
@@ -91,12 +96,27 @@ void Graph::print(){
 	for (auto& it : nodes){
 		it.second->print();
 	}
+
+	cout << "atomic edges of graph: " << endl;
+	for (auto &it : this->atomicEdges){
+		it.second->print();
+	}
+	cout << endl;
 }
 
 /////////////////////////////////////////////////////////////////////////
 /* Generate Initial Network */
 /////////////////////////////////////////////////////////////////////////
-void Graph::genTest0Graph(double threshold, int numIR){
+void Graph::genTest0Graph(double threshold, int numIR, int n){
+
+	nodeNum = n;
+	for (int i = 0; i < nodeNum; ++i){
+		Node* temp = new Node(i);
+		std::pair<int, Node*> tempPair;
+		tempPair.first = i;
+		tempPair.second = temp;
+		nodes.insert(tempPair);
+	}
 
 	default_random_engine generator;
 	uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -108,9 +128,10 @@ void Graph::genTest0Graph(double threshold, int numIR){
 			if (num > 1.0 - threshold){
 				if (rand()%2 == 1) {
 					// this->addUnitEdge(nodes.find(i)->second, nodes.find(j)->second, ir, rand()%2);
-					this->addMultiEdge(nodes.find(i)->second, nodes.find(j)->second, 0.3, 0.4, 2, 2);
+					this->addMultiEdge(nodes.find(i)->second, nodes.find(j)->second, 0.1, 0.1, 0, 1);
 				} else {
 					// this->addUnitEdge(nodes.find(j)->second, nodes.find(i)->second, ir, rand()%2);
+					this->addMultiEdge(nodes.find(j)->second, nodes.find(i)->second, 0.1, 0.1, 0, 1);
 				}
 			}
 
@@ -151,6 +172,30 @@ void Graph::generateTestGraph2(){
 	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0.0, 0, 2);
 
 }
+
+
+void Graph::generateTestGraph3(){
+
+	nodeNum = 4;
+	for (int i = 0; i < nodeNum; ++i){
+		nodes[i] = new Node(i);
+	}
+
+	this->addMultiEdge(nodes.find(0)->second, nodes.find(2)->second, 0.3, 0.0, 0, 2);
+
+	this->addMultiEdge(nodes.find(1)->second, nodes.find(0)->second, 0.2, 0.0, 0, 2);
+
+	this->addMultiEdge(nodes.find(1)->second, nodes.find(2)->second, 0.1, 0.0, 0, 2);
+
+	this->addMultiEdge(nodes.find(1)->second, nodes.find(3)->second, 0.1, 0.0, 0, 2);
+
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(0)->second, 0.3, 0.0, 0, 2);
+
+	this->addMultiEdge(nodes.find(3)->second, nodes.find(2)->second, 0.2, 0.0, 0, 2);
+
+}
+
+
 
 void Graph::setRoutePreference(int opMode, vector<string> &v){
 	// cout<<opMode<<endl;

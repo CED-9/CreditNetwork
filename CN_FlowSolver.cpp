@@ -113,13 +113,13 @@ int CplexSolver::solve(CplexConverter& converter)
 
 	/* Write the output to the screen. */
 
-	printf ("\nSolution status = %d\n", solstat);
+	// printf ("\nSolution status = %d\n", solstat);
 	if (solstat != 1 && solstat != 6 && solstat != 14){
 		// cout << "status" << solstat << endl; 
 		status1 = -1;
 		goto TERMINATE;
 	}
-	printf ("Solution value  = %f\n\n", objval);
+	// printf ("Solution value  = %f\n\n", objval);
 
 	status1 = 0;
 	

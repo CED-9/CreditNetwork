@@ -133,7 +133,7 @@ public:
 	void copyBack(){
 		
 		for (int i = 0; i < narcWidgetEdgeMap.size(); ++i){
-			cout << "copy back: " << head[i] << " " << tail[i] << " " << x[i] << endl;
+			// cout << "copy back: " << head[i] << " " << tail[i] << " " << x[i] << endl;
 			narcWidgetEdgeMap[i]->curr = x[i];
 		}
 

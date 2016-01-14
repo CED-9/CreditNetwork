@@ -5,6 +5,9 @@
 #include <vector>
 #include <fstream>
 
+extern void printEdge(Edge*);
+extern void printAtomicEdge(AtomicEdge*);
+
 Node::Node(int id){
 	this->nodeId = id;
 	this->transactionNum = 0;
@@ -14,20 +17,28 @@ Node::Node(int id){
 
 
 Node::~Node(){
-	for (auto it : edge_in){
-		delete it.second;
-	}
+	// for (auto it : edge_in){
+	// 	delete it.second;
+	// }
 }
 
 void Node::print(){
 	cout << "Node " << this->nodeId << endl;
-	for (auto it : edge_in){
-		it.second->print();
+	for (auto &it : edge_in){
+		printEdge(it.second);
 	}
-	for (auto it : edge_out){
-		it.second->print();
+	for (auto &it : edge_out){
+		printEdge(it.second);
+	}
+	cout << "Atomic Edges: " << endl;
+	for (auto &it : atomicEdge_in){
+		printAtomicEdge(it.second);
+	}
+	for (auto &it : atomicEdge_out){
+		printAtomicEdge(it.second);
 	}
 	cout << endl;
+
 	return;
 }
 

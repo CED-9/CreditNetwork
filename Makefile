@@ -1069,5 +1069,7 @@ test: CN_Edge.cpp CN_Node.cpp
 	g++ -g -c CN_Edge.cpp -std=c++11
 	g++ -g -c CN_Graph.cpp -std=c++11
 	g++ -g -c CN_WidgetGraph.cpp -std=c++11
-	$(CCC) -c $(CCFLAGS) CN_CplexSolver.cpp -std=c++11
-	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test test_edge.cpp *.o $(CCLNFLAGS) -std=c++11
+	$(CCC) -c $(CCFLAGS) CN_Solver.cpp -std=c++11
+	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test test.cpp *.o $(CCLNFLAGS) -std=c++11
+cleantest: 
+	rm *.o test

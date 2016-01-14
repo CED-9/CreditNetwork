@@ -8,12 +8,6 @@
 
 using namespace std;
 
-class Edge;
-class Node;
-class Graph;
-class WidgetNode;
-class AtomicEdge;
-
 extern void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g);
 
 // atomic edge, 0 flow, capacity
@@ -28,12 +22,15 @@ public:
 	int capacity;
 	double interest_rate;
 
+	Node* nodeFrom;
+	Node* nodeTo;
+
 	// widget stuff
 	WidgetNode* fromWidget;
 	WidgetNode* toWidget;
 
 	AtomicEdge(const AtomicEdge& a, Edge* e, 
-			int single, unordered_map<int, AtomicEdge*>& atomicMap){
+			int single, unordered_map<int, AtomicEdge*>& atomicMap, Node* nodeFromT, Node* nodeToT){
 		this->originEdge = e;
 		this->singleCreditIndex = single;
 		this->isDebt = a.isDebt;
@@ -41,14 +38,34 @@ public:
 		this->capacity = a.capacity;
 		this->interest_rate = a.interest_rate;
 		atomicMap[this->atomicEdgeId] = this;
+		nodeFrom = nodeFromT;
+		nodeTo = nodeToT;
+		if (this->isDebt){
+			nodeFromT->atomicEdge_in[this->atomicEdgeId] = this;
+			nodeToT->atomicEdge_out[this->atomicEdgeId] = this;
+		} else {
+			nodeFromT->atomicEdge_out[this->atomicEdgeId] = this;
+			nodeToT->atomicEdge_in[this->atomicEdgeId] = this;
+		}
+
+		
 	}
 
 	AtomicEdge(bool d, int id, int capT, double ir, Edge* e, 
-		int single, unordered_map<int, AtomicEdge*>& atomicMap)
+		int single, unordered_map<int, AtomicEdge*>& atomicMap, Node* nodeFromT, Node* nodeToT)
 		: isDebt(d), atomicEdgeId(id), capacity(capT)
 		, interest_rate(ir), originEdge(e), singleCreditIndex(single) {
 
 			atomicMap[this->atomicEdgeId] = this;
+			nodeFrom = nodeFromT;
+			nodeTo = nodeToT;
+			if (this->isDebt){
+				nodeFromT->atomicEdge_in[this->atomicEdgeId] = this;
+				nodeToT->atomicEdge_out[this->atomicEdgeId] = this;
+			} else {
+				nodeFromT->atomicEdge_out[this->atomicEdgeId] = this;
+				nodeToT->atomicEdge_in[this->atomicEdgeId] = this;
+			}
 
 	}
 
@@ -63,7 +80,9 @@ public:
 		cout << "    Atomic Edge, id: " << atomicEdgeId << " " 
 		<< "capacity: " << capacity << " ir: " << interest_rate 
 		<< " isDebt: " << isDebt 
-		<< " single index " << singleCreditIndex << endl;
+		<< " single index " << singleCreditIndex 
+		<< " from " << nodeFrom->nodeId << " to " << nodeTo->nodeId
+		<< endl;
 	}
 };
 
@@ -77,24 +96,24 @@ public:
 	unordered_map<double, AtomicEdge*> debt_current;
 
 	SingleCreditEdge(const SingleCreditEdge& s, Edge* e, 
-		int single, unordered_map<int, AtomicEdge*>& atomicMap) {
+		int single, unordered_map<int, AtomicEdge*>& atomicMap, Node* nodeFromT, Node* nodeToT) {
 		
 		this->credit_max = s.credit_max;
 		this->credit_interest_rate = s.credit_interest_rate;
-		this->credit_remain = new AtomicEdge(*(s.credit_remain), e, single, atomicMap);
+		this->credit_remain = new AtomicEdge(*(s.credit_remain), e, single, atomicMap, nodeFromT, nodeToT);
 		for (auto it : s.debt_current){
 			this->debt_current[it.first] = 
-				new AtomicEdge(*(it.second), e, single, atomicMap);
+				new AtomicEdge(*(it.second), e, single, atomicMap, nodeFromT, nodeToT);
 		}
 
 	}
 
 	SingleCreditEdge(int c_max, double ir, int& globalId, Edge* e, 
-		int single, unordered_map<int, AtomicEdge*>& atomicMap)
+		int single, unordered_map<int, AtomicEdge*>& atomicMap, Node* nodeFromT, Node* nodeToT)
 		: credit_max(c_max), credit_interest_rate(ir){
 
 			credit_remain = new AtomicEdge(0, 
-				globalId++, c_max, ir, e, single, atomicMap);
+				globalId++, c_max, ir, e, single, atomicMap, nodeFromT, nodeToT);
 
 	}
 
@@ -106,7 +125,7 @@ public:
 	}
 
 	bool routeCredit(int current, double interest_rate, int& globalId, Edge* e, 
-		int single, unordered_map<int, AtomicEdge*>& atomicMap){
+		int single, unordered_map<int, AtomicEdge*>& atomicMap, Node* nodeFromT, Node* nodeToT){
 
 
 		if (credit_remain->capacity < current){
@@ -120,7 +139,7 @@ public:
 		} else {
 			
 			debt_current[interest_rate] = new AtomicEdge(1, 
-				globalId++, current, interest_rate, e, single, atomicMap);
+				globalId++, current, interest_rate, e, single, atomicMap, nodeFromT, nodeToT);
 
 		}
 
@@ -174,7 +193,6 @@ public:
 	void print();
 
 };
-
 
 
 #endif

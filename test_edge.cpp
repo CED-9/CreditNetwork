@@ -10,7 +10,36 @@
 
 using namespace std;
 
+int genInterBankTrans(int nodeNum, Graph* g, double payment){
 
+	Node* f1 = NULL;
+	Node* f2 = NULL;	
+	int fid1 = rand()%nodeNum;
+	f1 = g->nodes.find(fid1)->second;
+	int fid2 = rand()%nodeNum;
+	while (fid1 == fid2){
+		fid2 = rand()%nodeNum;
+	}
+	f2 = g->nodes.find(fid2)->second;
+	
+	WidgetGraph widget;
+	widget.constructWidget(g);
+	widget.setupSrcAndDest(g->nodes[fid1], g->nodes[fid2], payment);
+
+	CplexConverter converter;
+	converter.constructCplex(&widget);
+	// cout << "--------------------------------------" << endl;
+	// converter.printInput();
+
+	CplexSolver solver;
+	// cout << "--------------------------------------" << endl;
+	if (solver.solve(converter) == 0){
+		converter.copyBack();
+		return 0;
+	}
+	// converter.printResult();
+	return 1;
+}
 
 int main(int argc, char* argv[]){
 
@@ -36,36 +65,49 @@ int main(int argc, char* argv[]){
 	// for (auto it : atomicMap){
 	// 	it.second->print();
 	// }
-	
 
 	Graph g;
-	g.generateTestGraph2();
-	cout << "--------------------------------------" << endl;
+	g.genTest0Graph(0.05, 1, 100);
 	g.print();
-
-	WidgetGraph widget;
-	widget.constructWidget(&g);
-	widget.setupSrcAndDest(g.nodes[0], g.nodes[5], 5);
-
-	cout << "widget graph --------------------------------" << endl;
-	widget.print();
-
-	CplexConverter converter;
-	converter.constructCplex(&widget);
-	cout << "--------------------------------------" << endl;
-	converter.printInput();
-
-	CplexSolver solver;
-	cout << "--------------------------------------" << endl;
-	if (solver.solve(converter) == 0){
-		converter.copyBack();
+	int cnt = 0;
+	for (int i = 0; i < 1000; ++i){
+		int temp = genInterBankTrans(100, &g, 1);
+		// cout << temp << endl;
+		if (temp == 1)
+		{
+			cnt ++;
+		}
 	}
-	converter.printResult();
+	cout << cnt << endl;
+
+	// Graph g;
+	// g.generateTestGraph2();
+	// cout << "--------------------------------------" << endl;
+	// g.print();
+
+	// WidgetGraph widget;
+	// widget.constructWidget(&g);
+	// widget.setupSrcAndDest(g.nodes[0], g.nodes[5], 5);
+
+	// cout << "widget graph --------------------------------" << endl;
+	// widget.print();
+
+	// CplexConverter converter;
+	// converter.constructCplex(&widget);
+	// cout << "--------------------------------------" << endl;
+	// converter.printInput();
+
+	// CplexSolver solver;
+	// cout << "--------------------------------------" << endl;
+	// if (solver.solve(converter) == 0){
+	// 	converter.copyBack();
+	// }
+	// converter.printResult();
 
 
-	cout << "copy back --------------------------------" << endl;
-	widget.copyBack();
-	g.print();
+	// cout << "copy back --------------------------------" << endl;
+	// widget.copyBack();
+	// g.print();
 
 
 
