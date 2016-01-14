@@ -15,8 +15,6 @@ public:
 	unordered_map<int, Node*> nodes;
 	list<Edge*> edges;
 	unordered_map<int, AtomicEdge*> atomicEdges;
-	set<doulbe> allInterests;
-	
 
 	/////////////////////////////////////////////////////////////////////////
 	/* Graph basics */

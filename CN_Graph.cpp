@@ -173,11 +173,6 @@ void Graph::generateTestGraph2(){
 
 	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.2, 0.0, 0, 2);
 
-
-	this->allInterests.insert(0.2);
-	this->allInterests.insert(0.3);
-	this->allInterests.insert(0.4);
-
 }
 
 
