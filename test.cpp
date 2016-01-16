@@ -31,7 +31,10 @@ int main(int argc, char* argv[]){
 	
 	LpSolver lpSolver;
 	lpSolver.buildLpProblem(converter);
-	converter.printResult();
+	// converter.printResult();
+	converter.copyBack();
+
+	graph.print();	
 
 
 	

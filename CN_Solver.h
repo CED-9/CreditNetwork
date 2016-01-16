@@ -83,7 +83,14 @@ public:
 	}
 
 	void copyBack(){
-		
+		for (int i = 0; i < variables.size(); ++i){
+			int id = variables[i].atomicEdgeId;
+			if (results[i] == 0){
+				continue;
+			}
+			this->graph->atomicEdges[id]
+				->route(results[i], variables[i].interest_rate, this->graph);
+		}
 	}
 };
 
