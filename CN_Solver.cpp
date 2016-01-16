@@ -1,8 +1,9 @@
 #include "CN_Solver.h"
 
-void LpSolver::buildLpProblem(CplexConverter& cplexConverter)
+bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
 {
 	IloEnv   env;
+	bool success = false;
 	try {
 		IloModel model(env);
 		IloNumVarArray var(env);
@@ -10,9 +11,9 @@ void LpSolver::buildLpProblem(CplexConverter& cplexConverter)
 		this->populatebyrow (cplexConverter, model, var, con); //modify where the graph is located
 		IloCplex cplex(model);
 
-		cout << "before solving " << endl;
-		cout << var << endl;
-		cout << con << endl;
+		// cout << "before solving " << endl;
+		// cout << var << endl;
+		// cout << con << endl;
 
 
 		// Optimize the problem and obtain solution.
@@ -20,7 +21,6 @@ void LpSolver::buildLpProblem(CplexConverter& cplexConverter)
 		   env.error() << "Failed to optimize LP" << endl;
 		   throw(-1);
 		}
-
 
 		IloNumArray vals(env);
 		env.out() << "Solution status = " << cplex.getStatus() << endl;
@@ -42,7 +42,7 @@ void LpSolver::buildLpProblem(CplexConverter& cplexConverter)
 		cout << "after solving " << endl;
 		cout << var << endl;
 		cout << con << endl;
-
+		success = true;
 
 	}
 	catch (IloException& e) {
@@ -53,7 +53,7 @@ void LpSolver::buildLpProblem(CplexConverter& cplexConverter)
 	}
 	env.end();
 
-	return;
+	return success;
 }  
 	
 void LpSolver::populatebyrow (CplexConverter& cplexConverter, 

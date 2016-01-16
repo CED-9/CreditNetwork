@@ -100,7 +100,7 @@ public:
 
 class LpSolver{
 public:
-	void buildLpProblem(CplexConverter& cplexConverter);
+	bool solveLpProblem(CplexConverter& cplexConverter);
 	
 	void populatebyrow (CplexConverter& cplexConverter, 
 		IloModel model, IloNumVarArray x, IloRangeArray c);

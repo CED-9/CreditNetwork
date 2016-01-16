@@ -1,8 +1,6 @@
 
 #include "CN_Node.h"
 #include "CN_Graph.h"
-#include "CN_Searcher.h"
-#include "CN_Executer.h"
 #include "CN_CreditNet.h"
 #include "CN_Solver.h"
 #include <unordered_map>
@@ -21,23 +19,26 @@ int main(int argc, char* argv[]){
 	// graph.genTest0Graph(0.06, 5);
 	// graph.print();
 	
-	Graph graph;
-	graph.generateTestGraph3();
-	graph.print();
+	// Graph graph;
+	// graph.generateTestGraph3();
+	// graph.print();
 
-	CplexConverter converter;
-	converter.constructCplex(&graph, graph.nodes[0], graph.nodes[3], 1);
-	converter.printInput();
+	// CplexConverter converter;
+	// converter.constructCplex(&graph, graph.nodes[0], graph.nodes[3], 1);
+	// converter.printInput();
 	
-	LpSolver lpSolver;
-	lpSolver.buildLpProblem(converter);
-	// converter.printResult();
-	converter.copyBack();
+	// LpSolver lpSolver;
+	// lpSolver.buildLpProblem(converter);
+	// // converter.printResult();
+	// converter.copyBack();
 
-	graph.print();	
+	// graph.print();	
 
 
-	
+	CreditNet creditNet;
+	creditNet.generateTestGraph3();
+	creditNet.genInterBankTrans(1);
+	creditNet.print();
 
 	// int cnt = 0;
 	// for (int i = 0; i < 100; ++i){

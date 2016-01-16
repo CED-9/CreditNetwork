@@ -5,18 +5,18 @@
 #include <list>
 #include "CN_Node.h"
 #include "CN_Graph.h"
-#include "CN_Searcher.h"
-#include "CN_Executer.h"
+#include "CN_Solver.h"
 
 class CreditNet : public Graph{
 private:
 
 public:
 	CreditNet(int finNumT);
+	CreditNet();
 
 	// Inter Bank Trans
 	// liquidity test
-	int genInterBankTrans();
+	int genInterBankTrans(int request);
 
 	
 	void printPayoff();
