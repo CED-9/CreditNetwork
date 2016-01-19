@@ -1,4 +1,7 @@
 SYSTEM     = x86-64_sles10_4.1
+# use for CAEN 
+#SYSTEM = x86-64_linux
+
 LIBFORMAT  = static_pic
 
 #------------------------------------------------------------
@@ -11,6 +14,10 @@ LIBFORMAT  = static_pic
 
 CPLEXDIR      = /usr/caen/cplex-12.4/cplex
 CONCERTDIR    = /usr/caen/cplex-12.4/concert
+# use for CAEN
+# CPLEXDIR      = /usr/caen/cplex-12.6/cplex
+# CONCERTDIR    = /usr/caen/cplex-12.6/concert
+
 # ---------------------------------------------------------------------
 # Compiler selection 
 # ---------------------------------------------------------------------
