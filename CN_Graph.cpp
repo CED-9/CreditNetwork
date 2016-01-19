@@ -107,9 +107,8 @@ void Graph::print(){
 /////////////////////////////////////////////////////////////////////////
 /* Generate Initial Network */
 /////////////////////////////////////////////////////////////////////////
-void Graph::genTest0Graph(double threshold, int numIR, int n){
+void Graph::genTest0Graph(double threshold, int numIR, int nodeNum, int cap){
 
-	nodeNum = n;
 	for (int i = 0; i < nodeNum; ++i){
 		Node* temp = new Node(i);
 		std::pair<int, Node*> tempPair;
@@ -128,10 +127,10 @@ void Graph::genTest0Graph(double threshold, int numIR, int n){
 			if (num > 1.0 - threshold){
 				if (rand()%2 == 1) {
 					// this->addUnitEdge(nodes.find(i)->second, nodes.find(j)->second, ir, rand()%2);
-					this->addMultiEdge(nodes.find(i)->second, nodes.find(j)->second, 0.1, 0.1, 0, 1);
+					this->addMultiEdge(nodes.find(i)->second, nodes.find(j)->second, ir, 0.0, 0, cap);
 				} else {
 					// this->addUnitEdge(nodes.find(j)->second, nodes.find(i)->second, ir, rand()%2);
-					this->addMultiEdge(nodes.find(j)->second, nodes.find(i)->second, 0.1, 0.1, 0, 1);
+					this->addMultiEdge(nodes.find(j)->second, nodes.find(i)->second, ir, 0.0, 0, cap);
 				}
 			}
 

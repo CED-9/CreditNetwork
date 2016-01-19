@@ -35,7 +35,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////
 	void generateTestGraph2();
 	void generateTestGraph3();
-	void genTest0Graph(double threshold, int numIR, int n);
+	void genTest0Graph(double threshold, int numIR, int n, int cap);
 
 };
 

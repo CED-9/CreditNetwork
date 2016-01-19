@@ -37,7 +37,7 @@ public:
 			if (at->isDebt){
 				
 				int tempId = globalVarId++;
-				cout << "adding: " << tempId << " " << at->atomicEdgeId << " " << at->interest_rate << endl;
+				// cout << "adding: " << tempId << " " << at->atomicEdgeId << " " << at->interest_rate << endl;
 				Variable v(tempId, at->atomicEdgeId, at->interest_rate);
 				variables.push_back(v);
 				capacities.push_back(at->capacity);
@@ -49,7 +49,7 @@ public:
 					if (credNetConstants.totalIrs[i] >= at->interest_rate){
 
 						int tempId = globalVarId++;
-						cout << "adding: " << tempId << " " << at->atomicEdgeId << " " << at->interest_rate << endl;
+						// cout << "adding: " << tempId << " " << at->atomicEdgeId << " " << at->interest_rate << endl;
 						Variable v(tempId, at->atomicEdgeId, credNetConstants.totalIrs[i]);
 						variables.push_back(v);
 						capacities.push_back(at->capacity);
