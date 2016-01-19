@@ -1,4 +1,7 @@
-SYSTEM     = x86-64_linux
+SYSTEM     = x86-64_sles10_4.1
+# use for CAEN 
+#SYSTEM = x86-64_linux
+
 LIBFORMAT  = static_pic
 
 #------------------------------------------------------------
@@ -9,8 +12,12 @@ LIBFORMAT  = static_pic
 #
 #------------------------------------------------------------
 
-CPLEXDIR      = /usr/caen/cplex-12.6/cplex
-CONCERTDIR    = /usr/caen/cplex-12.6/concert
+CPLEXDIR      = /usr/caen/cplex-12.4/cplex
+CONCERTDIR    = /usr/caen/cplex-12.4/concert
+# use for CAEN
+# CPLEXDIR      = /usr/caen/cplex-12.6/cplex
+# CONCERTDIR    = /usr/caen/cplex-12.6/concert
+
 # ---------------------------------------------------------------------
 # Compiler selection 
 # ---------------------------------------------------------------------
@@ -1071,5 +1078,6 @@ test: CN_Edge.cpp CN_Node.cpp
 	$(CCC) -c $(CCFLAGS) CN_Solver.cpp -std=c++11
 	$(CCC) -c $(CCFLAGS) CN_CreditNet.cpp -std=c++11
 	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test test.cpp *.o $(CCLNFLAGS) -std=c++11
+	time ./test 1 1 1
 cleantest: 
 	rm *.o test

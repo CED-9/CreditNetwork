@@ -24,7 +24,7 @@ int CreditNet::genInterBankTrans(int request){
 
 	Node* f1 = NULL;
 	Node* f2 = NULL;
-	
+	nodeNum = nodes.size();
 	int fid1 = rand()%nodeNum;
 	f1 = nodes.find(fid1)->second;
 	int fid2 = rand()%nodeNum;
@@ -34,7 +34,7 @@ int CreditNet::genInterBankTrans(int request){
 	f2 = nodes.find(fid2)->second;
 
 	// this->print();
-	cout << "fid1: " << fid1 << " fid2: " << fid2 << endl;
+	//cout << "fid1: " << fid1 << " fid2: " << fid2 << endl;
 	CplexConverter converter;
 	converter.constructCplex(this, this->nodes[fid1], this->nodes[fid2], request);
 	// converter.printInput();
