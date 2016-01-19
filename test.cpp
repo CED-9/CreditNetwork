@@ -18,7 +18,7 @@ mutex lock_rates;
 mutex lock_cout;
 
 void singleSimulation(int numNodes, int cap, int amt, double threshold, int numIR, 
-	int window_size, const int numTest, int burn, int mechanismGenMode, double* resultRate)
+	int window_size, const int numTest, int burn, int mechanismGenMode)
 {
 	std::vector<string> v;
 	// config the network
@@ -69,12 +69,13 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 		cnt++;
 		// cout>>cnt>>endl;
 	}
+	double resultRate;
 	lock_rates.lock();
-	*resultRate = failRateTotal / (cnt + 2.0 * window_size + 1.0);
+	resultRate = failRateTotal / (cnt + 2.0 * window_size);
 	// double transRate = (double) test/((double) numTest * (double) finNum * ((double) finNum-1));
 	lock_rates.unlock();
 	lock_cout.lock();
-	cout << "threshold   " << threshold << "   SS fail rate   " << *resultRate <<"   denom   "<< cnt + 2.0 * window_size + 1.0<<"   num   "<<failRateTotal<<endl;
+	cout << "threshold   " << threshold << "   SS fail rate   " << resultRate <<"   denom   "<< cnt + 2.0 * window_size <<"   num   "<<failRateTotal<<endl;
 
 	lock_cout.unlock();
 }
@@ -102,16 +103,16 @@ int main(int argc, char* argv[]){
 	int numIR = atoi(argv[2]);
 	int amt = atoi(argv[1]);
 	int cap = atoi(argv[3]);
-	int window_size = 100;
-	const int iter = 10;
+	int window_size = 4500;
+	const int iter = 2;
 	int numTest = 10;
 	int burn = 150;
-	const int numDeg = 1;
+	const int numDeg = 3;
 	// double degrees [numDeg] = {0.01,0.02,0.04,0.06,0.09,0.12,0.15,
 	// double degrees [numDeg] = {0.10,0.15,0.20, 0.25, 0.30};
-	//double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.15, 0.175};
-	double degrees[numDeg] = {1.1};
-
+	// double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.15, 0.175};
+	double degrees[numDeg] = {0.05,0.1,0.025};
+/*
 	for (int i = 0; i < numDeg; ++i){
 		threshold = degrees[i];
 			
@@ -172,11 +173,14 @@ int main(int argc, char* argv[]){
 		// wait for all threads to finish
 	
 	}
-	/*
+	
+	*/
+	
+	
 	// 10 rounds
 	for (int i = 0; i < numDeg; ++i){
 		threshold = degrees[i];
-		double* rates = new double [iter];
+		// double* rates = new double [iter];
 		vector<std::thread*> threadPool;
 		// double rateFinal = 0;
 		
@@ -185,8 +189,8 @@ int main(int argc, char* argv[]){
 		for (int j = 0; j < iter; ++j){
 			std::thread* singleRoundThread = new std::thread(singleSimulation,
 				numNodes, cap, amt, threshold, numIR, 
-				window_size, numTest, burn, mechanismGenMode,
-				rates + j);
+				window_size, numTest, burn, mechanismGenMode
+				);
 			threadPool.push_back(singleRoundThread);
 		}
 		
@@ -201,9 +205,9 @@ int main(int argc, char* argv[]){
 		// 	rate_avg += rates[j];
 		// }
 		// cout << "Threshold   " << threshold << "   SS Fail rate   " << rate_avg/iter << endl;
-		delete [] rates;
+		// delete [] rates;
 	}
-	*/
+	
 	// Graph graph;
 	// graph.generateTestGraph2();
 	// Graph graph(100);
