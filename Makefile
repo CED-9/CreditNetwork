@@ -1075,6 +1075,7 @@ test: CN_Edge.cpp CN_Node.cpp
 	g++ -g -c CN_Node.cpp -std=c++11
 	g++ -g -c CN_Edge.cpp -std=c++11
 	g++ -g -c CN_Graph.cpp -std=c++11
+	g++ -g -c CN_WidgetGraph.cpp -std=c++11
 	$(CCC) -c $(CCFLAGS) CN_Solver.cpp -std=c++11
 	$(CCC) -c $(CCFLAGS) CN_CreditNet.cpp -std=c++11
 	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test test.cpp *.o $(CCLNFLAGS) -std=c++11
@@ -1088,7 +1089,7 @@ testIR: CN_Edge.cpp CN_Node.cpp
 	$(CCC) -c $(CCFLAGS) CN_Solver.cpp -std=c++11
 	$(CCC) -c $(CCFLAGS) CN_CreditNet.cpp -std=c++11
 	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o testIR test.cpp *.o $(CCLNFLAGS) -std=c++11
-	time ./testIR 1 4 1 > 4IR_check
+	time ./testIR 1 4 1 
 	
 testcapIR: CN_Edge.cpp CN_Node.cpp
 	g++ -g -c CN_Node.cpp -std=c++11

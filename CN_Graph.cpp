@@ -107,7 +107,7 @@ void Graph::print(){
 /////////////////////////////////////////////////////////////////////////
 /* Generate Initial Network */
 /////////////////////////////////////////////////////////////////////////
-void Graph::genTest0Graph(double threshold, int numIR, int nodeNum, int cap){
+void Graph::genTest0Graph(double threshold, int numIR, int cap){
 
 	for (int i = 0; i < nodeNum; ++i){
 		Node* temp = new Node(i);
@@ -119,8 +119,8 @@ void Graph::genTest0Graph(double threshold, int numIR, int nodeNum, int cap){
 
 	default_random_engine generator;
 	uniform_real_distribution<double> distribution(0.0, 1.0);
-	for (int i = 0; i < nodes.size(); i++){
-		for (int j = i+1; j < nodes.size(); j++){
+	for (int i = 0; i < nodeNum; i++){
+		for (int j = i+1; j < nodeNum; j++){
 
 			double num = distribution(generator);
 			double ir = (rand() % numIR + 1)/100.0;

@@ -22,8 +22,8 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 {
 	std::vector<string> v;
 	// config the network
-	CreditNet creditNet;
-	creditNet.genTest0Graph(threshold,numIR,numNodes,cap);
+	CreditNet creditNet(numNodes);
+	creditNet.genTest0Graph(threshold,numIR,cap);
 	//creditNet.print();
 
 	//creditNet.setRoutePreference(mechanismGenMode, v);
