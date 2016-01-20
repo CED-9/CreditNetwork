@@ -96,14 +96,14 @@ int main(int argc, char* argv[]){
 	}
 
 	int window_size = 4500;
-	const int iter = 5;
+	const int iter = 8;
 	int numTest = 10;
 	int burn = 150;
-	const int numDeg = 1;
+	const int numDeg = 10;
 	// double degrees [numDeg] = {0.01,0.02,0.04,0.06,0.09,0.12,0.15,
 	// double degrees [numDeg] = {0.10,0.15,0.20, 0.25, 0.30};
-	// double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.15, 0.175};
-	double degrees[numDeg] = {0.025};
+	double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.15, 0.175};
+	// double degrees[numDeg] = {0.025};
 	
 	// 10 rounds
 	for (int i = 0; i < numDeg; ++i){
