@@ -1,4 +1,4 @@
-SYSTEM     = x86-64_sles10_4.1
+SYSTEM     = x86-64_linux
 # use for CAEN 
 #SYSTEM = x86-64_linux
 
@@ -12,8 +12,8 @@ LIBFORMAT  = static_pic
 #
 #------------------------------------------------------------
 
-CPLEXDIR      = /usr/caen/cplex-12.4/cplex
-CONCERTDIR    = /usr/caen/cplex-12.4/concert
+CPLEXDIR      = /usr/caen/cplex-12.6/cplex
+CONCERTDIR    = /usr/caen/cplex-12.6/concert
 # use for CAEN
 # CPLEXDIR      = /usr/caen/cplex-12.6/cplex
 # CONCERTDIR    = /usr/caen/cplex-12.6/concert
@@ -1071,6 +1071,20 @@ Warehouse.class: $(EXSRCJAVA)/Warehouse.java
 # My test
 #
 #------------------------------------------------------------
+testSingleTrans: CN_Edge.cpp CN_Node.cpp
+	g++ -g -c CN_Constants.cpp -std=c++11
+	
+	g++ -g -c CN_Node.cpp -std=c++11
+	g++ -g -c CN_Edge.cpp -std=c++11
+	g++ -g -c CN_Graph.cpp -std=c++11
+	g++ -g -c CN_WidgetGraph.cpp -std=c++11
+
+	g++ -g -c CN_CplexConverter.cpp -std=c++11
+
+	$(CCC) -c $(CCFLAGS) CN_Solver.cpp -std=c++11
+	$(CCC) -c $(CCFLAGS) CN_CreditNet.cpp -std=c++11
+	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test test_singleTrans.cpp *.o $(CCLNFLAGS) -std=c++11
+
 test: CN_Edge.cpp CN_Node.cpp
 	g++ -g -c CN_Node.cpp -std=c++11
 	g++ -g -c CN_Edge.cpp -std=c++11
@@ -1082,14 +1096,16 @@ test: CN_Edge.cpp CN_Node.cpp
 	time ./test 1 1 1 > dandekar_check
 
 testIR: CN_Edge.cpp CN_Node.cpp
+	g++ -g -c CN_Constants.cpp -std=c++11
 	g++ -g -c CN_Node.cpp -std=c++11
 	g++ -g -c CN_Edge.cpp -std=c++11
 	g++ -g -c CN_Graph.cpp -std=c++11
 	g++ -g -c CN_WidgetGraph.cpp -std=c++11
+	g++ -g -c CN_CplexConverter.cpp -std=c++11
 	$(CCC) -c $(CCFLAGS) CN_Solver.cpp -std=c++11
 	$(CCC) -c $(CCFLAGS) CN_CreditNet.cpp -std=c++11
 	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o testIR test.cpp *.o $(CCLNFLAGS) -std=c++11
-	time ./testIR 1 4 1 
+	time ./testIR 1 1 1 > out.1ir
 	
 testcapIR: CN_Edge.cpp CN_Node.cpp
 	g++ -g -c CN_Node.cpp -std=c++11

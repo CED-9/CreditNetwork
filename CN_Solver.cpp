@@ -1,7 +1,14 @@
 #include "CN_Solver.h"
+#include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
+
+extern CredNetConstants credNetConstants;
+
 
 bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
 {
+	// clock_t t;
+	// t = clock();
+	
 	IloEnv   env;
 	bool success = false;
 	try {
@@ -53,6 +60,10 @@ bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
 		// cerr << "Unknown exception caught" << endl;
 	}
 	env.end();
+
+
+	// t = clock() - t;
+	// printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
 
 	return success;
 }  

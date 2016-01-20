@@ -182,6 +182,8 @@ void Graph::generateTestGraph3(){
 		nodes[i] = new Node(i);
 	}
 
+	this->addMultiEdge(nodes.find(0)->second, nodes.find(1)->second, 0.2, 0.0, 0, 2);
+
 	this->addMultiEdge(nodes.find(0)->second, nodes.find(2)->second, 0.3, 0.0, 0, 2);
 
 	this->addMultiEdge(nodes.find(1)->second, nodes.find(0)->second, 0.2, 0.0, 0, 2);

@@ -10,13 +10,12 @@ class CredNetConstants{
 public:
 	vector<double> totalIrs;
 
-	CredNetConstants(){
-		totalIrs.push_back(0.1);
-		totalIrs.push_back(0.2);
-		totalIrs.push_back(0.3);
-	}
+	CredNetConstants(){}
+
+	void addIr(double ir);
+
+	void print();
 };
 
-const CredNetConstants credNetConstants;
 
 #endif
