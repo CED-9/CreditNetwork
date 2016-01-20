@@ -112,7 +112,7 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 		if(n == cplexConverter.src){
 
 			// source constraints
-			IloExpr inFlow(env);
+			// IloExpr inFlow(env);
 			IloExpr outFlow(env);	
 			for(auto &atoIn : n->atomicEdge_in){
 				int aeId = atoIn.second->atomicEdgeId;
@@ -128,26 +128,28 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 				for (int j = 0; j < cplexConverter.atomicIdToVarIdDict[aeId].size(); j++){
 					// var Id
 					int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
-					inFlow += x[vId];
-					cost -= cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * outFlow;
+					// inFlow += x[vId];
+					c.add(x[vId] == 0);
+					// cost -= cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * outFlow;
 				}
 			}
 
-			c.add(outFlow - inFlow == cplexConverter.request);
-			inFlow.end();
+			c.add(outFlow == cplexConverter.request);
+			// inFlow.end();
 			outFlow.end();
 
 		} else if(n == cplexConverter.dest){
 
 			// destination constraints
 			IloExpr inFlow(env);
-			IloExpr outFlow(env);	
+			// IloExpr outFlow(env);
 			for(auto &atoIn : n->atomicEdge_in){
 				int aeId = atoIn.second->atomicEdgeId;
 				for (int j = 0; j < cplexConverter.atomicIdToVarIdDict[aeId].size(); j++){
 					// var Id
 					int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
-					outFlow += x[vId];
+					// outFlow += x[vId];
+					c.add(x[vId] == 0);
 				}
 			}
 			for (auto &atoOut : n->atomicEdge_out){
@@ -159,9 +161,10 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 				}
 			}
 
-			c.add(inFlow - outFlow == cplexConverter.request);
+			c.add(inFlow == cplexConverter.request);
 			inFlow.end();
-			outFlow.end();
+			// outFlow.end();
+
 		} else {
 
 			// Monotonicity Constraints
@@ -225,8 +228,11 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 
 	}
 
+
+	
+
 	model.add(c);
-	model.add(IloMinimize(env, 1));
+	model.add(IloMinimize(env, cost));
 	// model.add(IloMaximize(env,cost));  //option to minimize cost
 	cost.end();
 
