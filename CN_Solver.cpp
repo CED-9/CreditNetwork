@@ -120,7 +120,7 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 					// var Id
 					int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
 					outFlow += x[vId];
-					cost += cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * inFlow;
+					cost += cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * x[vId];
 				}
 			}
 			for (auto &atoOut : n->atomicEdge_out){
@@ -130,7 +130,7 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 					int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
 					// inFlow += x[vId];
 					c.add(x[vId] == 0);
-					// cost -= cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * outFlow;
+					// cost -= cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * x[vId];
 				}
 			}
 
