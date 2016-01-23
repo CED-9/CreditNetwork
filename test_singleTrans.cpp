@@ -8,6 +8,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <mutex>
 #include <thread>
@@ -29,11 +30,13 @@ int main(){
 
 	CreditNet creditNet(200);
 	creditNet.genTest0Graph(0.025, 4, 1);
-	for (int i = 0; i < 1000; ++i){
+	for (int i = 0; i < 100; ++i){
 		cout << "result: " << creditNet.genInterBankTrans(1) << endl;
 	}
-	
-	creditNet.print();
+
+	ofstream fout("out");
+	creditNet.printAtomicIouEdges(fout);
+	fout.close();
 
 	return 0;
 }

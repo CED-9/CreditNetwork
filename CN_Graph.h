@@ -5,6 +5,7 @@
 #include "CN_Edge.h"
 #include <list>
 #include <unordered_map>
+#include <fstream>
 #include <set>
 
 
@@ -26,6 +27,9 @@ public:
 	~Graph();
 
 	void print();
+	void printAtomicEdges();
+	void printAtomicIouEdges(ofstream& fout);
+	void printAvgAtomicIouEdges();
 	
 	void addMultiEdge(Node* nodeFrom, Node* nodeTo, double credit_ir, double debt_ir, int currDebt, int cap);
 

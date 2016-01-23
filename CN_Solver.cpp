@@ -41,7 +41,8 @@ bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
 		// env.out() << "Duals         = " << vals << endl;
 		// cplex.getReducedCosts(vals, var);
 		// env.out() << "Reduced Costs = " << vals << endl;
-    	cplex.exportModel("lpex1.lp");
+		
+    	// cplex.exportModel("lpex1.lp");
 
 		for (int i = 0; i < cplexConverter.variables.size(); ++i){
 			cplexConverter.results.push_back(cplex.getValue(var[i]));

@@ -96,13 +96,50 @@ void Graph::print(){
 	for (auto& it : nodes){
 		it.second->print();
 	}
+}
 
-	cout << "atomic edges of graph: " << endl;
+void Graph::printAtomicEdges(){
+	cout << "--atomic edges of graph: ---------------------------------------" << endl;
 	for (auto &it : this->atomicEdges){
 		it.second->print();
 	}
 	cout << endl;
+
 }
+
+void Graph::printAvgAtomicIouEdges(){
+	int cnt = 0;
+	double totalIrCap = 0;
+	double totalCap = 0;
+
+	for (auto &it : this->atomicEdges){
+		if (!it.second->isDebt || it.second->capacity == 0){
+			continue;
+		}
+		totalIrCap += it.second->capacity * it.second->interest_rate;
+		totalCap += it.second->capacity;
+		cnt ++;
+	}
+	cout << "average ir: " << totalIrCap / totalCap << endl;
+}
+
+void Graph::printAtomicIouEdges(ofstream & fout){
+	fout << "--All IOU Edges ----------------------------------------------" << endl;
+	fout << "nodeFrom \t nodeTo \t amount \t ir" << endl;
+	for (auto &it : this->atomicEdges){
+		if (!it.second->isDebt || it.second->capacity == 0){
+			continue;
+		}
+		fout << it.second->nodeFrom->nodeId << " \t "
+			<< it.second->nodeTo->nodeId << " \t "
+			<< it.second->capacity << " \t "
+			<< it.second->interest_rate << endl;
+	}
+	fout << endl;
+}
+
+
+
 
 /////////////////////////////////////////////////////////////////////////
 /* Generate Initial Network */

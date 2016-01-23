@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <mutex>
 #include <thread>
@@ -20,7 +21,7 @@ mutex lock_rates;
 mutex lock_cout;
 
 void singleSimulation(int numNodes, int cap, int amt, double threshold, int numIR, 
-	int window_size, const int numTest, int burn, int mechanismGenMode)
+	int window_size, const int numTest, int burn, int mechanismGenMode, int iterIdx)
 {
 	std::vector<string> v;
 	// config the network
@@ -76,10 +77,29 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 	resultRate = failRateTotal / (cnt + 2.0 * window_size);
 	// double transRate = (double) test/((double) numTest * (double) finNum * ((double) finNum-1));
 	lock_rates.unlock();
+
+
+	ofstream fout("simu-" 
+		+ to_string(amt) + "AMT-"
+		+ to_string(numIR) + "IR-" 
+		+ to_string(cap) + "CAP-"
+		+ to_string(threshold) + "Thres-" 
+		+ to_string(iterIdx));
 	lock_cout.lock();
-	cout << "threshold   " << threshold << "   SS fail rate   " << resultRate <<"   denom   "<< cnt + 2.0 * window_size <<"   num   "<<failRateTotal<<endl;
+	cout << "threshold   " << threshold << "   SS fail rate   " 
+		<< resultRate <<"   denom   "
+		<< cnt + 2.0 * window_size <<"   num   " << failRateTotal 
+		<< "  AMT: " << amt << "  numIR:  " << numIR << "  CAP:  " << cap << endl;
+	creditNet.printAvgAtomicIouEdges();
 
 	lock_cout.unlock();
+
+	fout << "threshold   " << threshold << "   SS fail rate   " 
+		<< resultRate <<"   denom   "
+		<< cnt + 2.0 * window_size <<"   num   " << failRateTotal 
+		<< "  AMT: " << amt << "  numIR:  " << numIR << "  CAP:  " << cap << endl;
+	creditNet.printAtomicIouEdges(fout);
+	fout.close();
 }
 
 int main(int argc, char* argv[]){
@@ -99,10 +119,10 @@ int main(int argc, char* argv[]){
 	const int iter = 8;
 	int numTest = 10;
 	int burn = 150;
-	const int numDeg = 10;
+	const int numDeg = 8;
 	// double degrees [numDeg] = {0.01,0.02,0.04,0.06,0.09,0.12,0.15,
 	// double degrees [numDeg] = {0.10,0.15,0.20, 0.25, 0.30};
-	double degrees[numDeg] = {0.025, 0.035, 0.05, 0.075, 0.085, 0.1, 0.115, 0.125, 0.15, 0.175};
+	double degrees[numDeg] = {0.025, 0.03, 0.035, 0.05, 0.075, 0.1, 0.125, 0.175};
 	// double degrees[numDeg] = {0.025};
 	
 	// 10 rounds
@@ -117,7 +137,7 @@ int main(int argc, char* argv[]){
 		for (int j = 0; j < iter; ++j){
 			std::thread* singleRoundThread = new std::thread(singleSimulation,
 				numNodes, cap, amt, threshold, numIR, 
-				window_size, numTest, burn, mechanismGenMode
+				window_size, numTest, burn, mechanismGenMode, j
 				);
 			threadPool.push_back(singleRoundThread);
 		}
