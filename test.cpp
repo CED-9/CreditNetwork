@@ -27,6 +27,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 	// config the network
 	CreditNet creditNet(numNodes);
 	creditNet.genTest0Graph(threshold,numIR,cap);
+	string mode = "MIN_CREDIT_COST";
 	//creditNet.print();
 
 	//creditNet.setRoutePreference(mechanismGenMode, v);
@@ -40,7 +41,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 	vector<int> array;
 	for (int i = 0; i < window_size; ++i){
 		int temp;
-		temp = creditNet.genInterBankTrans(amt);
+		temp = creditNet.genInterBankTrans(amt, mode);
 		array.push_back(temp);
 		failRate1 += temp;
 		failRateTotal += temp;
@@ -48,7 +49,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 	
 	for (int i = 0; i < window_size; ++i){
 		int temp;
-		temp = creditNet.genInterBankTrans(amt);
+		temp = creditNet.genInterBankTrans(amt, mode);
 		array.push_back(temp);
 		failRate2 += temp;
 		failRateTotal += temp;
@@ -62,7 +63,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 		// move on
 		int temp;
 		
-		temp = creditNet.genInterBankTrans(amt);
+		temp = creditNet.genInterBankTrans(amt, mode);
 		
 		failRate1 = failRate1 - array[0] + array[window_size];
 		failRate2 = failRate2 - array[window_size] + temp;
