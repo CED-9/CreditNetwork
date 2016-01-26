@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <list>
+#include <string>
 #include "CN_Node.h"
 #include "CN_Graph.h"
 #include "CN_Solver.h"
@@ -16,7 +17,7 @@ public:
 
 	// Inter Bank Trans
 	// liquidity test
-	int genInterBankTrans(int request);
+	int genInterBankTrans(int request, string mode);
 
 	
 	void printPayoff();

@@ -4,7 +4,7 @@
 extern CredNetConstants credNetConstants;
 
 
-bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
+bool LpSolver::solveLpProblem(CplexConverter& cplexConverter, string mode)
 {
 	// clock_t t;
 	// t = clock();
@@ -15,7 +15,8 @@ bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
 		IloModel model(env);
 		IloNumVarArray var(env);
 		IloRangeArray con(env);
-		this->populatebyrow (cplexConverter, model, var, con); //modify where the graph is located
+		this->populatebyrow(cplexConverter, model, var, con); //modify where the graph is located
+		this->addObjective(mode, cplexConverter, model, var, con);
 		IloCplex cplex(model);
 
 		// cout << "before solving " << endl;
@@ -67,7 +68,55 @@ bool LpSolver::solveLpProblem(CplexConverter& cplexConverter)
 	// printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
 
 	return success;
-}  
+}
+
+void LpSolver::addObjective(string mode, 
+	CplexConverter& cplexConverter, IloModel model, 
+	IloNumVarArray x, IloRangeArray c){
+	
+	IloEnv env = model.getEnv();
+
+	if (mode == "MIN_SRC_COST"){
+
+		IloExpr cost(env);
+		for(auto &atoIn : cplexConverter.src->atomicEdge_in){
+			int aeId = atoIn.second->atomicEdgeId;
+			for (int j = 0; j < cplexConverter.atomicIdToVarIdDict[aeId].size(); j++){
+				// var Id
+				int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
+				cost += cplexConverter.graph->
+					atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->
+					interest_rate * x[vId];
+			}
+		}
+		model.add(IloMinimize(env, cost));
+
+	} else if (mode == "MIN_CREDIT_COST") {
+
+		IloExpr cost(env);
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			int aeId = cplexConverter.variables[i].atomicEdgeId;
+			if (!cplexConverter.graph->atomicEdges[aeId]->isDebt){
+				cost += x[i];
+			}
+		}
+		model.add(IloMinimize(env, cost));
+
+	} else if (mode == "MIN_HOP_COST") {
+
+		IloExpr cost(env);
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			cost += x[i];
+		}
+		model.add(IloMinimize(env, cost));
+
+	} else {
+		// default
+		model.add(IloMinimize(env, 1));
+	}
+
+
+}
 	
 void LpSolver::populatebyrow (CplexConverter& cplexConverter, 
 	IloModel model, IloNumVarArray x, IloRangeArray c)
@@ -75,7 +124,7 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 	IloEnv env = model.getEnv();
 	// CAPITAL LETTERS MEAN I NEED YOUR HELP, here is help 
 
-	IloExpr cost(env);
+	// IloExpr cost(env);
 	
 	// Create Variables
 	// cout << "size of var: " << cplexConverter.variables.size() << endl;
@@ -84,11 +133,6 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 		// cout << iloVar << endl;
 		x.add(iloVar);
 	}
-	for (int i = 0; i < cplexConverter.variables.size(); ++i)
-	{
-		// cout << "xi: " << x[i] << endl;
-	}
-
 
 	//Capacity Constraints
 	for (auto &it : cplexConverter.atomicIdToVarIdDict){
@@ -121,7 +165,7 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 					// var Id
 					int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
 					outFlow += x[vId];
-					cost += cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * x[vId];
+					// cost += cplexConverter.graph->atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->interest_rate * x[vId];
 				}
 			}
 			for (auto &atoOut : n->atomicEdge_out){
@@ -230,12 +274,10 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 	}
 
 
-	
-
 	model.add(c);
-	model.add(IloMinimize(env, cost));
+	// model.add(IloMinimize(env, cost));
 	// model.add(IloMaximize(env,cost));  //option to minimize cost
-	cost.end();
+	// cost.end();
 
 }  // END populatebyrow
 

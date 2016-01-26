@@ -31,7 +31,7 @@ int main(){
 	CreditNet creditNet(200);
 	creditNet.genTest0Graph(0.025, 4, 1);
 	for (int i = 0; i < 100; ++i){
-		cout << "result: " << creditNet.genInterBankTrans(1) << endl;
+		cout << "result: " << creditNet.genInterBankTrans(1, "MIN_CREDIT_COST") << endl;
 	}
 
 	ofstream fout("out");
