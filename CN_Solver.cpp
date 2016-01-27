@@ -78,15 +78,18 @@ void LpSolver::addObjective(string mode,
 
 	if (mode == "MIN_SRC_COST"){
 
+		cout << "min src\n";
+
 		IloExpr cost(env);
 		for(auto &atoIn : cplexConverter.src->atomicEdge_in){
 			int aeId = atoIn.second->atomicEdgeId;
 			for (int j = 0; j < cplexConverter.atomicIdToVarIdDict[aeId].size(); j++){
 				// var Id
 				int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
-				cost += cplexConverter.graph->
-					atomicEdges[cplexConverter.variables[vId].atomicEdgeId]->
-					interest_rate * x[vId];
+				cost += cplexConverter.variables[vId].interest_rate * x[vId];
+
+				cout << "adding " << cplexConverter.variables[vId].interest_rate 
+						<< " * " << vId << endl;
 			}
 		}
 		model.add(IloMinimize(env, cost));

@@ -24,19 +24,46 @@ int main(){
 	credNetConstants.addIr(0.02);
 	credNetConstants.addIr(0.03);
 	credNetConstants.addIr(0.04);
+	credNetConstants.addIr(0.05);
 
 	credNetConstants.print();
 
+	/* random graph */
+	// CreditNet creditNet(10);
 
-	CreditNet creditNet(200);
-	creditNet.genTest0Graph(0.025, 4, 1);
-	for (int i = 0; i < 100; ++i){
-		cout << "result: " << creditNet.genInterBankTrans(1, "MIN_CREDIT_COST") << endl;
+	// creditNet.print();
+
+	// creditNet.genTest0Graph(0.025, 4, 1);
+	// for (int i = 0; i < 10; ++i){
+	// 	cout << "result: " << creditNet.genInterBankTrans(1, "MIN_CREDIT_COST") << endl;
+	// }
+
+	// creditNet.print();
+
+	// ofstream fout("out");
+	// creditNet.printAtomicIouEdges(fout);
+	// fout.close();
+
+
+	/* test graph */
+	Graph g;
+	g.generateTestGraph3();
+	g.print();
+
+	CplexConverter converter;
+	converter.constructCplex(&g, g.nodes[0], g.nodes[3], 1);
+	LpSolver lpSolver;
+	if (lpSolver.solveLpProblem(converter, "MIN_HOP_COST")){
+		cout << "success! \n";
+		converter.printResult();
+		converter.copyBack();
+
 	}
 
-	ofstream fout("out");
-	creditNet.printAtomicIouEdges(fout);
-	fout.close();
+
+
+	g.print();
+	g.printAtomicEdges();
 
 	return 0;
 }
