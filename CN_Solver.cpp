@@ -74,11 +74,11 @@ void LpSolver::addObjective(string mode,
 	CplexConverter& cplexConverter, IloModel model, 
 	IloNumVarArray x, IloRangeArray c){
 	
+	// cerr << mode << endl;
+
 	IloEnv env = model.getEnv();
 
 	if (mode == "MIN_SRC_COST"){
-
-		cout << "min src\n";
 
 		IloExpr cost(env);
 		for(auto &atoIn : cplexConverter.src->atomicEdge_in){
@@ -88,8 +88,8 @@ void LpSolver::addObjective(string mode,
 				int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
 				cost += cplexConverter.variables[vId].interest_rate * x[vId];
 
-				cout << "adding " << cplexConverter.variables[vId].interest_rate 
-						<< " * " << vId << endl;
+				// cout << "adding " << cplexConverter.variables[vId].interest_rate 
+				// 		<< " * " << vId << endl;
 			}
 		}
 		model.add(IloMinimize(env, cost));
@@ -105,11 +105,31 @@ void LpSolver::addObjective(string mode,
 		}
 		model.add(IloMinimize(env, cost));
 
-	} else if (mode == "MIN_HOP_COST") {
+	} else if (mode == "MIN_SUMIR_COST") {
 
 		IloExpr cost(env);
 		for (int i = 0; i < cplexConverter.variables.size(); ++i){
-			cost += x[i];
+			cost += x[i] * cplexConverter.variables[i].interest_rate;
+		}
+		model.add(IloMinimize(env, cost));
+
+	} else if (mode == "MIN_DEGREE_COST") {
+
+		IloExpr cost(env);
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			int aeId = cplexConverter.variables[i].atomicEdgeId;
+			AtomicEdge* atEdge = cplexConverter.graph->atomicEdges[aeId];
+			
+			for (int j = 0; j < cplexConverter.atomicIdToVarIdDict[aeId].size(); j++){
+				// var Id
+				int vId = cplexConverter.atomicIdToVarIdDict[aeId][j];
+				if (!atEdge->isDebt){
+					cost += atEdge->nodeTo->degree * x[vId];
+				} else {
+					cost += atEdge->nodeFrom->degree * x[vId];
+				}	
+			}
+
 		}
 		model.add(IloMinimize(env, cost));
 

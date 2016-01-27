@@ -42,6 +42,9 @@ void Node::print(){
 	return;
 }
 
+void Node::updateDegree(){
+	this->degree = edge_in.size();
+}
 
 int Node::getNodeId(){ return nodeId; }
 

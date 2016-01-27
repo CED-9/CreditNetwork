@@ -49,11 +49,12 @@ int main(){
 	Graph g;
 	g.generateTestGraph3();
 	g.print();
+	g.updateNodeDegrees();
 
 	CplexConverter converter;
 	converter.constructCplex(&g, g.nodes[0], g.nodes[3], 1);
 	LpSolver lpSolver;
-	if (lpSolver.solveLpProblem(converter, "MIN_HOP_COST")){
+	if (lpSolver.solveLpProblem(converter, "MIN_SUMIR_COST")){
 		cout << "success! \n";
 		converter.printResult();
 		converter.copyBack();
@@ -64,6 +65,10 @@ int main(){
 
 	g.print();
 	g.printAtomicEdges();
+	for (auto& it : g.nodes)
+	{
+		cout << "node id: " << it.first << " " << it.second->degree << endl;
+	}
 
 	return 0;
 }

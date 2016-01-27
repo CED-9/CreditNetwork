@@ -111,7 +111,7 @@ int main(int argc, char* argv[]){
 		cerr << "not enough input" << endl;
 		return -1;
 	}
-	if (argc < 4){
+	if (argc >= 4){
 		mechanismGenMode = argv[4];
 	}
 	int numIR = atoi(argv[2]);

@@ -71,6 +71,12 @@ Graph::~Graph(){
 }
 
 
+void Graph::updateNodeDegrees(){
+	for (auto& it : this->nodes){
+		it.second->updateDegree();
+	}
+}
+
 void Graph::addMultiEdge(Node* nodeFrom, Node* nodeTo, 
 	double credit_ir, double debt_ir, int currDebt, int cap){
 

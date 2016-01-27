@@ -34,6 +34,8 @@ int CreditNet::genInterBankTrans(int request, string mode){
 	}
 	f2 = nodes.find(fid2)->second;
 
+	this->updateNodeDegrees();
+
 	// this->print();
 	//cout << "fid1: " << fid1 << " fid2: " << fid2 << endl;
 	CplexConverter converter;

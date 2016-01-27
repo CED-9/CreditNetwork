@@ -21,6 +21,7 @@ public:
 	int transactionNum;
 	double totalIR;
 	string routePreference;
+	int degree;
 
 	// edges
 	unordered_map<int, Edge*> edge_out;
@@ -42,6 +43,7 @@ public:
 
 	int getNodeId();
 	double getCurrBanlance();
+	void updateDegree();
 
 
 	void print(); 
