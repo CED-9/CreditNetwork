@@ -21,13 +21,12 @@ mutex lock_rates;
 mutex lock_cout;
 
 void singleSimulation(int numNodes, int cap, int amt, double threshold, int numIR, 
-	int window_size, const int numTest, int burn, int mechanismGenMode, int iterIdx)
+	int window_size, const int numTest, int burn, string mechanismGenMode, int iterIdx)
 {
 	std::vector<string> v;
 	// config the network
 	CreditNet creditNet(numNodes);
 	creditNet.genTest0Graph(threshold,numIR,cap);
-	string mode = "MIN_CREDIT_COST";
 	//creditNet.print();
 
 	//creditNet.setRoutePreference(mechanismGenMode, v);
@@ -41,7 +40,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 	vector<int> array;
 	for (int i = 0; i < window_size; ++i){
 		int temp;
-		temp = creditNet.genInterBankTrans(amt, mode);
+		temp = creditNet.genInterBankTrans(amt, mechanismGenMode);
 		array.push_back(temp);
 		failRate1 += temp;
 		failRateTotal += temp;
@@ -49,7 +48,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 	
 	for (int i = 0; i < window_size; ++i){
 		int temp;
-		temp = creditNet.genInterBankTrans(amt, mode);
+		temp = creditNet.genInterBankTrans(amt, mechanismGenMode);
 		array.push_back(temp);
 		failRate2 += temp;
 		failRateTotal += temp;
@@ -63,7 +62,7 @@ void singleSimulation(int numNodes, int cap, int amt, double threshold, int numI
 		// move on
 		int temp;
 		
-		temp = creditNet.genInterBankTrans(amt, mode);
+		temp = creditNet.genInterBankTrans(amt, mechanismGenMode);
 		
 		failRate1 = failRate1 - array[0] + array[window_size];
 		failRate2 = failRate2 - array[window_size] + temp;
@@ -107,7 +106,14 @@ int main(int argc, char* argv[]){
 			
 	int numNodes = 200;
 	double threshold;
-	int mechanismGenMode = 1;
+	string mechanismGenMode = "DEFAULT";
+	if (argc < 3){
+		cerr << "not enough input" << endl;
+		return -1;
+	}
+	if (argc < 4){
+		mechanismGenMode = argv[4];
+	}
 	int numIR = atoi(argv[2]);
 	int amt = atoi(argv[1]);
 	int cap = atoi(argv[3]);
