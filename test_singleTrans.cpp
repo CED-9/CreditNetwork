@@ -54,7 +54,7 @@ int main(){
 	CplexConverter converter;
 	converter.constructCplex(&g, g.nodes[0], g.nodes[3], 1);
 	LpSolver lpSolver;
-	if (lpSolver.solveLpProblem(converter, "MIN_SUMIR_COST")){
+	if (lpSolver.solveLpProblem(converter, "MIN_CREDIT_COST")){
 		cout << "success! \n";
 		converter.printResult();
 		converter.copyBack();

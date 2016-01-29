@@ -81,6 +81,12 @@ void LpSolver::addObjective(string mode,
 	if (mode == "MIN_SRC_COST"){
 
 		IloExpr cost(env);
+
+		// add cost to all atomic edges
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			cost += x[i] * cplexConverter.variables[i].interest_rate;
+		}
+
 		for(auto &atoIn : cplexConverter.src->atomicEdge_in){
 			int aeId = atoIn.second->atomicEdgeId;
 			for (int j = 0; j < cplexConverter.atomicIdToVarIdDict[aeId].size(); j++){
@@ -97,6 +103,12 @@ void LpSolver::addObjective(string mode,
 	} else if (mode == "MIN_CREDIT_COST") {
 
 		IloExpr cost(env);
+
+		// add cost to all atomic edges
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			cost += x[i] * cplexConverter.variables[i].interest_rate;
+		}
+
 		for (int i = 0; i < cplexConverter.variables.size(); ++i){
 			int aeId = cplexConverter.variables[i].atomicEdgeId;
 			if (!cplexConverter.graph->atomicEdges[aeId]->isDebt){
@@ -108,6 +120,7 @@ void LpSolver::addObjective(string mode,
 	} else if (mode == "MIN_SUMIR_COST") {
 
 		IloExpr cost(env);
+		// add cost to all atomic edges
 		for (int i = 0; i < cplexConverter.variables.size(); ++i){
 			cost += x[i] * cplexConverter.variables[i].interest_rate;
 		}
@@ -116,6 +129,12 @@ void LpSolver::addObjective(string mode,
 	} else if (mode == "MIN_DEGREE_COST") {
 
 		IloExpr cost(env);
+
+		// add cost to all atomic edges
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			cost += x[i] * cplexConverter.variables[i].interest_rate;
+		}
+		
 		for (int i = 0; i < cplexConverter.variables.size(); ++i){
 			int aeId = cplexConverter.variables[i].atomicEdgeId;
 			AtomicEdge* atEdge = cplexConverter.graph->atomicEdges[aeId];
