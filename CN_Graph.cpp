@@ -126,7 +126,7 @@ void Graph::printAvgAtomicIouEdges(){
 		totalCap += it.second->capacity;
 		cnt ++;
 	}
-	cout << "average ir: " << totalIrCap / totalCap << endl;
+	cout << "   " << totalIrCap / totalCap << endl;
 }
 
 void Graph::printAtomicIouEdges(ofstream & fout){
