@@ -21,6 +21,7 @@ public:
 	int atomicEdgeId;
 	int capacity;
 	double interest_rate;
+    int degree;
 
 	Node* nodeFrom;
 	Node* nodeTo;
