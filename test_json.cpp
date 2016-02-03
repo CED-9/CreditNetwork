@@ -14,7 +14,7 @@ using namespace std;
 
 struct Config {
 	string creditCapacity;
-	string requstAmount;
+	string requestAmount;
 
 	string numNodes;
 	string edgeProb;
@@ -42,36 +42,48 @@ void readConfig (Config &config, string inPath) {
 	cout << "stream set" << endl;
 	Document doc;
 	doc.ParseStream(is);
-	fclose(fp);
-	cout<<"fclosed"<<endl;
 
 	printf("\nModified JSON with reformatting:\n");
 	StringBuffer sb;
 	PrettyWriter<StringBuffer> writer(sb);
 	doc.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
 	puts(sb.GetString());
-	
-	
-	const Value& configObj = doc["configuration"];
-	config.numNodes = configObj["numNodes"].GetString();
-	config.edgeProb = configObj["edgeProb"].GetString();
-	config.transVal = configObj["transVal"].GetString();
-	config.window = configObj["window"].GetString();
-	config.smoothing = configObj["smoothing"].GetString();
-	config.numIR = configObj["numIR"].GetString();
-	config.creditCapacity = configObj["creditCapacity"].GetString();
-	config.requstAmount = configObj["requstAmount"].GetString();
-	
-	
+
 	const Value& a = doc["assignment"];
+	cout << "hehe" << endl;
 	const Value& b = a["All"];
-	
+
+	cout << "size: " << b.Size() << endl;
 	// rapidjson uses SizeType instead of size_t.
 	for (rapidjson::SizeType i = 0; i < b.Size(); i++)
 	{
 		config.assignedStrategy.push_back(b[i].GetString());
 		printf("%s \n", b[i].GetString());
 	}
+	
+	const Value& configObj = doc["configuration"];
+	cout << "haha" << endl;
+	config.numNodes = configObj["numNodes"].GetString();
+	cout << "haha" << endl;
+	config.edgeProb = configObj["edgeProb"].GetString();
+	cout << "haha" << endl;
+	config.transVal = configObj["transVal"].GetString();
+	cout << "haha" << endl;
+	config.window = configObj["window"].GetString();
+	cout << "haha" << endl;
+	config.smoothing = configObj["smoothing"].GetString();
+	cout << "haha" << endl;
+	config.numIR = configObj["numIR"].GetString();
+	cout << "haha" << endl;
+	config.creditCapacity = configObj["creditCapacity"].GetString();
+	cout << "haha" << endl;
+	config.requestAmount = configObj["requestAmount"].GetString();
+	cout << "haha8" << endl;
+	
+
+	fclose(fp);
+	cout<<"fclosed"<<endl;
+	return;
 }
 
 
