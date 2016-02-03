@@ -48,13 +48,9 @@ void Node::updateDegree(){
 
 int Node::getNodeId(){ return nodeId; }
 
+
+extern double getNodeCurrBanlance(Node*);
+
 double Node::getCurrBanlance(){
-	double temp = 0;
-	// for (auto it : edge_in){
-	// 	temp -= it.second->get_d_current() * it.second->get_interest_rate();
-	// }
-	// for (auto it : edge_out){
-	// 	temp += it.second->get_d_current() * it.second->get_interest_rate();
-	// }
-	return temp;
+	return getNodeCurrBanlance(this);
 }

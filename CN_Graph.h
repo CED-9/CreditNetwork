@@ -33,7 +33,7 @@ public:
 	
 	void addMultiEdge(Node* nodeFrom, Node* nodeTo, double credit_ir, double debt_ir, int currDebt, int cap);
 	void updateNodeDegrees();
-	void setRoutePreference(int opMode, vector<string> &v);
+	void setRoutePreference(vector<string> &v);
 	/////////////////////////////////////////////////////////////////////////
 	/* Generate Initial Network */
 	/////////////////////////////////////////////////////////////////////////

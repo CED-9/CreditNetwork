@@ -243,57 +243,12 @@ void Graph::generateTestGraph3(){
 
 
 
-void Graph::setRoutePreference(int opMode, vector<string> &v){
-	// cout<<opMode<<endl;
-	if (opMode == 1){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "FF";
-		}
-	} else if (opMode == 2){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "LP_SOURCE";
-		}
-	} else if (opMode == 3){        
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "LP_OVERALL";
-		}
+void Graph::setRoutePreference(vector<string> &v){
+     
+	for (int i = 0; i < nodeNum; i++) {
+		nodes[i]->routePreference = v[i];
 	}
-	else if (opMode == 4){  
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "1";
-			// not done 
-		}
-	}
-	else if (opMode == 5){        
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = v[i];
-		}       
-	}
-	else if (opMode == 6){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "LP_MIN";
-		}
-	}
-	else if (opMode == 7){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "LP_MAX";
-		}
-	}
-	else if (opMode == 8){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "LP_SHORT";
-		}
-	}
-	else if (opMode == 9){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "BFS_SHORT";
-		}
-	}
-	else if (opMode == 10){
-		for (int i = 0; i < nodeNum; i++) {
-			nodes.find(i)->second->routePreference = "BFS_LOW_IR";
-		}
-	}
+
 	return;
 }
 

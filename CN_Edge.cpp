@@ -68,3 +68,18 @@ void printEdge(Edge* e){
 void printAtomicEdge(AtomicEdge* ae){
 	ae->print();
 }
+
+double getNodeCurrBanlance(Node* n){
+	double temp = 0;
+	for (auto& it : n->atomicEdge_in){
+		if (it.second->isDebt){
+			temp += it.second->capacity * it.second->interest_rate;
+		}
+	}
+	for (auto& it : n->atomicEdge_out){
+		if (it.second->isDebt){
+			temp -= it.second->capacity * it.second->interest_rate;
+		}
+	}
+	return temp;
+}

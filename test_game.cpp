@@ -15,6 +15,9 @@ using namespace rapidjson;
 using namespace std;
 
 struct Config {
+	string creditCapacity;
+	string requstAmount;
+
 	string numNodes;
 	string edgeProb;
 	string transVal;
@@ -32,15 +35,17 @@ struct PlayerInfo {
 };
 
 void readConfig (Config &config, string inPath) {
-	// cout<<"trying to read"<<endl;
+	cout<<"trying to read"<<endl;
 	FILE* fp = fopen(inPath.c_str(), "r"); // non-Windows use "r"
-	// cout<<"fopened"<<endl;
+	cout<<"fopened"<<endl;
 	char readBuffer[65536];
+	cout << "buffer set" << endl;
 	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+	cout << "stream set" << endl;
 	Document doc;
 	doc.ParseStream(is);
 	fclose(fp);
-	// cout<<"fclosed"<<endl;
+	cout<<"fclosed"<<endl;
 
 	printf("\nModified JSON with reformatting:\n");
 	StringBuffer sb;
@@ -56,6 +61,8 @@ void readConfig (Config &config, string inPath) {
 	config.window = configObj["window"].GetString();
 	config.smoothing = configObj["smoothing"].GetString();
 	config.numIR = configObj["numIR"].GetString();
+	config.creditCapacity = configObj["creditCapacity"].GetString();
+	config.requstAmount = configObj["requstAmount"].GetString();
 	
 	
 	const Value& a = doc["assignment"];
@@ -65,7 +72,7 @@ void readConfig (Config &config, string inPath) {
 	for (rapidjson::SizeType i = 0; i < b.Size(); i++)
 	{
 		config.assignedStrategy.push_back(b[i].GetString());
-		// printf("%s \n", b[i].GetString());
+		printf("%s \n", b[i].GetString());
 	}
 }
 
@@ -115,13 +122,13 @@ void writePayoff (std::vector<PlayerInfo> &players, string outPath) {
 int main(int argc, char* argv[]){
 	
 	std::string json_folder = argv[1];
-	// cout<<json_folder<<endl;
+	cout<<json_folder<<endl;
 	int num_obs = atoi(argv[2]);
-	// cout <<  num_obs << endl;
+	cout <<  num_obs << endl;
 	Config config;
-	// cout << "configed" << endl;
+	cout << "configed" << endl;
 	readConfig(config, json_folder+"/simulation_spec.json");
-	// cout << "spec read" << endl;
+	cout << "spec read" << endl;
 	
 	for (int i = 0; i < num_obs; ++i){
 
@@ -137,25 +144,26 @@ int main(int argc, char* argv[]){
 	 
 		for (int j = 0; j < iter; ++j){
 			// config the network
+			cout << "config the network" << endl;
 			CreditNet creditNet(finNum);
-			for (int i = 0; i<finNum; ++i){
-				creditNet.nodes.find(i)->second->transactionNum = 0;
-			}
-			creditNet.genTest0Graph(threshold, numIR);
-			creditNet.setRoutePreference(5, config.assignedStrategy);
+			creditNet.genTest0Graph(threshold, numIR, stoi(config.creditCapacity));
+			creditNet.setRoutePreference(config.assignedStrategy);
 		
+			cout << "graph set" << endl;
 			// main loop
 			int failRateTotal = 0;
 
 			for (int i = 0; i < window_size; ++i){
 				int temp;
-				temp = creditNet.genInterBankTrans();
+				string mode = "SRC_DECIDE";
+				temp = creditNet.genInterBankTrans(stoi(config.requstAmount), mode);
 				failRateTotal += temp;
 			}
-			cout << window_size - failRateTotal << "   "<<endl;;
+			cout << window_size - failRateTotal << "   "<<endl;
 			for (int k = 0; k < finNum; ++k){
 				// cout << creditNet.finAgent[k]->transactionNum << "  " << creditNet.finAgent[k]->getCurrBanlance()<<"   ";
-				payoffs[k] += (double) creditNet.nodes.find(k)->second->transactionNum * (double)transVal + (double)creditNet.nodes.find(k)->second->getCurrBanlance();
+				payoffs[k] += (double) creditNet.nodes[k]->transactionNum * (double)transVal 
+					+ (double)creditNet.nodes[k]->getCurrBanlance();
 				// cout  << payoffs[k] << "   ";
 			}
 			// cout << endl;

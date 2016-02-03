@@ -35,6 +35,9 @@ int CreditNet::genInterBankTrans(int request, string mode){
 	f2 = nodes.find(fid2)->second;
 
 	this->updateNodeDegrees();
+	if (mode == "SRC_DECIDE"){
+		mode = this->nodes[fid1]->routePreference;
+	}
 
 	// this->print();
 	//cout << "fid1: " << fid1 << " fid2: " << fid2 << endl;
@@ -46,6 +49,7 @@ int CreditNet::genInterBankTrans(int request, string mode){
 	if (lpSolver.solveLpProblem(converter, mode)){
 		// converter.printResult();
 		converter.copyBack();
+		this->nodes[fid1]->transactionNum++;
 		return 0;
 	}
 	return 1;
