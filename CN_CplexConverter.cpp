@@ -41,6 +41,7 @@ void CplexConverter::constructCplex(Graph* g, Node* s, Node* t, int req){
 }
 
 void CplexConverter::printInput(){
+	cout << "printing input variables...\n";
 	for (int i = 0; i < variables.size(); ++i){
 		cout << "Var ID " << variables[i].varId 
 		<< ", Atomic Edge ID " << variables[i].atomicEdgeId

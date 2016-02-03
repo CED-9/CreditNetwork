@@ -1,18 +1,20 @@
 {
     "assignment":{
         "All":[
-            "BFS_SHORT",
-            "BFS_SHORT",
-            "BFS_LOW_IR",
-            "BFS_LOW_IR"	
+            "MIN_SRC_COST",
+            "MIN_SRC_COST",
+            "MIN_CREDIT_COST",
+            "MIN_CREDIT_COST"	
         ]
     },
     "configuration":{
-        "numNodes": 4,
-		"edgeProb": 1,
-		"transVal": 1,
-        "window": 21,
-        "smoothing": 1,
-		"numIR": 4	
+        "numNodes": "4",
+		"edgeProb": "1",
+		"transVal": "1",
+        "window": "1",
+        "smoothing": "1",
+		"numIR": "4",
+        "creditCapacity": "10",
+        "requestAmount": "10"
     }
 }

@@ -27,12 +27,10 @@ int CreditNet::genInterBankTrans(int request, string mode){
 	Node* f2 = NULL;
 	nodeNum = nodes.size();
 	int fid1 = rand()%nodeNum;
-	f1 = nodes.find(fid1)->second;
 	int fid2 = rand()%nodeNum;
 	while (fid1 == fid2){
 		fid2 = rand()%nodeNum;
 	}
-	f2 = nodes.find(fid2)->second;
 
 	this->updateNodeDegrees();
 	if (mode == "SRC_DECIDE"){
@@ -40,18 +38,25 @@ int CreditNet::genInterBankTrans(int request, string mode){
 	}
 
 	// this->print();
-	//cout << "fid1: " << fid1 << " fid2: " << fid2 << endl;
+
+	// fid1 = 2; fid2 = 0;
+	// cout << "from " << fid1 << ", to " << fid2 << " " << request;
+
 	CplexConverter converter;
 	converter.constructCplex(this, this->nodes[fid1], this->nodes[fid2], request);
+
 	// converter.printInput();
+	
 	LpSolver lpSolver;
 
 	if (lpSolver.solveLpProblem(converter, mode)){
 		// converter.printResult();
 		converter.copyBack();
 		this->nodes[fid1]->transactionNum++;
+		// cout << " success " << endl;
 		return 0;
 	}
+	// cout << " fail " << endl;
 	return 1;
 	
 }

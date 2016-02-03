@@ -18,3 +18,7 @@ void CredNetConstants::print(){
 void CredNetConstants::addIr(double ir){
 	totalIrs.push_back(ir);
 }
+
+void CredNetConstants::clean(){
+	totalIrs.clear();
+}

@@ -73,7 +73,7 @@ void readConfig (Config &config, string inPath) {
 	{
 		config.assignedStrategy.push_back(b[i].GetString());
 		// printf("%s \n", b[i].GetString());
-		cout << b[i].GetString() << endl;
+		// cout << b[i].GetString() << endl;
 	}
 }
 
@@ -119,29 +119,33 @@ void writePayoff (std::vector<PlayerInfo> &players, string outPath) {
 }
 
 #include "CN_CreditNet.h"
+extern CredNetConstants credNetConstants;
 
 int main(int argc, char* argv[]){
 	
 	std::string json_folder = argv[1];
-	cout<<json_folder<<endl;
+	// cout<<json_folder<<endl;
 	int num_obs = atoi(argv[2]);
-	cout <<  num_obs << endl;
+	// cout <<  num_obs << endl;
 	Config config;
-	cout << "configed" << endl;
+	// cout << "configed" << endl;
 	readConfig(config, json_folder+"/simulation_spec.json");
-	cout << "spec read" << endl;
-	
+	// cout << "spec read" << endl;
+
 	for (int i = 0; i < num_obs; ++i){
 
-		int finNum = stoi(config.numNodes);
-		std::vector<double> payoffs(finNum,0.0);
-
-		double transVal = stod(config.transVal);
-
-		double threshold = stod(config.edgeProb);
 		int numIR = stoi(config.numIR);
+		credNetConstants.clean();
+		for (int i = 1; i <= numIR; ++i){
+			credNetConstants.addIr(0.01 * i);
+		}
+		double transVal = stod(config.transVal);
+		double threshold = stod(config.edgeProb);
 		int window_size = stoi(config.window);
 		int iter = stoi(config.smoothing);
+		int finNum = stoi(config.numNodes);
+
+		std::vector<double> payoffs(finNum,0.0);
 	 
 		for (int j = 0; j < iter; ++j){
 			// config the network
@@ -149,6 +153,8 @@ int main(int argc, char* argv[]){
 			CreditNet creditNet(finNum);
 			creditNet.genTest0Graph(threshold, numIR, stoi(config.creditCapacity));
 			creditNet.setRoutePreference(config.assignedStrategy);
+			// creditNet.print();
+			// creditNet.printAtomicEdges();
 		
 			// cout << "graph set" << endl;
 			// main loop
@@ -160,7 +166,7 @@ int main(int argc, char* argv[]){
 				temp = creditNet.genInterBankTrans(stoi(config.requestAmount), mode);
 				failRateTotal += temp;
 			}
-			cout << window_size - failRateTotal << "   "<<endl;
+			// cout << window_size - failRateTotal << "   "<<endl;
 			for (int k = 0; k < finNum; ++k){
 				// cout << creditNet.finAgent[k]->transactionNum << "  " << creditNet.finAgent[k]->getCurrBanlance()<<"   ";
 				payoffs[k] += (double) creditNet.nodes[k]->transactionNum * (double)transVal 

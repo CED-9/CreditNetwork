@@ -13,6 +13,7 @@ public:
 	CredNetConstants(){}
 
 	void addIr(double ir);
+	void clean();
 
 	void print();
 };
