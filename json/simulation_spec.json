@@ -11,7 +11,7 @@
         "numNodes": "4",
 		"edgeProb": "1",
 		"transVal": "1",
-        "window": "1",
+        "window": "500",
         "smoothing": "1",
 		"numIR": "4",
         "creditCapacity": "10",
