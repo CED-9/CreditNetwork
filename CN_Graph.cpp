@@ -166,7 +166,7 @@ void Graph::genTest0Graph(double threshold, int numIR, int cap){
 		for (int j = i+1; j < nodeNum; j++){
 
 			double num = distribution(generator);
-			double ir = (rand() % numIR + 1)/100.0;
+			double ir = (rand() % numIR + 1);
 			if (num > 1.0 - threshold){
 				if (rand()%2 == 1) {
 					// this->addUnitEdge(nodes.find(i)->second, nodes.find(j)->second, ir, rand()%2);
