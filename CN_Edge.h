@@ -8,7 +8,7 @@
 
 using namespace std;
 
-extern void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g);
+extern void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g, int transSeqNum);
 
 // atomic edge, 0 flow, capacity
 class AtomicEdge{
@@ -70,11 +70,11 @@ public:
 
 	}
 
-	void route(int current, double interest_rate, Graph* g){
+	void route(int current, double interest_rate, Graph* g, int transSeqNum){
 		if (current == 0){
 			return;
 		}
-		helpRouteOnAtomicEdge(current, interest_rate, this, g);
+		helpRouteOnAtomicEdge(current, interest_rate, this, g, transSeqNum);
 	}
 
 	void print() {
@@ -189,7 +189,7 @@ public:
 		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap);
 
 	void routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate, 
-		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap);
+		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap, int transSeqNum);
 
 	void print();
 

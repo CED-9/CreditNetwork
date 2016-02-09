@@ -10,6 +10,11 @@ class CredNetConstants{
 public:
 	vector<double> totalIrs;
 
+	default_random_engine gloabalGenerator;
+	uniform_int_distribution<int> unifromIntDistribution;
+	uniform_real_distribution<double> uniformDoubleDistribution(0.0,1.0);
+
+
 	CredNetConstants(){}
 
 	void addIr(double ir);

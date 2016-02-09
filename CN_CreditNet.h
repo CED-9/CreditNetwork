@@ -17,7 +17,7 @@ public:
 
 	// Inter Bank Trans
 	// liquidity test
-	int genInterBankTrans(int request, string mode);
+	int genInterBankTrans(int request, string mode, int transSeqNum);
 
 	
 	void printPayoff();

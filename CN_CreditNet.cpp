@@ -21,11 +21,21 @@ void CreditNet::printPayoff(){
 }
 
 // for liquid stuff
-int CreditNet::genInterBankTrans(int request, string mode){
+int CreditNet::genInterBankTrans(int request, string mode, int transSeqNum){
 
 	Node* f1 = NULL;
 	Node* f2 = NULL;
 	nodeNum = nodes.size();
+
+	// default_random_engine generator;
+	// uniform_int_distribution<int> distribution(0, this->nodeNum-1);
+
+	// int fid1 = distribution(generator);
+	// int fid2 = distribution(generator);
+	// while (fid1 == fid2){
+	// 	fid2 = distribution(generator);
+	// }
+	
 	int fid1 = rand()%nodeNum;
 	int fid2 = rand()%nodeNum;
 	while (fid1 == fid2){
@@ -40,23 +50,28 @@ int CreditNet::genInterBankTrans(int request, string mode){
 	// this->print();
 
 	// fid1 = 2; fid2 = 0;
-	// cout << "from " << fid1 << ", to " << fid2 << " " << request;
+	cout << "from " << fid1 << ", to " << fid2 << " " << request << " " << mode;
 
 	CplexConverter converter;
-	converter.constructCplex(this, this->nodes[fid1], this->nodes[fid2], request);
+	converter.constructCplex(this, this->nodes[fid1], this->nodes[fid2], request, transSeqNum);
 
 	// converter.printInput();
 	
 	LpSolver lpSolver;
 
+	this->nodes[fid1]->srcNum++;
+	this->nodes[fid2]->destNum++;
+	
 	if (lpSolver.solveLpProblem(converter, mode)){
 		// converter.printResult();
 		converter.copyBack();
 		this->nodes[fid1]->transactionNum++;
-		// cout << " success " << endl;
+		this->nodes[fid1]->successSrc++;
+		this->nodes[fid2]->successDest++;
+		cout << " success " << endl;
 		return 0;
 	}
-	// cout << " fail " << endl;
+	cout << " fail " << endl;
 	return 1;
 	
 }

@@ -24,51 +24,52 @@ int main(){
 	credNetConstants.addIr(0.02);
 	credNetConstants.addIr(0.03);
 	credNetConstants.addIr(0.04);
-	credNetConstants.addIr(0.05);
 
 	credNetConstants.print();
 
-	/* random graph */
-	// CreditNet creditNet(10);
-
-	// creditNet.print();
-
-	// creditNet.genTest0Graph(0.025, 4, 1);
-	// for (int i = 0; i < 10; ++i){
-	// 	cout << "result: " << creditNet.genInterBankTrans(1, "MIN_CREDIT_COST") << endl;
-	// }
-
-	// creditNet.print();
-
-	// ofstream fout("out");
-	// creditNet.printAtomicIouEdges(fout);
-	// fout.close();
-
-
 	/* test graph */
-	Graph g;
-	g.generateTestGraph3();
-	g.print();
+	CreditNet g(100);
+	int req = 10;
+	int cap = 10;
+	int numIR = 4;
+	double threshold = 0.05;
+
+	g.genTest0Graph(threshold, numIR, cap);
+	// g.print();
 	g.updateNodeDegrees();
 
-	CplexConverter converter;
-	converter.constructCplex(&g, g.nodes[0], g.nodes[3], 1);
-	LpSolver lpSolver;
-	if (lpSolver.solveLpProblem(converter, "MIN_CREDIT_COST")){
-		cout << "success! \n";
-		converter.printResult();
-		converter.copyBack();
+	vector<string> v;
+	v.push_back("MIN_SRC_COST");
+	for (int i = 0; i < 99; ++i){
+		v.push_back("MIN_CREDIT_COST");
+	}
+	g.setRoutePreference(v);
 
+
+	for (int i = 0; i < 10000; ++i){
+		g.genInterBankTrans(10, "SRC_DECIDE", i);
 	}
 
+
+	for (auto& it : g.nodes){
+		cout << "node id: " << it.first
+			<< "\tsrc num " << it.second->srcNum
+			<< "\tdest num " << it.second->destNum
+			<< "\tsucc src num " << it.second->successSrc 
+			<< "\tsucc dest num " << it.second->successDest
+			<< "\tiou ir " << it.second->getCurrBanlance()
+			<< endl;
+	}
+
+
+	cout << "///////////////////////" << endl;
+	for (auto& it : g.nodes){
+		cout << "node id: " << it.first << "\t";
+		it.second->printTransSeq();
+	}
 
 
 	g.print();
-	g.printAtomicEdges();
-	for (auto& it : g.nodes)
-	{
-		cout << "node id: " << it.first << " " << it.second->degree << endl;
-	}
 
 	return 0;
 }

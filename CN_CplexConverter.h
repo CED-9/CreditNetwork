@@ -8,6 +8,7 @@
 class CplexConverter{
 
 public:
+	int transSeqNum;
 
 	struct Variable{
 		int varId;
@@ -26,7 +27,7 @@ public:
 	Node* dest;
 	Graph* graph;
 	
-	void constructCplex(Graph* g, Node* s, Node* t, int req);
+	void constructCplex(Graph* g, Node* s, Node* t, int req, int transSeqNumT);
 
 	void printInput();
 

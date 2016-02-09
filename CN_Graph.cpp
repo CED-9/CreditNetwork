@@ -93,7 +93,7 @@ void Graph::addMultiEdge(Node* nodeFrom, Node* nodeTo,
 
 	SingleCreditEdge* temp = e->addSingleCreditEdge(credit_ir, cap, this->atomicGlobalId, this->atomicEdges);
 	if (currDebt != 0){
-		e->routeAtomicEdge(temp->credit_remain, currDebt, debt_ir, atomicGlobalId, this->atomicEdges);
+		e->routeAtomicEdge(temp->credit_remain, currDebt, debt_ir, atomicGlobalId, this->atomicEdges, 0);
 	}
 
 }
@@ -257,6 +257,6 @@ void Graph::setRoutePreference(vector<string> &v){
 //////////////////////////////////////////////////////
 // route on atomic edge
 //////////////////////////////////////////////////////
-void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g){
-	a->originEdge->routeAtomicEdge(a, current, interest_rate, g->atomicGlobalId, g->atomicEdges);
+void helpRouteOnAtomicEdge(int current, double interest_rate, AtomicEdge* a, Graph* g, int transSeqNum){
+	a->originEdge->routeAtomicEdge(a, current, interest_rate, g->atomicGlobalId, g->atomicEdges, transSeqNum);
 }

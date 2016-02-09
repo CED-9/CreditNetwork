@@ -3,11 +3,12 @@
 extern CredNetConstants credNetConstants;
 
 
-void CplexConverter::constructCplex(Graph* g, Node* s, Node* t, int req){
+void CplexConverter::constructCplex(Graph* g, Node* s, Node* t, int req, int transSeqNumT){
 	graph = g;
 	src = s;
 	dest = t;
 	request = req;
+	transSeqNum = transSeqNumT;
 
 	int globalVarId = 0;
 	for (int i = 0; i < g->atomicEdges.size(); i++){
@@ -41,7 +42,7 @@ void CplexConverter::constructCplex(Graph* g, Node* s, Node* t, int req){
 }
 
 void CplexConverter::printInput(){
-	cout << "printing input variables...\n";
+	cout << "printing input variables... " << this->transSeqNum << endl;
 	for (int i = 0; i < variables.size(); ++i){
 		cout << "Var ID " << variables[i].varId 
 		<< ", Atomic Edge ID " << variables[i].atomicEdgeId
@@ -64,6 +65,7 @@ void CplexConverter::copyBack(){
 			continue;
 		}
 		this->graph->atomicEdges[id]
-			->route(results[i], variables[i].interest_rate, this->graph);
+			->route(results[i], variables[i].interest_rate, this->graph, this->transSeqNum);
 	}
+
 }

@@ -38,7 +38,7 @@ SingleCreditEdge* Edge::addSingleCreditEdge(double interest_rate, int cap,
 }
 
 void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate, 
-	int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap){
+	int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap, int transSeqNum){
 
 	if (a->isDebt){
 		a->originEdge->singleCreditEdges[a->singleCreditIndex]
@@ -48,6 +48,8 @@ void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate,
 			->routeCredit(flow, interest_rate, atomicGlobalId, 
 				this, a->singleCreditIndex, atomicMap, nodeFrom, nodeTo);
 	}
+
+	a->nodeTo->addModification(transSeqNum);
 
 }
 

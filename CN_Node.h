@@ -19,6 +19,13 @@ class Node{
 public:
 	int nodeId;
 	int transactionNum;
+
+	int srcNum;
+	int destNum;
+	int successSrc;
+	int successDest;
+	vector<int> transSeq;
+
 	double totalIR;
 	string routePreference;
 	int degree;
@@ -44,6 +51,9 @@ public:
 	int getNodeId();
 	double getCurrBanlance();
 	void updateDegree();
+
+	void printTransSeq();
+	void addModification(int transSeqNum);
 
 
 	void print(); 

@@ -13,6 +13,10 @@ Node::Node(int id){
 	this->transactionNum = 0;
 	this->totalIR = 0;
 	this->routePreference = "";
+	srcNum = 0;
+	destNum = 0;
+	successSrc = 0;
+	successDest = 0;
 }
 
 
@@ -53,4 +57,15 @@ extern double getNodeCurrBanlance(Node*);
 
 double Node::getCurrBanlance(){
 	return getNodeCurrBanlance(this);
+}
+
+void Node::addModification(int transSeqNum){
+	this->transSeq.push_back(transSeqNum);
+}
+
+void Node::printTransSeq(){
+	for (int i = 0; i < transSeq.size(); ++i){
+		cout << transSeq[i] << " ";
+	}
+	cout << endl;
 }
