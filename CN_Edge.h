@@ -90,6 +90,7 @@ public:
 
 class SingleCreditEdge{
 public:
+
 	int credit_max;
 	double credit_interest_rate;
 
@@ -177,6 +178,9 @@ public:
 class Edge{
 
 public:
+
+	vector<int> edgeUsage;
+	
 	Node* nodeFrom;
 	Node* nodeTo;
 	vector <SingleCreditEdge*> singleCreditEdges;

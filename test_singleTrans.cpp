@@ -61,18 +61,18 @@ int main(){
 	}
 
 
-	cout << "////////////////////////////////////////////////" << endl;
+	cout << "// Node Seq //////////////////////////////////////////////" << endl;
 	for (auto& it : g.nodes){
 		cout << "node id: " << it.first << "\t";
 		it.second->printTransSeq();
 	}
 
-	cout << "////////////////////////////////////////////////" << endl;
+	cout << "// Edge Seq //////////////////////////////////////////////" << endl;
 	for (auto& it : g.nodes){
-		cout << "node id: " << it.first 
-			<< " degree " << it.second->degree << endl;
-	}	
-
+		cout << "node id: " << it.first << "\t";
+		it.second->printTransSeq();
+	}
+	
 	cout << "////////////////////////////////////////////////" << endl;
 
 	g.print();

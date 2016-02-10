@@ -68,4 +68,11 @@ void Node::printTransSeq(){
 		cout << transSeq[i] << " ";
 	}
 	cout << endl;
+	for (int i = 0; i < this->edge_in.size(); ++i){
+		cout << "Single Edge " << i << endl;
+		for (int i = 0; i < this->edge_in[i]->edgeUsage.size(); ++i){
+			cout << this->edge_in[i]->edgeUsage[i];
+		}
+		cout << endl;
+	}
 }

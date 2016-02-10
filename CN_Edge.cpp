@@ -50,6 +50,7 @@ void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate,
 	}
 
 	a->nodeTo->addModification(transSeqNum);
+	this->edgeUsage.push_back(transSeqNum);
 
 }
 
