@@ -159,6 +159,16 @@ void LpSolver::addObjective(string mode,
 		}
 		model.add(IloMinimize(env, cost));
 
+	}	
+		else if (mode == "MAX_IR_COST") {
+
+		IloExpr cost(env);
+		// add cost to all atomic edges
+		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			cost += 100 - x[i] * cplexConverter.variables[i].interest_rate;
+		}
+		model.add(IloMinimize(env, cost));
+
 	}	else if (mode == "MIN_SUMIR_COST") {
 
 		IloExpr cost(env);
@@ -168,7 +178,7 @@ void LpSolver::addObjective(string mode,
 		}
 		model.add(IloMinimize(env, cost));
 
-	} else if (mode == "MIN_DEGREE_COST") {
+	} 	else if (mode == "MIN_DEGREE_COST") {
 
 		IloExpr cost(env);
 

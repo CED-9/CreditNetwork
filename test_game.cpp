@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
 		int numIR = stoi(config.numIR);
 		credNetConstants.clean();
 		for (int i = 1; i <= numIR; ++i){
-			credNetConstants.addIr(0.01 * i);
+			credNetConstants.addIr(i);
 		}
 		double transVal = stod(config.transVal);
 		double threshold = stod(config.edgeProb);

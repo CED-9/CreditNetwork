@@ -117,7 +117,7 @@ int main(int argc, char* argv[]){
 	int cap = atoi(argv[3]);
 
 	for (int i = 1; i <= numIR; ++i){
-		credNetConstants.addIr(0.01 * i);
+		credNetConstants.addIr(i);
 	}
 
 	int window_size = 4500;
