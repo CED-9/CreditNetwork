@@ -1,12 +1,15 @@
 // CN_CreditNet.C 
 #define NON_DEBUG_MODE
 
+#include "CN_Constants.h"
 #include "CN_CreditNet.h"
 #include <string>
 #include <queue>
 #include <vector>
 #include <iostream>
 using namespace std;
+
+extern CredNetConstants credNetConstants;
 
 CreditNet::CreditNet(int finNumT) : Graph(finNumT){}
 
@@ -27,13 +30,13 @@ int CreditNet::genInterBankTrans(int request, string mode, int transSeqNum){
 	Node* f2 = NULL;
 	nodeNum = nodes.size();
 
-	int fid1 = credNetConstants.unifromIntDistribution(
-		credNetConstants.generator)%nodeNum;
-	int fid2 = credNetConstants.unifromIntDistribution(
-		credNetConstants.generator)%nodeNum;
+	int fid1 = credNetConstants.uniformIntDistribution(
+		credNetConstants.gloabalGenerator)%nodeNum;
+	int fid2 = credNetConstants.uniformIntDistribution(
+		credNetConstants.gloabalGenerator)%nodeNum;
 	while (fid1 == fid2){
-		fid2 = credNetConstants.unifromIntDistribution(
-			credNetConstants.generator)%nodeNum;
+		fid2 = credNetConstants.uniformIntDistribution(
+			credNetConstants.gloabalGenerator)%nodeNum;
 	}
 	
 	// int fid1 = rand()%nodeNum;

@@ -1,10 +1,13 @@
 
 #include "CN_Graph.h"
+#include "CN_Constants.h"
 #include <iostream>
 #include <random>
 #include <algorithm>
 
 using namespace std;
+
+extern CredNetConstants credNetConstants;
 
 /////////////////////////////////////////////////////////////////////////
 /* Graph basics */
@@ -166,12 +169,12 @@ void Graph::genTest0Graph(double threshold, int numIR, int cap){
 		for (int j = i+1; j < nodeNum; j++){
 
 			double num = credNetConstants.uniformDoubleDistribution(
-				credNetConstants.generator);
+				credNetConstants.gloabalGenerator);
 
 			double ir = (credNetConstants.uniformIntDistribution(
-				credNetConstants.generator) % numIR + 1);
+				credNetConstants.gloabalGenerator) % numIR + 1);
 			
-			if (num > 1.0 - threshold){
+			if (num < threshold){
 				if (rand()%2 == 1) {
 					// this->addUnitEdge(nodes.find(i)->second, nodes.find(j)->second, ir, rand()%2);
 					this->addMultiEdge(nodes.find(i)->second, nodes.find(j)->second, ir, 0.0, 0, cap);

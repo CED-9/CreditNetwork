@@ -20,10 +20,10 @@ extern CredNetConstants credNetConstants;
 
 int main(){
 
-	credNetConstants.addIr(0.01);
-	credNetConstants.addIr(0.02);
-	credNetConstants.addIr(0.03);
-	credNetConstants.addIr(0.04);
+	credNetConstants.addIr(1);
+	credNetConstants.addIr(2);
+	credNetConstants.addIr(3);
+	credNetConstants.addIr(4);
 
 	credNetConstants.print();
 
@@ -63,15 +63,24 @@ int main(){
 
 	cout << "// Node Seq //////////////////////////////////////////////" << endl;
 	for (auto& it : g.nodes){
-		cout << "node id: " << it.first << "\t";
+		cout << "node id: " << it.first << "\t degree: " << it.second->degree;
 		it.second->printTransSeq();
 	}
 
 	cout << "// Edge Seq //////////////////////////////////////////////" << endl;
 	for (auto& it : g.nodes){
-		cout << "node id: " << it.first << "\t";
-		it.second->printTransSeq();
+		cout << "node id: " << it.first << "\n";
+		for (auto& edge : it.second->edge_in){
+
+			cout << "Edge from " << edge.second->nodeFrom->nodeId << " to " << edge.second->nodeTo->nodeId << endl;
+
+			for (int j = 0; j < edge.second->edgeUsage.size(); ++j){
+				cout << edge.second->edgeUsage[j] << " ";
+			}
+			cout << endl;
+		}
 	}
+
 	
 	cout << "////////////////////////////////////////////////" << endl;
 
