@@ -2,6 +2,7 @@
 #define CN_Const
 
 #include <vector>
+#include <random>
 
 using namespace std;
 
