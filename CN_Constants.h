@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -17,7 +18,9 @@ public:
 	uniform_real_distribution<double> uniformDoubleDistribution;
 
 
-	CredNetConstants(): uniformIntDistribution(0, 9999), uniformDoubleDistribution(0.0, 1.0){}
+	CredNetConstants(): uniformIntDistribution(0, 9999), uniformDoubleDistribution(0.0, 1.0)
+		, gloabalGenerator(std::chrono::system_clock::now().time_since_epoch().count()){
+	}
 
 	void addIr(double ir);
 	void clean();

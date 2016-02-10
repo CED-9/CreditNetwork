@@ -38,10 +38,10 @@ int main(){
 	g.updateNodeDegrees();
 
 	vector<string> v;
-	v.push_back("MIN_SRC_COST");
 	for (int i = 0; i < 99; ++i){
-		v.push_back("MIN_CREDIT_COST");
+		v.push_back("MIN_CREDIT_SRC");
 	}
+	v.push_back("MIN_SRC_COST");
 	g.setRoutePreference(v);
 
 
@@ -49,42 +49,62 @@ int main(){
 		g.genInterBankTrans(10, "SRC_DECIDE", i);
 	}
 
+	double avgTransSucc = 0;
+	double avgIouIr = 0;
+	double avgDegree = 0;
+	double avgNodeEngage = 0;
+	double avgEdgeEngage = 0;
+	double totalEdgeNum = 0;
 
 	for (auto& it : g.nodes){
-		cout << "node id: " << it.first
-			<< "\tsrc num " << it.second->srcNum
-			<< "\tdest num " << it.second->destNum
-			<< "\tsucc src num " << it.second->successSrc 
-			<< "\tsucc dest num " << it.second->successDest
-			<< "\tiou ir " << it.second->getCurrBanlance()
+		it.second->print();
+		cout << "node id: " << it.first << it.second->degree << " \t"
+			<< "src num " << it.second->srcNum
+			<< " \tdest num " << it.second->destNum
+			<< " \tsucc src num " << it.second->successSrc 
+			<< " \tsucc dest num " << it.second->successDest
+			<< " \tiou ir " << it.second->getCurrBanlance()
 			<< endl;
-	}
 
-
-	cout << "// Node Seq //////////////////////////////////////////////" << endl;
-	for (auto& it : g.nodes){
-		cout << "node id: " << it.first << "\t degree: " << it.second->degree;
+		cout << "node engage: ";
 		it.second->printTransSeq();
-	}
 
-	cout << "// Edge Seq //////////////////////////////////////////////" << endl;
-	for (auto& it : g.nodes){
-		cout << "node id: " << it.first << "\n";
+		cout << "edge engage: \n";
 		for (auto& edge : it.second->edge_in){
 
 			cout << "Edge from " << edge.second->nodeFrom->nodeId << " to " << edge.second->nodeTo->nodeId << endl;
 
+			avgEdgeEngage += edge.second->edgeUsage.size();
 			for (int j = 0; j < edge.second->edgeUsage.size(); ++j){
 				cout << edge.second->edgeUsage[j] << " ";
 			}
 			cout << endl;
 		}
+		totalEdgeNum += it.second->edge_in.size();
+
+		avgDegree += it.second->degree;
+		avgNodeEngage += it.second->transSeq.size();
+		avgTransSucc += it.second->successSrc;
+		avgIouIr += it.second->getCurrBanlance();
 	}
-
 	
-	cout << "////////////////////////////////////////////////" << endl;
+	avgTransSucc /= 100;
+	avgIouIr /= 100;
+	avgDegree /= 100;
+	avgNodeEngage /= 100;
+	avgEdgeEngage /= totalEdgeNum;
 
-	g.print();
+	cout << endl;
+	cout << "avg success " << avgTransSucc << endl;
+	cout << "avg iou ir " << avgIouIr << endl;
+	cout << "avg degree " << avgDegree << endl;
+	cout << "avg node engage " << avgNodeEngage << endl;
+	cout << "avg edge engage " << avgEdgeEngage << endl;
+
+	cout << "node 99 degree " << g.nodes[99]->degree << endl;
+	cout << "node 99 success " << g.nodes[99]->successSrc << endl;
+	cout << "node 99 iou ir " << g.nodes[99]->getCurrBanlance() << endl;
+	cout << "node 99 node engage " << g.nodes[99]->transSeq.size() << endl;
 
 	return 0;
 }
