@@ -27,20 +27,20 @@ int CreditNet::genInterBankTrans(int request, string mode, int transSeqNum){
 	Node* f2 = NULL;
 	nodeNum = nodes.size();
 
-	// default_random_engine generator;
-	// uniform_int_distribution<int> distribution(0, this->nodeNum-1);
-
-	// int fid1 = distribution(generator);
-	// int fid2 = distribution(generator);
-	// while (fid1 == fid2){
-	// 	fid2 = distribution(generator);
-	// }
-	
-	int fid1 = rand()%nodeNum;
-	int fid2 = rand()%nodeNum;
+	int fid1 = credNetConstants.unifromIntDistribution(
+		credNetConstants.generator)%nodeNum;
+	int fid2 = credNetConstants.unifromIntDistribution(
+		credNetConstants.generator)%nodeNum;
 	while (fid1 == fid2){
-		fid2 = rand()%nodeNum;
+		fid2 = credNetConstants.unifromIntDistribution(
+			credNetConstants.generator)%nodeNum;
 	}
+	
+	// int fid1 = rand()%nodeNum;
+	// int fid2 = rand()%nodeNum;
+	// while (fid1 == fid2){
+	// 	fid2 = rand()%nodeNum;
+	// }
 
 	this->updateNodeDegrees();
 	if (mode == "SRC_DECIDE"){

@@ -35,7 +35,6 @@ int main(){
 	double threshold = 0.05;
 
 	g.genTest0Graph(threshold, numIR, cap);
-	// g.print();
 	g.updateNodeDegrees();
 
 	vector<string> v;
@@ -62,12 +61,19 @@ int main(){
 	}
 
 
-	cout << "///////////////////////" << endl;
+	cout << "////////////////////////////////////////////////" << endl;
 	for (auto& it : g.nodes){
 		cout << "node id: " << it.first << "\t";
 		it.second->printTransSeq();
 	}
 
+	cout << "////////////////////////////////////////////////" << endl;
+	for (auto& it : g.nodes){
+		cout << "node id: " << it.first 
+			<< " degree " << it.second->degree << endl;
+	}	
+
+	cout << "////////////////////////////////////////////////" << endl;
 
 	g.print();
 

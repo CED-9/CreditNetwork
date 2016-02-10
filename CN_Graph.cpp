@@ -160,13 +160,17 @@ void Graph::genTest0Graph(double threshold, int numIR, int cap){
 		nodes.insert(tempPair);
 	}
 
-	default_random_engine generator;
-	uniform_real_distribution<double> distribution(0.0, 1.0);
+	// default_random_engine generator;
+	// uniform_real_distribution<double> distribution(0.0, 1.0);
 	for (int i = 0; i < nodeNum; i++){
 		for (int j = i+1; j < nodeNum; j++){
 
-			double num = distribution(generator);
-			double ir = (rand() % numIR + 1);
+			double num = credNetConstants.uniformDoubleDistribution(
+				credNetConstants.generator);
+
+			double ir = (credNetConstants.uniformIntDistribution(
+				credNetConstants.generator) % numIR + 1);
+			
 			if (num > 1.0 - threshold){
 				if (rand()%2 == 1) {
 					// this->addUnitEdge(nodes.find(i)->second, nodes.find(j)->second, ir, rand()%2);
