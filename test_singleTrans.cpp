@@ -18,7 +18,15 @@ using namespace std;
 
 extern CredNetConstants credNetConstants;
 
-int main(){
+int main(int argc, char* argv[]){
+
+	if (argc < 2){
+		cerr << "enter more" << endl;
+		return -1;
+	}
+
+	string strategy_1 = argv[1];
+	string strategy_99 = argv[2];
 
 	credNetConstants.addIr(1);
 	credNetConstants.addIr(2);
@@ -39,9 +47,9 @@ int main(){
 
 	vector<string> v;
 	for (int i = 0; i < 99; ++i){
-		v.push_back("MIN_CREDIT_SRC");
+		v.push_back(strategy_99);
 	}
-	v.push_back("MIN_SRC_COST");
+	v.push_back(strategy_1);
 	g.setRoutePreference(v);
 
 
@@ -87,7 +95,7 @@ int main(){
 		avgTransSucc += it.second->successSrc;
 		avgIouIr += it.second->getCurrBanlance();
 	}
-	
+
 	avgTransSucc /= 100;
 	avgIouIr /= 100;
 	avgDegree /= 100;
