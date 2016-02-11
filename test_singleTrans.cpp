@@ -64,36 +64,49 @@ int main(int argc, char* argv[]){
 	double avgEdgeEngage = 0;
 	double totalEdgeNum = 0;
 
+	double avgTargetDegreeNodeTrans = 0;
+	double avgTargetDegreeNodeIouIr = 0;
+	double avgTargetDegreeNodeEngage = 0;
+	double totalTargetDegreeNodeNum = 0;
+	int targetNodeDegree = g.nodes[99]->degree;
+
 	for (auto& it : g.nodes){
-		it.second->print();
-		cout << "node id: " << it.first << it.second->degree << " \t"
-			<< "src num " << it.second->srcNum
-			<< " \tdest num " << it.second->destNum
-			<< " \tsucc src num " << it.second->successSrc 
-			<< " \tsucc dest num " << it.second->successDest
-			<< " \tiou ir " << it.second->getCurrBanlance()
-			<< endl;
+		// it.second->print();
+		// cout << "node id: " << it.first << it.second->degree << " \t"
+		// 	<< "src num " << it.second->srcNum
+		// 	<< " \tdest num " << it.second->destNum
+		// 	<< " \tsucc src num " << it.second->successSrc 
+		// 	<< " \tsucc dest num " << it.second->successDest
+		// 	<< " \tiou ir " << it.second->getCurrBanlance()
+		// 	<< endl;
 
-		cout << "node engage: ";
-		it.second->printTransSeq();
+		// cout << "node engage: ";
+		// it.second->printTransSeq();
 
-		cout << "edge engage: \n";
-		for (auto& edge : it.second->edge_in){
+		// cout << "edge engage: \n";
+		// for (auto& edge : it.second->edge_in){
 
-			cout << "Edge from " << edge.second->nodeFrom->nodeId << " to " << edge.second->nodeTo->nodeId << endl;
+		// 	cout << "Edge from " << edge.second->nodeFrom->nodeId << " to " << edge.second->nodeTo->nodeId << endl;
 
-			avgEdgeEngage += edge.second->edgeUsage.size();
-			for (int j = 0; j < edge.second->edgeUsage.size(); ++j){
-				cout << edge.second->edgeUsage[j] << " ";
-			}
-			cout << endl;
-		}
+		// 	avgEdgeEngage += edge.second->edgeUsage.size();
+		// 	for (int j = 0; j < edge.second->edgeUsage.size(); ++j){
+		// 		cout << edge.second->edgeUsage[j] << " ";
+		// 	}
+		// 	cout << endl;
+		// }
 		totalEdgeNum += it.second->edge_in.size();
 
 		avgDegree += it.second->degree;
 		avgNodeEngage += it.second->transSeq.size();
 		avgTransSucc += it.second->successSrc;
 		avgIouIr += it.second->getCurrBanlance();
+
+		if (it.second->degree == targetNodeDegree){
+			avgTargetDegreeNodeTrans += it.second->successSrc;
+			avgTargetDegreeNodeIouIr += it.second->getCurrBanlance();
+			avgTargetDegreeNodeEngage += it.second->transSeq.size();
+			totalTargetDegreeNodeNum += 1;
+		}
 	}
 
 	avgTransSucc /= 100;
@@ -102,12 +115,21 @@ int main(int argc, char* argv[]){
 	avgNodeEngage /= 100;
 	avgEdgeEngage /= totalEdgeNum;
 
+	avgTargetDegreeNodeTrans /= totalTargetDegreeNodeNum;
+	avgTargetDegreeNodeIouIr /= totalTargetDegreeNodeNum;
+	avgTargetDegreeNodeEngage /= totalTargetDegreeNodeNum;
+
+
 	cout << endl;
 	cout << "avg success " << avgTransSucc << endl;
 	cout << "avg iou ir " << avgIouIr << endl;
 	cout << "avg degree " << avgDegree << endl;
 	cout << "avg node engage " << avgNodeEngage << endl;
 	cout << "avg edge engage " << avgEdgeEngage << endl;
+
+	cout << "degree " << targetNodeDegree << " " << "avg success " << avgTargetDegreeNodeTrans << endl;
+	cout << "degree " << targetNodeDegree << " " << "avg iou ir " << avgTargetDegreeNodeIouIr << endl;
+	cout << "degree " << targetNodeDegree << " " << "avg node engage " << avgTargetDegreeNodeEngage << endl;
 
 	cout << "node 99 degree " << g.nodes[99]->degree << endl;
 	cout << "node 99 success " << g.nodes[99]->successSrc << endl;
