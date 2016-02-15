@@ -53,7 +53,7 @@ int CreditNet::genInterBankTrans(int request, string mode, int transSeqNum){
 	// this->print();
 
 	// fid1 = 2; fid2 = 0;
-	cout << "from " << fid1 << ", to " << fid2 << " " << request << " " << mode;
+	// cout << "from " << fid1 << ", to " << fid2 << " " << request << " " << mode;
 
 	CplexConverter converter;
 	converter.constructCplex(this, this->nodes[fid1], this->nodes[fid2], request, transSeqNum);
@@ -71,10 +71,10 @@ int CreditNet::genInterBankTrans(int request, string mode, int transSeqNum){
 		this->nodes[fid1]->transactionNum++;
 		this->nodes[fid1]->successSrc++;
 		this->nodes[fid2]->successDest++;
-		cout << " success " << endl;
+		// cout << " success " << endl;
 		return 0;
 	}
-	cout << " fail " << endl;
+	// cout << " fail " << endl;
 	return 1;
 	
 }

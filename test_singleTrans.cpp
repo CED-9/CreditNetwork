@@ -18,6 +18,10 @@ using namespace std;
 
 extern CredNetConstants credNetConstants;
 
+void simulation();
+void simulationNoStatistics();
+
+
 int main(int argc, char* argv[]){
 
 	if (argc < 2){
@@ -33,7 +37,53 @@ int main(int argc, char* argv[]){
 	credNetConstants.addIr(3);
 	credNetConstants.addIr(4);
 
-	credNetConstants.print();
+	cout << "NodeId \tDegree \tsuccSrc \tsuccDest \tiouIr \tnodeEngage ";
+
+	for (int i = 0; i < 10; ++i){
+		simulationNoStatistics();
+	}
+
+	return 0;
+}
+
+void simulationNoStatistics(){
+
+	/* test graph */
+	CreditNet g(100);
+	int req = 10;
+	int cap = 10;
+	int numIR = 4;
+	double threshold = 0.05;
+
+	g.genTest0Graph(threshold, numIR, cap);
+	g.updateNodeDegrees();
+
+	vector<string> v;
+	for (int i = 0; i < 99; ++i){
+		v.push_back(strategy_99);
+	}
+	v.push_back(strategy_1);
+	g.setRoutePreference(v);
+
+
+	for (int i = 0; i < 10000; ++i){
+		g.genInterBankTrans(10, "SRC_DECIDE", i);
+	}
+
+	for (int i = 0; i < g.nodes.size(); ++i){
+
+		cout << g.nodes[i]->nodeId << "\t" << g.nodes[i]->degree << "\t" << g.nodes[i]->successSrc
+			<< "\t" << g.nodes[i]->successDest << g.nodes[i]->getCurrBanlance() 
+			<< "\t" << g.nodes[i]->transSeq.size() << endl;
+	}
+
+}
+
+
+
+
+
+void simulation(){
 
 	/* test graph */
 	CreditNet g(100);
@@ -94,8 +144,8 @@ int main(int argc, char* argv[]){
 		// 	}
 		// 	cout << endl;
 		// }
-		totalEdgeNum += it.second->edge_in.size();
 
+		totalEdgeNum += it.second->edge_in.size();
 		avgDegree += it.second->degree;
 		avgNodeEngage += it.second->transSeq.size();
 		avgTransSucc += it.second->successSrc;
@@ -125,7 +175,7 @@ int main(int argc, char* argv[]){
 	cout << "avg iou ir " << avgIouIr << endl;
 	cout << "avg degree " << avgDegree << endl;
 	cout << "avg node engage " << avgNodeEngage << endl;
-	cout << "avg edge engage " << avgEdgeEngage << endl;
+	// cout << "avg edge engage " << avgEdgeEngage << endl;
 
 	cout << "degree " << targetNodeDegree << " " << "avg success " << avgTargetDegreeNodeTrans << endl;
 	cout << "degree " << targetNodeDegree << " " << "avg iou ir " << avgTargetDegreeNodeIouIr << endl;
@@ -135,6 +185,4 @@ int main(int argc, char* argv[]){
 	cout << "node 99 success " << g.nodes[99]->successSrc << endl;
 	cout << "node 99 iou ir " << g.nodes[99]->getCurrBanlance() << endl;
 	cout << "node 99 node engage " << g.nodes[99]->transSeq.size() << endl;
-
-	return 0;
 }
