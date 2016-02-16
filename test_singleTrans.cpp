@@ -73,7 +73,7 @@ void simulationNoStatistics(){
 	for (int i = 0; i < g.nodes.size(); ++i){
 
 		cout << g.nodes[i]->nodeId << "\t" << g.nodes[i]->degree << "\t" << g.nodes[i]->successSrc
-			<< "\t" << g.nodes[i]->successDest << g.nodes[i]->getCurrBanlance() 
+			<< "\t" << g.nodes[i]->successDest << "\t" << g.nodes[i]->getCurrBanlance() 
 			<< "\t" << g.nodes[i]->transSeq.size() << endl;
 	}
 
