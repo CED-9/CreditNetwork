@@ -13,13 +13,14 @@
 #include <mutex>
 #include <thread>
 #include <cmath>
+#include <string>
 
 using namespace std;
 
 extern CredNetConstants credNetConstants;
 
-void simulation();
-void simulationNoStatistics();
+void simulation(string strategy_1, string strategy_99);
+void simulationNoStatistics(string strategy_1, string strategy_99);
 
 
 int main(int argc, char* argv[]){
@@ -37,16 +38,16 @@ int main(int argc, char* argv[]){
 	credNetConstants.addIr(3);
 	credNetConstants.addIr(4);
 
-	cout << "NodeId \tDegree \tsuccSrc \tsuccDest \tiouIr \tnodeEngage ";
+	cout << "NodeId, \tMecha, \tDegree, \tsuccSrc, \tsuccDest, \tiouIr, \tnodeEngage ";
 
-	for (int i = 0; i < 10; ++i){
-		simulationNoStatistics();
+	for (int i = 0; i < 15; ++i){
+		simulationNoStatistics(strategy_1, strategy_99);
 	}
 
 	return 0;
 }
 
-void simulationNoStatistics(){
+void simulationNoStatistics(string strategy_1, string strategy_99){
 
 	/* test graph */
 	CreditNet g(100);
@@ -72,9 +73,13 @@ void simulationNoStatistics(){
 
 	for (int i = 0; i < g.nodes.size(); ++i){
 
-		cout << g.nodes[i]->nodeId << "\t" << g.nodes[i]->degree << "\t" << g.nodes[i]->successSrc
-			<< "\t" << g.nodes[i]->successDest << "\t" << g.nodes[i]->getCurrBanlance() 
-			<< "\t" << g.nodes[i]->transSeq.size() << endl;
+		cout << g.nodes[i]->nodeId 
+			<< ", \t" << g.nodes[i]->routePreference
+			<< ", \t" << g.nodes[i]->degree 
+			<< ", \t" << g.nodes[i]->successSrc
+			<< ", \t" << g.nodes[i]->successDest 
+			<< ", \t" << g.nodes[i]->getCurrBanlance() 
+			<< ", \t" << g.nodes[i]->transSeq.size() << endl;
 	}
 
 }
@@ -83,7 +88,7 @@ void simulationNoStatistics(){
 
 
 
-void simulation(){
+void simulation(string strategy_1, string strategy_99){
 
 	/* test graph */
 	CreditNet g(100);
