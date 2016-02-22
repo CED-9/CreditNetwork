@@ -163,7 +163,7 @@ int main(int argc, char* argv[]){
 			for (int i = 0; i < window_size; ++i){
 				int temp;
 				string mode = "SRC_DECIDE";
-				temp = creditNet.genInterBankTrans(stoi(config.requestAmount), mode);
+				temp = creditNet.genInterBankTrans(stoi(config.requestAmount), mode, i);
 				failRateTotal += temp;
 			}
 			// cout << window_size - failRateTotal << "   "<<endl;

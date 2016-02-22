@@ -40,6 +40,7 @@ public:
 	void generateTestGraph2();
 	void generateTestGraph3();
 	void genTest0Graph(double threshold, int numIR, int cap);
+	void genTest1Graph(double threshold, int numIR, int cap);
 
 };
 

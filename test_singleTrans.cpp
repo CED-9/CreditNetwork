@@ -38,9 +38,9 @@ int main(int argc, char* argv[]){
 	credNetConstants.addIr(3);
 	credNetConstants.addIr(4);
 
-	cout << "NodeId, \tMecha, \tDegree, \tsuccSrc, \tsuccDest, \tiouIr, \tnodeEngage ";
+	cout << "NodeId, \tMecha, \tDegree, \tsuccSrc, \tsuccDest, \tiouIr, \tnodeEngage \n";
 
-	for (int i = 0; i < 15; ++i){
+	for (int i = 0; i < 20; ++i){
 		simulationNoStatistics(strategy_1, strategy_99);
 	}
 
@@ -56,7 +56,7 @@ void simulationNoStatistics(string strategy_1, string strategy_99){
 	int numIR = 4;
 	double threshold = 0.05;
 
-	g.genTest0Graph(threshold, numIR, cap);
+	g.genTest1Graph(threshold, numIR, cap);
 	g.updateNodeDegrees();
 
 	vector<string> v;
@@ -67,7 +67,7 @@ void simulationNoStatistics(string strategy_1, string strategy_99){
 	g.setRoutePreference(v);
 
 
-	for (int i = 0; i < 10000; ++i){
+	for (int i = 0; i < 5000; ++i){
 		g.genInterBankTrans(10, "SRC_DECIDE", i);
 	}
 

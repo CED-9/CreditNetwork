@@ -190,6 +190,39 @@ void Graph::genTest0Graph(double threshold, int numIR, int cap){
 
 }
 
+void Graph::genTest1Graph(double threshold, int numIR, int cap){
+
+	for (int i = 0; i < nodeNum; ++i){
+		Node* temp = new Node(i);
+		std::pair<int, Node*> tempPair;
+		tempPair.first = i;
+		tempPair.second = temp;
+		nodes.insert(tempPair);
+	}
+
+	// default_random_engine generator;
+	// uniform_real_distribution<double> distribution(0.0, 1.0);
+	for (int i = 0; i < nodeNum; i++){
+
+		int count = threshold / 2 * nodeNum + 1;
+		while(count > 0){
+			
+			double ir = (credNetConstants.uniformIntDistribution(
+				credNetConstants.gloabalGenerator) % numIR + 1);
+
+			double id = (credNetConstants.uniformIntDistribution(
+				credNetConstants.gloabalGenerator) % nodeNum);
+			if (id == i){
+				continue;
+			}
+			this->addMultiEdge(nodes.find(id)->second, nodes.find(i)->second, ir, 0.0, 0, cap);
+			count--;
+		}
+
+	}
+}
+
+
 void Graph::generateTestGraph2(){
 
 	nodeNum = 8;
