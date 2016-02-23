@@ -33,24 +33,14 @@ struct PlayerInfo {
 };
 
 void readConfig (Config &config, string inPath) {
-	// cout<<"trying to read"<<endl;
+
 	FILE* fp = fopen(inPath.c_str(), "r"); // non-Windows use "r"
-	// cout<<"fopened"<<endl;
 	char readBuffer[65536];
-	// cout << "buffer set" << endl;
 	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-	// cout << "stream set" << endl;
 	Document doc;
 	doc.ParseStream(is);
 	fclose(fp);
-	// cout<<"fclosed"<<endl;
 
-	// printf("\nModified JSON with reformatting:\n");
-	// StringBuffer sb;
-	// PrettyWriter<StringBuffer> writer(sb);
-	// doc.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
-	// puts(sb.GetString());
-	// cout<<"read in all"<<endl;
 	
 	const Value& configObj = doc["configuration"];
 	config.numNodes = configObj["numNodes"].GetString();
@@ -70,8 +60,6 @@ void readConfig (Config &config, string inPath) {
 	for (rapidjson::SizeType i = 0; i < b.Size(); i++)
 	{
 		config.assignedStrategy.push_back(b[i].GetString());
-		// printf("%s \n", b[i].GetString());
-		// cout << b[i].GetString() << endl;
 	}
 }
 
@@ -101,11 +89,6 @@ void writePayoff (std::vector<PlayerInfo> &players, string outPath) {
 	rapidjson::Value object(rapidjson::kObjectType);
 	object.SetObject();
 	result.AddMember("features", object, allocator);
-	// printf("\nModified JSON with reformatting:\n");
-	// StringBuffer sb;
-	// PrettyWriter<StringBuffer> writer(sb);
-	// result.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
-	// puts(sb.GetString());
 	
 	FILE* fp = fopen(outPath.c_str(), "w"); // non-Windows use "w"
 	char writeBuffer[65536];
@@ -165,13 +148,10 @@ int main(int argc, char* argv[]){
 				failRateTotal += temp;
 			}
 			// cout << window_size - failRateTotal << "   "<<endl;
-			for (int k = 0; k < finNum; ++k){
-				// cout << creditNet.finAgent[k]->transactionNum << "  " << creditNet.finAgent[k]->getCurrBanlance()<<"   ";
+			for (int k = 0; k < finNum; ++k){	
 				payoffs[k] += (double) creditNet.nodes[k]->transactionNum * (double)transVal 
 					+ (double)creditNet.nodes[k]->getCurrBanlance();
-				// cout  << payoffs[k] << "   ";
 			}
-			// cout << endl;
 		}
 
 		vector<PlayerInfo> myList;
