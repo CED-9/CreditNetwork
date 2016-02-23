@@ -260,24 +260,53 @@ void Graph::generateTestGraph2(){
 
 void Graph::generateTestGraph3(){
 
-	nodeNum = 4;
+	nodeNum = 14;
 	for (int i = 0; i < nodeNum; ++i){
 		nodes[i] = new Node(i);
 	}
 
-	this->addMultiEdge(nodes.find(0)->second, nodes.find(1)->second, 0.02, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(0)->second, nodes.find(1)->second, 0.1, 0.0, 0, 10);
 
-	this->addMultiEdge(nodes.find(0)->second, nodes.find(2)->second, 0.03, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(1)->second, nodes.find(4)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(1)->second, nodes.find(5)->second, 0.3, 0.0, 0, 10);
 
-	this->addMultiEdge(nodes.find(1)->second, nodes.find(0)->second, 0.02, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(2)->second, nodes.find(1)->second, 0.1, 0.0, 0, 10);
 
-	this->addMultiEdge(nodes.find(1)->second, nodes.find(2)->second, 0.01, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(3)->second, nodes.find(0)->second, 0.3, 0.0, 0, 10);
 
-	this->addMultiEdge(nodes.find(1)->second, nodes.find(3)->second, 0.01, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(0)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(3)->second, 0.3, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(4)->second, nodes.find(7)->second, 0.1, 0.0, 0, 10);
 
-	this->addMultiEdge(nodes.find(2)->second, nodes.find(0)->second, 0.03, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(2)->second, 0.3, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(4)->second, 0.1, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(5)->second, nodes.find(9)->second, 0.2, 0.0, 0, 10);
 
-	this->addMultiEdge(nodes.find(3)->second, nodes.find(2)->second, 0.02, 0.0, 0, 2);
+	this->addMultiEdge(nodes.find(6)->second, nodes.find(2)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(6)->second, nodes.find(5)->second, 0.1, 0.0, 0, 10);
+	
+	this->addMultiEdge(nodes.find(7)->second, nodes.find(3)->second, 0.2, 0.0, 0, 10);
+
+	this->addMultiEdge(nodes.find(8)->second, nodes.find(4)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(8)->second, nodes.find(5)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(8)->second, nodes.find(7)->second, 0.3, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(8)->second, nodes.find(12)->second, 0.1, 0.0, 0, 10);
+
+	this->addMultiEdge(nodes.find(9)->second, nodes.find(6)->second, 0.1, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(9)->second, nodes.find(8)->second, 0.3, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(9)->second, nodes.find(13)->second, 0.3, 0.0, 0, 10);
+
+	this->addMultiEdge(nodes.find(10)->second, nodes.find(6)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(10)->second, nodes.find(9)->second, 0.3, 0.0, 0, 10);
+
+	this->addMultiEdge(nodes.find(11)->second, nodes.find(7)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(11)->second, nodes.find(8)->second, 0.2, 0.0, 0, 10);
+
+	this->addMultiEdge(nodes.find(12)->second, nodes.find(9)->second, 0.3, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(12)->second, nodes.find(11)->second, 0.2, 0.0, 0, 10);
+
+	this->addMultiEdge(nodes.find(13)->second, nodes.find(10)->second, 0.2, 0.0, 0, 10);
+	this->addMultiEdge(nodes.find(13)->second, nodes.find(12)->second, 0.1, 0.0, 0, 10);
 
 }
 
