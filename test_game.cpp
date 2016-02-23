@@ -7,9 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
-#include <thread>
 #include <algorithm>
-#include <mutex>
 
 using namespace rapidjson;
 using namespace std;
