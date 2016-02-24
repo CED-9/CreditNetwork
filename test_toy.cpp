@@ -19,7 +19,7 @@ using namespace std;
 
 extern CredNetConstants credNetConstants;
 
-void simulation();
+void simulation(CreditNet &g);
 
 int main(int argc, char* argv[]){
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 	}
 	g.setRoutePreference(v);
 
-	for (int i = 0; i < 1; ++i){
+	for (int i = 0; i < 5; ++i){
 		simulation(g);
 	}
 	
@@ -48,17 +48,26 @@ int main(int argc, char* argv[]){
 	return 0;
 }
 
-void simulation(CreditNet g){
+void simulation(CreditNet &g){
 	int fid1 = credNetConstants.uniformIntDistribution(
-		credNetConstants.gloabalGenerator)%nodeNum;
+		credNetConstants.gloabalGenerator) % g.nodeNum;
 	int fid2 = credNetConstants.uniformIntDistribution(
-		credNetConstants.gloabalGenerator)%nodeNum;
+		credNetConstants.gloabalGenerator) % g.nodeNum;
 	while (fid1 == fid2){
 		fid2 = credNetConstants.uniformIntDistribution(
-			credNetConstants.gloabalGenerator)%nodeNum;
+			credNetConstants.gloabalGenerator) % g.nodeNum;
 	}
+
+	// fid1 = 4;
+	// fid2 = 1;
+
 	CplexConverter converter;
-	converter.constructCplex(&g, g.nodes[fid1], g.nodes[fid2], 10, 0);
+	converter.constructCplex(&g, g.nodes[fid1], g.nodes[fid2], 15, 0);
 	LpSolver lpSolver;
-	cout << "routing from node " << fid1 << " to node " << fid2 << " succ " lpSolver.solveLpProblem(converter, mode) << endl;
+	bool result = lpSolver.solveLpProblem(converter, g.nodes[fid1]->routePreference);
+	cout << "routing from node " << fid1 
+		<< " to node " << fid2 << " succ " << result << endl;
+	if (result){
+		converter.copyBack();
+	}
 }

@@ -46,6 +46,7 @@ bool LpSolver::solveLpProblem(CplexConverter& cplexConverter, string mode)
     	// cplex.exportModel("lpex1.lp");
 
 		for (int i = 0; i < cplexConverter.variables.size(); ++i){
+			cout << "results from LP: " << cplex.getValue(var[i]) << endl;
 			cplexConverter.results.push_back(cplex.getValue(var[i]));
 		}
 
@@ -223,7 +224,7 @@ void LpSolver::populatebyrow (CplexConverter& cplexConverter,
 	// Create Variables
 	// cout << "size of var: " << cplexConverter.variables.size() << endl;
 	for (int i = 0; i < cplexConverter.variables.size(); ++i){
-		IloNumVar iloVar(env, 0.0, cplexConverter.capacities[i]);
+		IloNumVar iloVar(env, 0.0, cplexConverter.capacities[i], IloNumVar::Int);
 		// cout << iloVar << endl;
 		x.add(iloVar);
 	}

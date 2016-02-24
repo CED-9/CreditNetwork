@@ -1,9 +1,14 @@
 #ifndef CN_CplexConverter
 #define CN_CplexConverter
 
-#include "CN_WidgetGraph.h"
 #include "CN_Constants.h"
-
+#include "CN_Node.h"
+#include "CN_Graph.h"
+#include <unordered_map>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <set>
 
 class CplexConverter{
 
