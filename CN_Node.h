@@ -1,6 +1,7 @@
 #ifndef CN_Node
 #define CN_Node
 
+#include "CN_Constants.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -8,11 +9,6 @@
 
 using namespace std;
 
-// forward declaration
-class Graph;
-class Edge;
-class AtomicEdge;
-class WidgetNode;
 
 class Node{
 
@@ -37,25 +33,15 @@ public:
 	// atomic edges
 	unordered_map<int, AtomicEdge*> atomicEdge_in;
 	unordered_map<int, AtomicEdge*> atomicEdge_out;
-    
-	// widget nodes
-	unordered_map<int, WidgetNode*> credit_out_widget_nodes;
-	unordered_map<int, WidgetNode*> credit_in_widget_nodes;
-	unordered_map<int, WidgetNode*> debt_in_widget_nodes;
-	unordered_map<int, WidgetNode*> debt_out_widget_nodes;
+
 
 	Node(int id);
-
 	~Node();
-
 	int getNodeId();
 	double getCurrBanlance();
 	void updateDegree();
-
 	void printTransSeq();
 	void addModification(int transSeqNum);
-
-
 	void print(); 
 };
 

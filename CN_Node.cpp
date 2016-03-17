@@ -20,11 +20,7 @@ Node::Node(int id){
 }
 
 
-Node::~Node(){
-	// for (auto it : edge_in){
-	// 	delete it.second;
-	// }
-}
+Node::~Node(){}
 
 void Node::print(){
 	cout << "Node " << this->nodeId << endl;

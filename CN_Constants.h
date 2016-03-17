@@ -1,10 +1,17 @@
-#ifndef CN_Const
-#define CN_Const
+#ifndef CN_Constants
+#define CN_Constants
 
 #include <vector>
 #include <random>
 #include <algorithm>
 #include <chrono>
+
+// forward declaration
+class Graph;
+class Edge;
+class singleCreditEdge;
+class AtomicEdge;
+class GraphModifier;
 
 using namespace std;
 
