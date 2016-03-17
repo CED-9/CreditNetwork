@@ -7,6 +7,7 @@
 #include "CN_Node.h"
 #include "CN_Graph.h"
 #include "CN_Solver.h"
+#include "CN_FinNode.h"
 
 class CreditNet : public Graph{
 private:
@@ -21,6 +22,12 @@ public:
 
 	
 	void printPayoff();
+
+	////////// Generate Test Credit Net /////////////////////////////
+
+	void genTestCredNet100();
+
+
 };
 
 
