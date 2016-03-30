@@ -1,6 +1,7 @@
 #ifndef CN_AtomicEdge
 #define CN_AtomicEdge
 
+#include "CN_Constants.h"
 #include "CN_Node.h"
 
 // atomic edge
@@ -27,18 +28,6 @@ public:
 		, nodeFrom(from), nodeTo(to)
 	{}
 
-
-
-	void print() {
-		cout << "    Atomic Edge, id: " << atomicEdgeId << " " 
-		<< "capacity: " << capacity 
-		<< " ir: " << interest_rate 
-		<< " isDebt: " << isDebt 
-		<< " single index " << singleCreditIndex 
-		<< " from " << nodeFrom->nodeId 
-		<< " to " << nodeTo->nodeId
-		<< endl;
-	}
 };
 
 #endif

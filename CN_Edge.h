@@ -195,8 +195,6 @@ public:
 	void routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate, 
 		int& atomicGlobalId, unordered_map<int, AtomicEdge*>& atomicMap, int transSeqNum);
 
-	void print();
-
 };
 
 

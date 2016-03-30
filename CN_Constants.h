@@ -8,6 +8,7 @@
 
 // forward declaration
 class Graph;
+class Node;
 class Edge;
 class singleCreditEdge;
 class AtomicEdge;

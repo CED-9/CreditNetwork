@@ -5,8 +5,6 @@
 #include <vector>
 #include <fstream>
 
-extern void printEdge(Edge*);
-extern void printAtomicEdge(AtomicEdge*);
 
 Node::Node(int id){
 	this->nodeId = id;
@@ -22,25 +20,6 @@ Node::Node(int id){
 
 Node::~Node(){}
 
-void Node::print(){
-	cout << "Node " << this->nodeId << endl;
-	for (auto &it : edge_in){
-		printEdge(it.second);
-	}
-	for (auto &it : edge_out){
-		printEdge(it.second);
-	}
-	cout << "Atomic Edges: " << endl;
-	for (auto &it : atomicEdge_in){
-		printAtomicEdge(it.second);
-	}
-	for (auto &it : atomicEdge_out){
-		printAtomicEdge(it.second);
-	}
-	cout << endl;
-
-	return;
-}
 
 void Node::updateDegree(){
 	this->degree = edge_in.size();
@@ -49,11 +28,6 @@ void Node::updateDegree(){
 int Node::getNodeId(){ return nodeId; }
 
 
-extern double getNodeCurrBanlance(Node*);
-
-double Node::getCurrBanlance(){
-	return getNodeCurrBanlance(this);
-}
 
 void Node::addModification(int transSeqNum){
 	this->transSeq.push_back(transSeqNum);

@@ -54,35 +54,3 @@ void Edge::routeAtomicEdge(AtomicEdge* a, int flow, double interest_rate,
 
 }
 
-void Edge::print(){
-	cout << "From Node " << nodeFrom->getNodeId() 
-	<< " To Node " << nodeTo->getNodeId() << endl;
-
-	for (int i = 0; i < singleCreditEdges.size(); ++i){
-		singleCreditEdges[i]->print();
-	}
-	
-}
-
-void printEdge(Edge* e){
-	e->print();
-}
-
-void printAtomicEdge(AtomicEdge* ae){
-	ae->print();
-}
-
-double getNodeCurrBanlance(Node* n){
-	double temp = 0;
-	for (auto& it : n->atomicEdge_in){
-		if (it.second->isDebt){
-			temp += it.second->capacity * it.second->interest_rate;
-		}
-	}
-	for (auto& it : n->atomicEdge_out){
-		if (it.second->isDebt){
-			temp -= it.second->capacity * it.second->interest_rate;
-		}
-	}
-	return temp;
-}

@@ -42,7 +42,7 @@ public:
 	void updateDegree();
 	void printTransSeq();
 	void addModification(int transSeqNum);
-	void print(); 
+
 };
 
 #endif
