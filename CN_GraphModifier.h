@@ -14,10 +14,23 @@ private:
 	GraphModifier(){}
 	
 public:
+
+	// Edge Modifications
+	static void setRoutePreference(vector<string> &v, Graph& g);
+	static bool routeAtomicEdge(Graph* g, AtomicEdge* at, 
+		int amt, double ir);
+	static void addEdge(Graph* g, Node* nodeFrom, Node* nodeTo, 
+		double credit_ir, double debt_ir, int currDebt, int cap);
+	static void updateNodeDegrees(Graph* g);
+
+
+
+	// Get Statistics
 	static double getNodeCurrBanlance(Node*);
+	static double getAvgAtomicIouEdges(Graph* g);
+	
 
-
-
+	// Print Out Status
 	static void print(AtomicEdge* at);
 	static void print(SingleCreditEdge* sc);
 	static void print(Edge* e);

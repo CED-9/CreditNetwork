@@ -2,6 +2,8 @@
 #define CN_Graph
 
 #include "CN_Node.h"
+#include "CN_AtomicEdge.h"
+#include "CN_SingleCreditEdge.h"
 #include "CN_Edge.h"
 #include <list>
 #include <unordered_map>
@@ -10,30 +12,19 @@
 
 
 class Graph{
+
 public:
 	int nodeNum;
 	int atomicGlobalId;
+
 	unordered_map<int, Node*> nodes;
 	list<Edge*> edges;
 	unordered_map<int, AtomicEdge*> atomicEdges;
 
-	/////////////////////////////////////////////////////////////////////////
-	/* Graph basics */
-	/////////////////////////////////////////////////////////////////////////
 	Graph();
 	Graph(int nodeNum);
-	Graph(Graph &graphT);
-	Graph& operator=(Graph &graphT);
 	~Graph();
 
-	void print();
-	void printAtomicEdges();
-	void printAtomicIouEdges(ofstream& fout);
-	void printAvgAtomicIouEdges();
-	
-	void addMultiEdge(Node* nodeFrom, Node* nodeTo, double credit_ir, double debt_ir, int currDebt, int cap);
-	void updateNodeDegrees();
-	void setRoutePreference(vector<string> &v);
 	/////////////////////////////////////////////////////////////////////////
 	/* Generate Initial Network */
 	/////////////////////////////////////////////////////////////////////////

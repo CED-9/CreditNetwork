@@ -26,20 +26,18 @@ public:
 	string routePreference;
 	int degree;
 
-	// edges
+	// edges, key is the other node id
 	unordered_map<int, Edge*> edge_out;
 	unordered_map<int, Edge*> edge_in;
 
-	// atomic edges
+	// atomic edges, key is the atomic edge id
 	unordered_map<int, AtomicEdge*> atomicEdge_in;
 	unordered_map<int, AtomicEdge*> atomicEdge_out;
 
-
 	Node(int id);
 	~Node();
-	int getNodeId();
-	double getCurrBanlance();
-	void updateDegree();
+
+
 	void printTransSeq();
 	void addModification(int transSeqNum);
 

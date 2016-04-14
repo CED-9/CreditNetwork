@@ -3,7 +3,7 @@
 extern CredNetConstants credNetConstants;
 
 
-void CplexConverter::constructCplex(Graph* g, Node* s, Node* t, int req, int transSeqNumT){
+void CplexConverter::constructCplex(Graph* g, Node* s, Node* t, int req, const set<Node*>& excludedNodes, int transSeqNumT){
 	graph = g;
 	src = s;
 	dest = t;

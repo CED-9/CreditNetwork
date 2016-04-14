@@ -7,11 +7,11 @@
 #include <chrono>
 
 // forward declaration
-class Graph;
 class Node;
-class Edge;
-class singleCreditEdge;
 class AtomicEdge;
+class SingleCreditEdge;
+class Edge;
+class Graph;
 class GraphModifier;
 
 using namespace std;

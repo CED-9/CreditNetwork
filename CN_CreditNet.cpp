@@ -15,11 +15,83 @@ CreditNet::CreditNet(int finNumT) : Graph(finNumT){}
 
 CreditNet::CreditNet() : Graph(){}
 
+
+
+
+bool CreditNet::paymentRouting(Node* NodeFrom, Node* NodeTo, string mode, 
+	int amt, const set<Node*>& excludedNodes, transSeqNum = -1){
+
+
+	CplexConverter converter;
+	converter.constructCplex(this, NodeFrom, NodeTo, amt, excludedNodes, transSeqNum);
+
+	// converter.printInput();
+	
+	LpSolver lpSolver;
+
+	nodeFrom->srcNum++;
+	nodeTo->destNum++;
+	
+	if (lpSolver.solveLpProblem(converter, mode)){
+		// converter.printResult();
+		converter.copyBack();
+		NodeFrom->transactionNum++;
+		NodeFrom->successSrc++;
+		nodeTo->successDest++;
+		// cout << " success " << endl;
+		return true;
+	}
+	// cout << " fail " << endl;
+	return false;
+}
+
+bool CreditNet::wiredPaymentRouting(HouseHoldNode* hFrom, 
+	FinNode* fTo, HouseHoldNode* hTo, string mode, 
+	int amt, set<Node*> excludedNodes, transSeqNum = -1){
+
+	if (this->paymentRouting(hFrom, fTo, mode, 
+		amt, excludedNodes, transSeqNum))
+	{
+		this->makeDeposit(hTo, fTo, amt, fTo->bankIr);
+		return true;
+	}
+	return false;
+}
+
+bool CreditNet::makeDeposit(HouseHoldNode* h, FinNode* f, int amt, double ir){
+	// if f have no account
+	if (h->edge_out.find(f) == h->edge_out.end()){
+		
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void CreditNet::printPayoff(){
-	for (auto it : nodes) {
-		cout << it.second->getNodeId() << ": "
+	for (auto& it : nodes) {
+		cout << it.second->nodeId << ": "
 			<< "Transactions " << it.second->transactionNum << ", Current Banlance "
-			<< it.second->getCurrBanlance() << endl;
+			<< GraphModifier::getNodeCurrBanlance(it.second) << endl;
 	}
 }
 

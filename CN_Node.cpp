@@ -17,15 +17,7 @@ Node::Node(int id){
 	successDest = 0;
 }
 
-
 Node::~Node(){}
-
-
-void Node::updateDegree(){
-	this->degree = edge_in.size();
-}
-
-int Node::getNodeId(){ return nodeId; }
 
 
 

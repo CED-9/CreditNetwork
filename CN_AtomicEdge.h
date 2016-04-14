@@ -10,7 +10,7 @@ class AtomicEdge{
 public:
 	// original Edge Info
 	Edge* originEdge;
-	singleCreditEdge* originSingleCreditEdge;
+	SingleCreditEdge* originSingleCreditEdge;
 
 	bool isDebt;
 	int atomicEdgeId;
@@ -21,7 +21,7 @@ public:
 	Node* nodeTo;
 
 	AtomicEdge(bool d, int id, int capT, double ir, 
-		Edge* e, singleCreditEdge* s, Node* from, Node* to)
+		Edge* e, SingleCreditEdge* s, Node* from, Node* to)
 	: isDebt(d), atomicEdgeId(id)
 		, capacity(capT), interest_rate(ir)
 		, originEdge(e), originSingleCreditEdge(s)

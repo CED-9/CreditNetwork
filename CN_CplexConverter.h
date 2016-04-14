@@ -32,7 +32,7 @@ public:
 	Node* dest;
 	Graph* graph;
 	
-	void constructCplex(Graph* g, Node* s, Node* t, int req, int transSeqNumT);
+	void constructCplex(Graph* g, Node* s, Node* t, int req, const set<Node*>& excludedNodes, int transSeqNumT);
 
 	void printInput();
 
